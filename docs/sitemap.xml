@@ -170,13 +170,13 @@
     <loc>https://DoMySon.github.io/2019/07/ILRuntime/</loc>
     <lastmod>2019-07-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://DoMySon.github.io/categories/database/</loc>
-    <lastmod>2019-07-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://DoMySon.github.io/tags/Redis/</loc>
+    <loc>https://DoMySon.github.io/tags/database/</loc>
     <lastmod>2019-07-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://DoMySon.github.io/2019/07/Redis/</loc>
+    <lastmod>2019-07-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://DoMySon.github.io/categories/redis/</loc>
     <lastmod>2019-07-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://DoMySon.github.io/categories/Protobuf3/</loc>
@@ -197,7 +197,7 @@
     <loc>https://DoMySon.github.io/2019/05/Bitmap/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://DoMySon.github.io/tags/mysql/</loc>
+    <loc>https://DoMySon.github.io/categories/mysql/</loc>
     <lastmod>2019-03-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://DoMySon.github.io/2019/03/mysql/</loc>
@@ -250,8 +250,6 @@
   </url><url>
     <loc>https://DoMySon.github.io/about/</loc>
     <lastmod>2019-02-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://DoMySon.github.io/1/01/</loc>
   </url><url>
     <loc>https://DoMySon.github.io/1/01/</loc>
   </url><url>

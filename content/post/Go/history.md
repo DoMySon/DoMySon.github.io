@@ -1,10 +1,8 @@
 ---
 title: go历代版本
 date: 2020-02-13
-tags: [""]
 categories: ["go"]
 description: go版本变迁史
-img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false
 ---

@@ -1,8 +1,8 @@
 ---
 title: Redis
 date: 2019-07-24
-tags: ["Redis"]
-categories: ["Database"]
+tags: ["database"]
+categories: ["redis"]
 description: Redis是一种基于内存的数据库，并且提供一定的持久化功能。它的性能十分优越，可以支持每秒十几万此的读/写操作，其性能远超数据库，并且还支持集群、分布式、主从同步等配置，原则上可以无限扩展，让更多的数据存储在内存中，更让人欣慰的是它还支持一定的事务能力，这保证了高并发的场景下数据的安全和一致性。
 img: http://www.runoob.com/wp-content/uploads/2014/03/mysql.jpg
 toc: true

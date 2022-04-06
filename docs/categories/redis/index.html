@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>redis | 薛定谔的BUG</title>
+    <meta property="og:title" content="redis - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="redis">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/categories/redis/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/categories/redis/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        分类
+        <span class="keyword">redis</span>
+        中的文章
+    </h3>
+    
+
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/07/Redis/">Redis</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月24日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/redis'>redis</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="liunx安装">Liunx安装</h1>
+<h1 id="基本数据结构">基本数据结构</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>string</code></td>
+<td style="text-align:center">键值对</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>has</code></td>
+<td style="text-align:center">hash表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>list</code></td>
+<td style="text-align:center">字符串列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>set</code></td>
+<td style="text-align:center">无重复列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>sorted set</code></td>
+<td style="text-align:center">有序无重复列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>subscribe/publish</code></td>
+<td style="text-align:center">发布订阅模式</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><a href="http://doc.redisfans.com/index.html">Redis命令</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://redis.io/download">Redis下载</a></p>
+</blockquote>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/07/Redis/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/2022/04/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    
+    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
