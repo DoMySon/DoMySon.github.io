@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>mysql</title>
+      <link>https://domyson.github.io/categories/mysql/</link>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/categories/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>C</title>
       <link>https://domyson.github.io/categories/c/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
@@ -26,11 +35,11 @@
     </item>
     
     <item>
-      <title>tools</title>
-      <link>https://domyson.github.io/categories/tools/</link>
+      <title>others</title>
+      <link>https://domyson.github.io/categories/others/</link>
       <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://domyson.github.io/categories/tools/</guid>
+      <guid>https://domyson.github.io/categories/others/</guid>
       <description></description>
     </item>
     
@@ -80,36 +89,9 @@
     </item>
     
     <item>
-      <title>Protobuf3</title>
-      <link>https://domyson.github.io/categories/protobuf3/</link>
-      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/categories/protobuf3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mysql</title>
-      <link>https://domyson.github.io/categories/mysql/</link>
-      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/categories/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Nginx</title>
-      <link>https://domyson.github.io/categories/nginx/</link>
-      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/categories/nginx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Linux</title>
       <link>https://domyson.github.io/categories/linux/</link>
-      <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/categories/linux/</guid>
       <description></description>

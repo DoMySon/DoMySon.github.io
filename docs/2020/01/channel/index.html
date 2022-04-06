@@ -55,8 +55,6 @@
                     
                     <a  href="https://domyson.github.io/about/" title="关于">关于</a>
                     
-                    <a  href="https://domyson.github.io/tools/" title="对照表">对照表</a>
-                    
                 </nav>
             </div>
         </div>
@@ -198,7 +196,6 @@
 <blockquote>
 <p><code>channel</code> 提供了一种通信机制，通过它，一个 <code>goroutine</code> 可以与另一 <code>goroutine</code> 发送消息。<code>channel</code> 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 <code>len()</code> 获取通道当前缓冲数量。 <code>cap()</code> 获取通道最大缓冲。</p>
 </blockquote>
-<h1 id="描述">描述</h1>
 <p><code>channel</code> 用于在不同的 <code>goroutine</code> 中实现数据传递和共享，是一个FIFO的队列，同样也是一个线程安全的结构。</p>
 <ol>
 <li>
@@ -286,7 +283,7 @@
 <p>关闭 channel 会产生一个广播机制，所有向 channel 读取消息的 goroutine 都会收到消息。</p>
 </li>
 <li>
-<p>对于统一关闭的 <code>Goroutine</code> 建议使用同一个 <code>channel</code> 控制，上述原理。</p>
+<p>对于统一关闭的 <code>Goroutine</code> 建议使用同一个 <code>channel</code> 控制，上述原理。</p>
 </li>
 </ul>
 </li>
@@ -417,6 +414,10 @@
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -448,10 +449,6 @@
         <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
-    <li>
-        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -467,19 +464,15 @@
     
     <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
@@ -491,6 +484,8 @@
     <section class="widget">
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
     
     <a href="https://domyson.github.io/tags/bit/">bit</a>
     
@@ -528,7 +523,11 @@
     
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
     <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
     
     <a href="https://domyson.github.io/tags/network/">Network</a>
     

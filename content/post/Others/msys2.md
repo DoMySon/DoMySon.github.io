@@ -2,7 +2,7 @@
 title: Msys2
 date: 2020-03-12
 tags: ["msys2"]
-categories: ["tools"]
+categories: ["others"]
 description: 高性能web代理
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

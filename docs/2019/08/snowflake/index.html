@@ -55,8 +55,6 @@
                     
                     <a  href="https://domyson.github.io/about/" title="关于">关于</a>
                     
-                    <a  href="https://domyson.github.io/tools/" title="对照表">对照表</a>
-                    
                 </nav>
             </div>
         </div>
@@ -235,9 +233,9 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">lastTs</span> <span style="color:#66d9ef">int64</span> = <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>()  <span style="color:#75715e">//基于秒
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SnowFalke</span>(<span style="color:#a6e22e">machineID</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">int64</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">snowfalke</span>(<span style="color:#a6e22e">machineID</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">int64</span> {
 </span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 同一毫秒
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">curTS</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ts</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>()
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>() <span style="color:#f92672">==</span> <span style="color:#a6e22e">lastTS</span> {
 </span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sn</span><span style="color:#f92672">++</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 序列号占 12 位,十进制范围是 [ 0, 4095 ]
@@ -246,15 +244,15 @@
 </span></span><span style="display:flex;"><span>		}
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">curTS</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x1FFFFFFFFFF</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ts</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x1FFFFFFFFFF</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">22</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">id</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rightBinValue</span> | <span style="color:#a6e22e">machineID</span> | <span style="color:#a6e22e">sn</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">id</span>
 </span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">curTS</span> &gt; <span style="color:#a6e22e">lastTS</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ts</span> &gt; <span style="color:#a6e22e">lastTS</span> {
 </span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sn</span> = <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">lastTS</span> = <span style="color:#a6e22e">curTS</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">lastTS</span> = <span style="color:#a6e22e">ts</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">curTS</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x1FFFFFFFFFF</span>
@@ -263,7 +261,7 @@
 </span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">id</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rightBinValue</span> | <span style="color:#a6e22e">machineID</span> | <span style="color:#a6e22e">sn</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">id</span>
 </span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">curTS</span> &lt; <span style="color:#a6e22e">lastTS</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ts</span> &lt; <span style="color:#a6e22e">lastTS</span> {
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
@@ -363,6 +361,10 @@
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -394,10 +396,6 @@
         <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
-    <li>
-        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -413,19 +411,15 @@
     
     <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
@@ -437,6 +431,8 @@
     <section class="widget">
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
     
     <a href="https://domyson.github.io/tags/bit/">bit</a>
     
@@ -474,7 +470,11 @@
     
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
     <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
     
     <a href="https://domyson.github.io/tags/network/">Network</a>
     

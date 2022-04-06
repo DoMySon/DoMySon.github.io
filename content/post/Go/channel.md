@@ -4,7 +4,6 @@ date: 2020-01-20
 tags: []
 categories: ["go"]
 description: 
-img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false
 ---
@@ -16,8 +15,6 @@ draft: false
 
 <!--more-->
 
-
-# 描述
 
 `channel` 用于在不同的 `goroutine` 中实现数据传递和共享，是一个FIFO的队列，同样也是一个线程安全的结构。
 
@@ -91,7 +88,7 @@ draft: false
 
     + 关闭 channel 会产生一个广播机制，所有向 channel 读取消息的 goroutine 都会收到消息。
 
-    + 对于统一关闭的 `Goroutine` 建议使用同一个 `channel` 控制，上述原理。
+    + 对于统一关闭的 `Goroutine` 建议使用同一个 `channel` 控制，上述原理。
 
 
 8. `select-case`

@@ -44,9 +44,9 @@ var(
     lastTs int64 = time.Now().Unix()  //基于秒
 )
 
-func SnowFalke(machineID int64) int64 {
+func snowfalke(machineID int64) int64 {
 	// 同一毫秒
-	curTS := time.Now().Unix()
+	ts := time.Now().Unix()
 	if time.Now().Unix() == lastTS {
 		sn++
 		// 序列号占 12 位,十进制范围是 [ 0, 4095 ]
@@ -55,15 +55,15 @@ func SnowFalke(machineID int64) int64 {
 		}
 		// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
 		// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
-		rightBinValue := curTS & 0x1FFFFFFFFFF
+		rightBinValue := ts & 0x1FFFFFFFFFF
 		// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
 		rightBinValue <<= 22
 		id := rightBinValue | machineID | sn
 		return id
 	}
-	if curTS > lastTS {
+	if ts > lastTS {
 		sn = 0
-		lastTS = curTS
+		lastTS = ts
 		// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
 		// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
 		rightBinValue := curTS & 0x1FFFFFFFFFF
@@ -72,7 +72,7 @@ func SnowFalke(machineID int64) int64 {
 		id := rightBinValue | machineID | sn
 		return id
 	}
-	if curTS < lastTS {
+	if ts < lastTS {
 		return 0
 	}
 	return 0

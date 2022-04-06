@@ -2,7 +2,7 @@
 title: Protobuf3
 date: 2019-05-13
 tags: [""]
-categories: ["Protobuf3"]
+categories: ["others"]
 description:  一种数据交换格式
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

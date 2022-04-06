@@ -17,6 +17,15 @@
     <loc>https://domyson.github.io/categories/go/</loc>
     <lastmod>2022-04-06T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://domyson.github.io/tags/mysql/</loc>
+    <lastmod>2022-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://domyson.github.io/categories/mysql/</loc>
+    <lastmod>2022-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://domyson.github.io/2022/04/mysql100%E9%97%AE/</loc>
+    <lastmod>2022-04-06T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://domyson.github.io/post/</loc>
     <lastmod>2022-04-06T00:00:00+00:00</lastmod>
   </url><url>
@@ -50,7 +59,7 @@
     <loc>https://domyson.github.io/tags/msys2/</loc>
     <lastmod>2020-03-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/categories/tools/</loc>
+    <loc>https://domyson.github.io/categories/others/</loc>
     <lastmod>2020-03-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/tags/gc/</loc>
@@ -137,6 +146,12 @@
     <loc>https://domyson.github.io/2019/08/snowflake/</loc>
     <lastmod>2019-08-27T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://domyson.github.io/tags/ascii/</loc>
+    <lastmod>2019-08-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://domyson.github.io/2019/08/ascii/</loc>
+    <lastmod>2019-08-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://domyson.github.io/2019/08/unsafe%E5%8C%85/</loc>
     <lastmod>2019-08-25T00:00:00+00:00</lastmod>
   </url><url>
@@ -144,9 +159,6 @@
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/tags/pprof/</loc>
-    <lastmod>2019-08-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://domyson.github.io/tools/</loc>
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/tags/sort/</loc>
@@ -179,9 +191,6 @@
     <loc>https://domyson.github.io/categories/redis/</loc>
     <lastmod>2019-07-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/categories/protobuf3/</loc>
-    <lastmod>2019-05-13T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://domyson.github.io/2019/05/protobuf3/</loc>
     <lastmod>2019-05-13T00:00:00+00:00</lastmod>
   </url><url>
@@ -197,12 +206,6 @@
     <loc>https://domyson.github.io/2019/05/bitmap/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/categories/mysql/</loc>
-    <lastmod>2019-03-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://domyson.github.io/2019/03/mysql/</loc>
-    <lastmod>2019-03-16T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://domyson.github.io/2019/03/docker/</loc>
     <lastmod>2019-03-12T00:00:00+00:00</lastmod>
   </url><url>
@@ -211,9 +214,6 @@
   </url><url>
     <loc>https://domyson.github.io/2019/03/dockerfile/</loc>
     <lastmod>2019-03-12T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://domyson.github.io/categories/nginx/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/2019/03/nginx/</loc>
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
@@ -230,11 +230,14 @@
     <loc>https://domyson.github.io/tags/lua/</loc>
     <lastmod>2019-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/2019/03/xlua/</loc>
+    <loc>https://domyson.github.io/tags/markdown/</loc>
     <lastmod>2019-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/categories/linux/</loc>
-    <lastmod>2019-02-26T00:00:00+00:00</lastmod>
+    <loc>https://domyson.github.io/2019/03/markdown/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://domyson.github.io/2019/03/xlua/</loc>
+    <lastmod>2019-03-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/tags/lock/</loc>
     <lastmod>2019-02-26T00:00:00+00:00</lastmod>
@@ -245,13 +248,17 @@
     <loc>https://domyson.github.io/2019/02/i/o/</loc>
     <lastmod>2019-02-25T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://domyson.github.io/categories/linux/</loc>
+    <lastmod>2019-02-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://domyson.github.io/2019/02/gc/</loc>
     <lastmod>2019-02-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/about/</loc>
     <lastmod>2019-02-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://domyson.github.io/1/01/</loc>
+    <loc>https://domyson.github.io/others/</loc>
+    <priority>0</priority>
   </url><url>
     <loc>https://domyson.github.io/1/01/</loc>
   </url><url>
@@ -259,7 +266,7 @@
   </url><url>
     <loc>https://domyson.github.io/1/01/</loc>
   </url><url>
-    <loc>https://domyson.github.io/1/01/archives/</loc>
+    <loc>https://domyson.github.io/1/01/</loc>
   </url><url>
     <loc>https://domyson.github.io/tags/i/o/</loc>
   </url><url>

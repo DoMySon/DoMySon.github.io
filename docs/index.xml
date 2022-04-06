@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>mysql100问</title>
+      <link>https://domyson.github.io/2022/04/mysql100%E9%97%AE/</link>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2022/04/mysql100%E9%97%AE/</guid>
+      <description>聚集、非聚集、联合索引 A1: 聚集索引（主键索引）所有ROW都会按照主键索引进行排序 A2: 非聚集索引即普通索引加上字段 A3: 几个字段组成的索引 A4: 聚集索引在</description>
+    </item>
+    
+    <item>
       <title>预处理器</title>
       <link>https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
@@ -536,6 +545,15 @@ G H I   J
     </item>
     
     <item>
+      <title>ASCII</title>
+      <link>https://domyson.github.io/2019/08/ascii/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2019/08/ascii/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>unsafe包</title>
       <link>https://domyson.github.io/2019/08/unsafe%E5%8C%85/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
@@ -555,15 +573,6 @@ G H I   J
       <description>&lt;blockquote&gt;
 &lt;p&gt;单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Tools</title>
-      <link>https://domyson.github.io/tools/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/tools/</guid>
-      <description>常用表 Http状态码、Header、方法 ASCII对照 16进制RGB颜色 正则表达式 Markdown文档 私人资源</description>
     </item>
     
     <item>
@@ -814,107 +823,6 @@ G H I   J
     </item>
     
     <item>
-      <title>mysql</title>
-      <link>https://domyson.github.io/2019/03/mysql/</link>
-      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/2019/03/mysql/</guid>
-      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;下载地址&#34;&gt;下载地址&lt;/h1&gt;
-&lt;p&gt;&lt;a href=&#34;http://dev.mysql.com/downloads/mysql/&#34;&gt;MySQL下载地址&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&#34;text-align:center&#34;&gt;名称&lt;/th&gt;
-&lt;th style=&#34;text-align:center&#34;&gt;大小&lt;/th&gt;
-&lt;th style=&#34;text-align:center&#34;&gt;范围&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;tinyint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;1字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;-2^7~2^7-1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;smallint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;2字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;-2^15~2^15-1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;mediumint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;3字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;-2^23~2^23-1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;int(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;4字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;-2^31~2^31-1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;bigint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;8字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;-2^63~2^63-1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;char(n)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;1字节&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多255个字符&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;varchar(n)&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多65535个字符&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;tinytext&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多255个字符&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;text&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多65535个字符&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;mediumtext&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多2的24次方-1个字符&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;longtext&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;最多2的32次方-1个字符&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;日期 &amp;lsquo;2008-12-2&amp;rsquo;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;时间 &amp;lsquo;12:25:36&amp;rsquo;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;datetime&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;日期时间 &amp;lsquo;2008-12-2 22:06:44&amp;rsquo;&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
-&lt;td style=&#34;text-align:center&#34;&gt;自动存储记录修改时间&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;</description>
-    </item>
-    
-    <item>
       <title>Docker</title>
       <link>https://domyson.github.io/2019/03/docker/</link>
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
@@ -971,6 +879,28 @@ G H I   J
 &lt;li&gt;
 &lt;p&gt;文件服务器&lt;/p&gt;
 &lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Markdown</title>
+      <link>https://domyson.github.io/2019/03/markdown/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2019/03/markdown/</guid>
+      <description>&lt;h1 id=&#34;目录&#34;&gt;目录&lt;/h1&gt;
+&lt;p&gt;只能跳转标题，如果有同名标题与标题等级无关，匹配最优先的标题&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E4%B8%80%E3%80%81%E6%A0%87%E9%A2%98&#34;&gt;标题&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E4%BA%8C%E3%80%81%E5%AD%97%E4%BD%93&#34;&gt;字体&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E4%B8%89%E3%80%81%E5%BC%95%E7%94%A8&#34;&gt;引用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%9B%9B%E3%80%81%E5%88%86%E5%89%B2%E7%BA%BF&#34;&gt;分割线&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%85%AD%E3%80%81%E8%B6%85%E9%93%BE%E6%8E%A5&#34;&gt;超链接&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%85%AB%E3%80%81%E8%A1%A8%E6%A0%BC&#34;&gt;表格&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E4%B9%9D%E3%80%81%E4%BB%A3%E7%A0%81&#34;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8D%81%E3%80%81%E6%B5%81%E7%A8%8B%E5%9B%BE&#34;&gt;流程图&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8D%81%E4%B8%80%E3%80%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE&#34;&gt;语法高亮&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8D%81%E4%BA%8C%E3%80%81%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6&#34;&gt;转义字符&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1106,6 +1036,22 @@ G H I   J
     
     <item>
       <title></title>
+      <link>https://domyson.github.io/others/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/others/</guid>
+      <description>;; &amp;mdash; ;; title: &amp;ldquo;others&amp;rdquo; ;; description: BBBBBBBBBBB ;; date: 2019-08-23 ;; type: others ;; &amp;mdash;
+;; # 常用表
+;; Http状态码、Header、方法
+;; ASCII对照
+;; 16进制RGB颜色
+;; 正则表达式
+;; Markdown文档
+;; 私人资源</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://domyson.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -1138,15 +1084,6 @@ G H I   J
       
       <guid>https://domyson.github.io/1/01/</guid>
       <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true 假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转</description>
-    </item>
-    
-    <item>
-      <title>Archives</title>
-      <link>https://domyson.github.io/1/01/archives/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/1/01/archives/</guid>
-      <description></description>
     </item>
     
     <item>

@@ -2,7 +2,7 @@
 title: Nginx
 date: 2019-03-09
 tags: ["Web","Proxy"]
-categories: ["Nginx"]
+categories: ["others"]
 description: 高性能web代理
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

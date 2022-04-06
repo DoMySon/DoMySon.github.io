@@ -52,8 +52,6 @@
                     
                     <a  href="https://domyson.github.io/about/" title="关于">关于</a>
                     
-                    <a  href="https://domyson.github.io/tools/" title="对照表">对照表</a>
-                    
                 </nav>
             </div>
         </div>
@@ -67,6 +65,58 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/" title="unsafe包">unsafe包</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/ascii/" title="ASCII">ASCII</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/others'>others</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/08/ascii/">阅读全文</a></p>
+    </article>
+    
     
     
     <article class="post">
@@ -266,7 +316,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/protobuf3'>Protobuf3</a></span>
+            <span class="meta-category"><a href='/categories/others'>others</a></span>
             
         </div>
         
@@ -455,151 +505,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/03/mysql/" title="mysql">mysql</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月16日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/mysql'>mysql</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<blockquote>
-<p>MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。</p>
-</blockquote>
-<h1 id="下载地址">下载地址</h1>
-<p><a href="http://dev.mysql.com/downloads/mysql/">MySQL下载地址</a></p>
-<h1 id="基本类型">基本类型</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">名称</th>
-<th style="text-align:center">大小</th>
-<th style="text-align:center">范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>tinyint(m)</code></td>
-<td style="text-align:center">1字节</td>
-<td style="text-align:center">-2^7~2^7-1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>smallint(m)</code></td>
-<td style="text-align:center">2字节</td>
-<td style="text-align:center">-2^15~2^15-1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>mediumint(m)</code></td>
-<td style="text-align:center">3字节</td>
-<td style="text-align:center">-2^23~2^23-1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>int(m)</code></td>
-<td style="text-align:center">4字节</td>
-<td style="text-align:center">-2^31~2^31-1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>bigint(m)</code></td>
-<td style="text-align:center">8字节</td>
-<td style="text-align:center">-2^63~2^63-1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>char(n)</code></td>
-<td style="text-align:center">1字节</td>
-<td style="text-align:center">最多255个字符</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>varchar(n)</code></td>
-<td style="text-align:center">最多65535个字符</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>tinytext</code></td>
-<td style="text-align:center">最多255个字符</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>text</code></td>
-<td style="text-align:center">最多65535个字符</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>mediumtext</code></td>
-<td style="text-align:center">最多2的24次方-1个字符</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>longtext</code></td>
-<td style="text-align:center">最多2的32次方-1个字符</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>date</code></td>
-<td style="text-align:center">日期 &lsquo;2008-12-2&rsquo;</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>time</code></td>
-<td style="text-align:center">时间 &lsquo;12:25:36&rsquo;</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>datetime</code></td>
-<td style="text-align:center">日期时间 &lsquo;2008-12-2 22:06:44&rsquo;</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>timestamp</code></td>
-<td style="text-align:center">自动存储记录修改时间</td>
-<td></td>
-</tr>
-</tbody>
-</table>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/03/mysql/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/03/dockerfile/" title="Dockerfile">Dockerfile</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月12日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="dockerfile">Dockerfile</h1>
-<blockquote>
-<p><code>Dockerfile</code> 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。<code>docker build</code> 命令用于从 <code>Dockerfile</code>构建映像。命令中使用 <code>-f</code> 标志指向文件系统中任何位置的 <code>Dockerfile</code> 文件。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/03/dockerfile/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -690,6 +595,10 @@
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -721,10 +630,6 @@
         <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
-    <li>
-        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -740,19 +645,15 @@
     
     <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
@@ -764,6 +665,8 @@
     <section class="widget">
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
     
     <a href="https://domyson.github.io/tags/bit/">bit</a>
     
@@ -801,7 +704,11 @@
     
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
     <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
     
     <a href="https://domyson.github.io/tags/network/">Network</a>
     

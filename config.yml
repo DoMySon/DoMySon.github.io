@@ -30,11 +30,6 @@ menu:
       weight: 30
       identifier: "about"
       url: /about/
-    -
-      name: "对照表"
-      weight: 40
-      identifier: "tools"
-      url: /tools/
 
 # URL样式
 #将改变content/post/文件夹下所有文章的URL。
