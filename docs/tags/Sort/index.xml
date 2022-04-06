@@ -9,19 +9,19 @@
     <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Sort/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TopK</title>
-      <link>https://DoMySon.github.io/2019/07/TopK/</link>
+      <link>https://DoMySon.github.io/post/TopK/</link>
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/07/TopK/</guid>
+      <guid>https://DoMySon.github.io/post/TopK/</guid>
       <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
     </item>
     
     <item>
       <title>ClassicSort</title>
-      <link>https://DoMySon.github.io/2019/07/ClassicSort/</link>
+      <link>https://DoMySon.github.io/post/ClassicSort/</link>
       <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/07/ClassicSort/</guid>
+      <guid>https://DoMySon.github.io/post/ClassicSort/</guid>
       <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
 &lt;h2 id=&#34;稳定排序非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
 &lt;blockquote&gt;

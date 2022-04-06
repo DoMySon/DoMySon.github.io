@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 27 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Unity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Unity内存管理</title>
-      <link>https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <link>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description>&lt;h1 id=&#34;unity-托管内存&#34;&gt;Unity 托管内存&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -38,19 +38,19 @@
     
     <item>
       <title>ILRuntime</title>
-      <link>https://DoMySon.github.io/2019/07/ILRuntime/</link>
+      <link>https://DoMySon.github.io/post/ILRuntime/</link>
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/07/ILRuntime/</guid>
+      <guid>https://DoMySon.github.io/post/ILRuntime/</guid>
       <description>这是一个介绍</description>
     </item>
     
     <item>
       <title>xLua</title>
-      <link>https://DoMySon.github.io/2019/03/xLua/</link>
+      <link>https://DoMySon.github.io/post/xLua/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/03/xLua/</guid>
+      <guid>https://DoMySon.github.io/post/xLua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;

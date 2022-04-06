@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Bitmap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bitmap</title>
-      <link>https://DoMySon.github.io/2019/05/Bitmap/</link>
+      <link>https://DoMySon.github.io/post/Bitmap/</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/05/Bitmap/</guid>
+      <guid>https://DoMySon.github.io/post/Bitmap/</guid>
       <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
     </item>
     

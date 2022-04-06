@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 16 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mysql</title>
-      <link>https://DoMySon.github.io/2019/03/mysql/</link>
+      <link>https://DoMySon.github.io/post/mysql/</link>
       <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/03/mysql/</guid>
+      <guid>https://DoMySon.github.io/post/mysql/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;

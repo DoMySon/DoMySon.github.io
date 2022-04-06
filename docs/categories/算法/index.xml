@@ -9,19 +9,19 @@
     <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>位运算</title>
-      <link>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
+      <link>https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
+      <guid>https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
       <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
     </item>
     
     <item>
       <title>Tree</title>
-      <link>https://DoMySon.github.io/2019/09/Tree/</link>
+      <link>https://DoMySon.github.io/post/Tree/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/09/Tree/</guid>
+      <guid>https://DoMySon.github.io/post/Tree/</guid>
       <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
 &lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
 &lt;blockquote&gt;
@@ -77,10 +77,10 @@ G H I   J
     
     <item>
       <title>ConsistentHash</title>
-      <link>https://DoMySon.github.io/2019/08/ConsistentHash/</link>
+      <link>https://DoMySon.github.io/post/ConsistentHash/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/08/ConsistentHash/</guid>
+      <guid>https://DoMySon.github.io/post/ConsistentHash/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 &lt;code&gt;Key&lt;/code&gt; 从多个节点（也就是服务器）中找到缓存数据所在的节点。&lt;/p&gt;
@@ -106,10 +106,10 @@ G H I   J
     
     <item>
       <title>Snowflake</title>
-      <link>https://DoMySon.github.io/2019/08/Snowflake/</link>
+      <link>https://DoMySon.github.io/post/Snowflake/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/08/Snowflake/</guid>
+      <guid>https://DoMySon.github.io/post/Snowflake/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;snowflake&lt;/code&gt;（雪花算法）是一种分布式ID算法。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -126,19 +126,19 @@ G H I   J
     
     <item>
       <title>TopK</title>
-      <link>https://DoMySon.github.io/2019/07/TopK/</link>
+      <link>https://DoMySon.github.io/post/TopK/</link>
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/07/TopK/</guid>
+      <guid>https://DoMySon.github.io/post/TopK/</guid>
       <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
     </item>
     
     <item>
       <title>ClassicSort</title>
-      <link>https://DoMySon.github.io/2019/07/ClassicSort/</link>
+      <link>https://DoMySon.github.io/post/ClassicSort/</link>
       <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/07/ClassicSort/</guid>
+      <guid>https://DoMySon.github.io/post/ClassicSort/</guid>
       <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
 &lt;h2 id=&#34;稳定排序非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
 &lt;blockquote&gt;
@@ -160,19 +160,19 @@ G H I   J
     
     <item>
       <title>Bitmap</title>
-      <link>https://DoMySon.github.io/2019/05/Bitmap/</link>
+      <link>https://DoMySon.github.io/post/Bitmap/</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/05/Bitmap/</guid>
+      <guid>https://DoMySon.github.io/post/Bitmap/</guid>
       <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
     </item>
     
     <item>
       <title>GC</title>
-      <link>https://DoMySon.github.io/2019/02/GC/</link>
+      <link>https://DoMySon.github.io/post/GC/</link>
       <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/02/GC/</guid>
+      <guid>https://DoMySon.github.io/post/GC/</guid>
       <description>&lt;h1 id=&#34;何谓-gc&#34;&gt;何谓 &lt;code&gt;GC&lt;/code&gt;&lt;/h1&gt;
 &lt;p&gt;GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
 曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：&lt;/p&gt;

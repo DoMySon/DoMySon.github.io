@@ -9,10 +9,10 @@
     <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Protobuf3/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Protobuf3</title>
-      <link>https://DoMySon.github.io/2019/05/Protobuf3/</link>
+      <link>https://DoMySon.github.io/post/Protobuf3/</link>
       <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/05/Protobuf3/</guid>
+      <guid>https://DoMySon.github.io/post/Protobuf3/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;Protocol Buffers&lt;/code&gt;，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 &lt;code&gt;syntax = proto3&lt;/code&gt; 的协议语法。&lt;/p&gt;
 &lt;h1 id=&#34;标准类型对照&#34;&gt;标准类型对照&lt;/h1&gt;

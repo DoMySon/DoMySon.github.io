@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Docker | 薛定谔的BUG</title>
+    <meta property="og:title" content="Docker - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-03-12T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-12T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Docker是一个好东西">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/post/Docker/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#镜像image-一个特殊的文件系统">镜像（Image）—— 一个特殊的文件系统</a></li>
+    <li><a href="#容器container-镜像运行时的实体">容器（Container）—— 镜像运行时的实体</a></li>
+    <li><a href="#仓库repository-集中存放镜像文件的地方">仓库（Repository）—— 集中存放镜像文件的地方</a></li>
+    <li><a href="#docker-registry公开服务和私有docker-registry">Docker Registry公开服务和私有Docker Registry</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#查看拉取删除">查看、拉取、删除</a></li>
+    <li><a href="#制作推送">制作、推送</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#查看容器">查看容器</a></li>
+    <li><a href="#产看容器进程">产看容器进程</a></li>
+    <li><a href="#移除容器">移除容器</a></li>
+    <li><a href="#停止容器">停止容器</a></li>
+    <li><a href="#启动容器">启动容器</a></li>
+    <li><a href="#查看容器日志">查看容器日志</a></li>
+    <li><a href="#进入指定容器">进入指定容器</a></li>
+    <li><a href="#容器通讯方式">容器通讯方式</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#优化基础镜像">优化基础镜像</a></li>
+    <li><a href="#串联-dockerfile-指令">串联 <code>Dockerfile</code> 指令</a></li>
+    <li><a href="#多段构建">多段构建</a></li>
+    <li><a href="#heading"></a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#创建数据卷">创建数据卷</a></li>
+    <li><a href="#删除数据卷">删除数据卷</a></li>
+    <li><a href="#挂载一个主机目录作为数据卷">挂载一个主机目录作为数据卷</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#docker-compse-up-opthions---scale-servicenum-service">docker-compse up [opthions] [&ndash;scale SERVICE=NUM] [SERVICE&hellip;]</a></li>
+    <li><a href="#docker-compose-ps-service">docker-compose ps [SERVICE&hellip;]</a></li>
+    <li><a href="#docker-compose-startstoprestart">docker-compose [start|stop|restart]</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Docker</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Docker'>Docker</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="docker简介">Docker简介</h1>
+<ul>
+<li>
+<p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p>
+</li>
+<li>
+<p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p>
+</li>
+<li>
+<p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p>
+</li>
+</ul>
+<h1 id="docker和虚拟机">Docker和虚拟机</h1>
+<blockquote>
+<p>容器和虚拟机具有相似的资源隔离和分配优势，但功能有所不同，因为容器虚拟化的是操作系统，而不是硬件，因此容器更容易移植，效率也更高。</p>
+</blockquote>
+<p>传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程；而容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便。</p>
+<p>
+        <img class="mx-auto" alt="DockervsVM" src="/images/Docker/dockervsVM.jpg" />   
+    </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">容器</th>
+<th style="text-align:center">虚拟机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">启动</td>
+<td style="text-align:center">秒级</td>
+<td style="text-align:center">分钟级</td>
+</tr>
+<tr>
+<td style="text-align:center">硬盘</td>
+<td style="text-align:center">MB</td>
+<td style="text-align:center">GB</td>
+</tr>
+<tr>
+<td style="text-align:center">性能</td>
+<td style="text-align:center">接近原生</td>
+<td style="text-align:center">弱于原生</td>
+</tr>
+<tr>
+<td style="text-align:center">支持量</td>
+<td style="text-align:center">单机上千</td>
+<td style="text-align:center">单机几十左右</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>容器是一个应用层抽象，用于将代码和依赖资源打包在一起。 多个容器可以在同一台机器上运行，共享操作系统内核，但各自作为独立的进程在用户空间中运行 。与虚拟机相比， 容器占用的空间较少（容器镜像大小通常只有几十兆），瞬间就能完成启动。</p>
+</li>
+<li>
+<p>虚拟机（VM）是一个物理硬件层抽象，用于将一台服务器变成多台服务器。 管理程序允许多个VM在一台机器上运行。每个VM都包含一整套操作系统、一个或多个应用、必要的二进制文件和库资源，因此占用大量空间。而且VM启动也十分缓慢 。</p>
+</li>
+</ul>
+<blockquote>
+<p>虚拟机更擅长于彻底隔离整个运行环境。例如，云服务提供商通常采用虚拟机技术隔离不同的用户。而 Docker 通常用于隔离不同的应用 ，例如前端，后端以及数据库。</p>
+</blockquote>
+<h1 id="docker基本组成">Docker基本组成</h1>
+<ul>
+<li>
+<p>镜像 （Image）</p>
+</li>
+<li>
+<p>容器（Container）</p>
+</li>
+<li>
+<p>仓库（Repository）</p>
+</li>
+</ul>
+<h2 id="镜像image-一个特殊的文件系统">镜像（Image）—— 一个特殊的文件系统</h2>
+<blockquote>
+<p>操作系统分为内核和用户空间。对于Linux而言，内核启动后，会挂载root文件系统为其提供用户空间支持。而Docker镜像（Image），就相当于是一个root文件系统。Docker镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。 镜像不包含任何动态数据，其内容在构建之后也不会被改变。Docker设计时，就充分利用Union FS的技术，将其设计为分层存储的架构。 镜像实际是由多层文件系统联合组成。镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
+</blockquote>
+<h2 id="容器container-镜像运行时的实体">容器（Container）—— 镜像运行时的实体</h2>
+<blockquote>
+<p>镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等 。容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的命名空间。前面讲过镜像使用的是分层存储，容器也是如此。容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。按照Docker最佳实践的要求，容器不应该向其存储层内写入任何数据 ，容器存储层要保持无状态化。所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层，直接对宿主（或网络存储）发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， 使用数据卷后，容器可以随意删除、重新run，数据却不会丢失。</p>
+</blockquote>
+<h2 id="仓库repository-集中存放镜像文件的地方">仓库（Repository）—— 集中存放镜像文件的地方</h2>
+<blockquote>
+<p>镜像构建完成后，可以很容易的在当前宿主上运行，但是， 如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry就是这样的服务。一个Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：镜像仓库是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本 。我们可以通过&lt;仓库名&gt;:&lt;标签&gt;的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以latest作为默认标签。</p>
+</blockquote>
+<h2 id="docker-registry公开服务和私有docker-registry">Docker Registry公开服务和私有Docker Registry</h2>
+<blockquote>
+<p>Docker Registry公开服务是开放给用户使用、允许用户管理镜像的Registry服务。一般这类公开服务允许用户免费上传、下载公开的镜像，并可能提供收费服务供用户管理私有镜像。最常使用的Registry公开服务是官方的Docker Hub ，这也是默认的Registry，并拥有大量的高质量的官方镜像，网址为：hub.docker.com/ 。在国内访问Docker Hub可能会比较慢国内也有一些云服务商提供类似于Docker Hub的公开服务。除了使用公开服务外，用户还可以在本地搭建私有Docker Registry 。Docker官方提供了Docker Registry镜像，可以直接使用做为私有Registry服务。开源的Docker Registry镜像只提供了Docker Registry API的服务端实现，足以支持Docker命令，不影响使用。但不包含图形界面，以及镜像维护、用户管理、访问控制等高级功能。</p>
+</blockquote>
+<h1 id="image">Image</h1>
+<h2 id="查看拉取删除">查看、拉取、删除</h2>
+<ul>
+<li>
+<p>搜索镜像</p>
+<p><code>docker search name[:tag]</code></p>
+</li>
+<li>
+<p>拉取镜像,若不指定tag则默认拉取<code>latest</code></p>
+<p><code>docker pull name[:tag]</code></p>
+</li>
+<li>
+<p>查看本地所有镜像</p>
+<p><code>docker images</code></p>
+</li>
+<li>
+<p>删除镜像，可以多个删除</p>
+<p><code>docker rmi [option] image ... </code></p>
+<ul>
+<li><code>-f</code> 强制删除</li>
+</ul>
+</li>
+</ul>
+<h2 id="制作推送">制作、推送</h2>
+<ul>
+<li>
+<p>在指定路径中找到 <a href="/post/Dockerfile">Dockerfile</a> 并构建Image, 后面是路径，但路径中必须存在 <code>Dockerfile</code></p>
+<p><code>docker build -t [:namespace]/name:tag Path</code></p>
+</li>
+<li>
+<p>给镜像赋予新的标签, <code>namespace</code> 必须为 <code>dockerid</code>，除非另外购买。</p>
+<p><code>docker tag oldname:oldtag  namespace/newname:newtag</code></p>
+</li>
+<li>
+<p>将镜像上传至 docker 仓库 DockerHub 上,<code>namespace</code> 必须是用户名,也可以上传至 <code>Gitlab</code></p>
+<p><code>docker push namespace/name:tag</code></p>
+<p><code>docker</code></p>
+</li>
+<li>
+<p>提交修改的镜像</p>
+<p><code>docker commit [-a] [-m] CONTAINER [REPOSITORY[:TAG]]</code></p>
+<ul>
+<li>
+<p><code>-a</code> 指明提交者</p>
+</li>
+<li>
+<p><code>-m</code> 提交信息</p>
+</li>
+</ul>
+<p>在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。以后我们运行这个新镜像的时候，就会拥有原有容器最后的文件变化。
+此方式更新的镜像有依赖通过 <code>docker save -o dst [REPOSITORY[:TAG]]</code>存盘,删除所有镜像,再通过 <code>docker load -i path</code> 加载新镜像。</p>
+</li>
+</ul>
+<h1 id="container">Container</h1>
+<h2 id="查看容器">查看容器</h2>
+<p><code>docker ps [-a|-s]</code></p>
+<ul>
+<li>
+<p><code>-a</code> 查看所有容器。</p>
+</li>
+<li>
+<p><code>-s</code> 查看已启动的容器。</p>
+</li>
+</ul>
+<h2 id="产看容器进程">产看容器进程</h2>
+<p><code>docker top containerID</code></p>
+<h2 id="移除容器">移除容器</h2>
+<blockquote>
+<p>可以多个同时删除</p>
+</blockquote>
+<p><code>docker rm container ...  [option]</code></p>
+<ul>
+<li>
+<p><code>-f</code> : 强制删除容器。</p>
+</li>
+<li>
+<p><code>-v</code> : 若删除容器则数据卷也删除。</p>
+</li>
+</ul>
+<h2 id="停止容器">停止容器</h2>
+<blockquote>
+<p>可以同时停止多个</p>
+</blockquote>
+<p><code>docker stop container ...</code></p>
+<h2 id="启动容器">启动容器</h2>
+<p><code>docker run [:--name] [:-e] [:-v] [:-h] [:--net] [:-p prot0:prot1] [:-d|-i] [:-t] [:--rm] [:--restart] [:--privileged=false] [:--ip] [:--network=] name:tag [:shell]</code></p>
+<ul>
+<li>
+<p><code>run</code> 命令将会启动 <code>dockerfile</code> 中定义的 <code>CMD</code> 或 <code>ENTRYPOINT</code> 指令。</p>
+</li>
+<li>
+<p><code>--name=xxx</code> 指定容器运行时的名称，可不选，默认为随机字符。</p>
+</li>
+<li>
+<p><code>-p Host0:Host1</code> 表示本地 Host0 映射容器 Host1 端口,若为 <code>-P</code> 则随机映射49000 ~ 49900 端口。</p>
+</li>
+<li>
+<p><code>-d</code>：分离模式: 在后台运行。</p>
+</li>
+<li>
+<p><code>-h</code>：指定主机域名。如 <code>-h domyson.cn</code>。</p>
+</li>
+<li>
+<p><code>-e</code>：为 <code>dockerfile</code> 中的 <code>ENV</code> 的参数变量,设置环境变量，或者覆盖已存在的环境变量 <code>-e TZ=&quot;Asia/Shanghai&quot;</code> 设置时区为上海。</p>
+</li>
+<li>
+<p><code>-u</code>：<del>指定执行用户，一般为 <code>root</code>。</del></p>
+</li>
+<li>
+<p><code>--rm</code>：停止容器就移除。</p>
+</li>
+<li>
+<p><code>-it</code>: 以交互模式运行容器 (不同于 <code>-d</code> : 以分离模式运行容器),这意味着交互回话 session 结束时,容器就会停止运行，与 <code>-d</code> 互斥。</p>
+</li>
+<li>
+<p><code>-v</code> : 容器内创建一个数据卷。多次重复使用 -v 标记可以创建多个数据卷，也可以挂载一个主机目录作为数据卷 path0:path1(其中path0是主机目录，path1是容器目录)。</p>
+</li>
+<li>
+<p><code>--link container</code> : <del>连接到其他容器。</del> 这个方法以后将被弃用，推荐使用 <code>--network</code></p>
+</li>
+<li>
+<p><code>--network NETWORK</code>：指定连接到的网络。</p>
+</li>
+<li>
+<p><code>--ip</code>：指定容器的ip。</p>
+</li>
+<li>
+<p><code>--restart</code>：<code>no、on-failure:n、always</code> 设置容器自动重启模式，若容器已经启动，可以通过 <code>docker update --restart args</code> 来设置参数。</p>
+</li>
+<li>
+<p><code>--privileged</code>：真正给予 <code>Container 中 root 用户</code> root权限，否则 <code>root</code> 只是一个普通用户。</p>
+</li>
+<li>
+<p><code>shell</code>：指定交互的方式，一般为bash <code>bash -c &quot;cmd string&quot;</code>，这条命令将由启动容器执行。</p>
+</li>
+</ul>
+<h2 id="查看容器日志">查看容器日志</h2>
+<p><code>docker logs [opt] CONTAINER</code></p>
+<ul>
+<li>
+<p><code>-f</code> : 跟踪日志输出</p>
+</li>
+<li>
+<p><code>--since</code> :显示某个开始时间的所有日志</p>
+</li>
+<li>
+<p><code>-t</code> : 显示时间戳</p>
+</li>
+<li>
+<p><code>--tail N</code> :仅列出最新N条容器日志</p>
+</li>
+</ul>
+<h2 id="进入指定容器">进入指定容器</h2>
+<p><code>docker exec [opt] CONTAINER shell [:args]</code></p>
+<ul>
+<li>
+<p><code>-d</code> ：分离模式: 在后台运行</p>
+</li>
+<li>
+<p><code>-it</code>：以交互模式运行容器 (不同于 -d : 以分离模式运行容器),这意味着交互回话 session 结束时,容器就会停止运行。与 <code>-d</code> 互斥</p>
+</li>
+<li>
+<p><code>-u</code>：指定运行用户,一般设置为 root</p>
+</li>
+<li>
+<p>进入容器内部之后，通过 <code>exit</code> 退出</p>
+</li>
+</ul>
+<h2 id="容器通讯方式">容器通讯方式</h2>
+<p><a href="/2020/01/Docker-Network/">See DockerNetwork</a></p>
+<h1 id="镜像体积优化">镜像体积优化</h1>
+<blockquote>
+<p><code>Docker</code> 由多个 <code>Layers</code> 组成（上限是127层）。而 <a href="/2019/03/Dockerfile">Dockerfile</a> 每一条指令都会创建一层 <code>Layers</code>。</p>
+</blockquote>
+<h2 id="优化基础镜像">优化基础镜像</h2>
+<ul>
+<li>
+<p>使用 <code>Alpine</code> 基础镜像</p>
+<blockquote>
+<p>Alpine是一个高度精简又包含了基本工具的轻量级Linux发行版，基础镜像仅 <code>4.41MB</code></p>
+</blockquote>
+</li>
+<li>
+<p>使用 <code>scratch</code> 基础镜像</p>
+<blockquote>
+<p>scratch是一个空镜像，只能用于构建其他镜像</p>
+</blockquote>
+</li>
+<li>
+<p>使用 <code>busybox</code> 基础镜像</p>
+<blockquote>
+<p>如果希望镜像里可以包含一些常用的Linux工具，busybox镜像是个不错选择，镜像本身只有1.16M，非常便于构建小镜像。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="串联-dockerfile-指令">串联 <code>Dockerfile</code> 指令</h2>
+<blockquote>
+<p>通过  <code>&amp;&amp;</code> 和 <code>\</code> 将多个 <code>Run</code> 命令合并成一个</p>
+</blockquote>
+<h2 id="多段构建">多段构建</h2>
+<p>待完善</p>
+<h2 id="heading"></h2>
+<h1 id="docker数据卷">Docker数据卷</h1>
+<ul>
+<li>数据卷可以在容器之间共享和重用</li>
+<li>对数据卷的修改会立马生效</li>
+<li>对数据卷的更新，不会影响镜像</li>
+<li>数据卷默认会一直存在，即使容器被删除</li>
+</ul>
+<h2 id="创建数据卷">创建数据卷</h2>
+<pre tabindex="0"><code>在 run 命令中 -v /data 标记来创建一个数据卷并挂载到容器里。在一次 run 中多次使用可以挂载多个数据卷。(创建一个容器，并加载一个数据卷到容器的 /data 目录)
+
+也可以在 Dockerfile 中使用  VOLUME  来添加一个或者多个新的卷到由该镜像创建的任意容器。
+</code></pre><h2 id="删除数据卷">删除数据卷</h2>
+<pre tabindex="0"><code>数据卷是被设计用来持久化数据的，它的生命周期独立于容器，Docker不会在容器被删除后自动删除数据卷，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的数据卷。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用  docker rm -v  这个命令。无主的数据卷可能会占据很多空间，要清理会很麻烦。
+</code></pre><h2 id="挂载一个主机目录作为数据卷">挂载一个主机目录作为数据卷</h2>
+<pre tabindex="0"><code>docker run -d -P --name web -v /src/webapp:/opt/webapp[:权限]
+
+上面的命令加载主机的  /src/webapp  目录到容器的  /opt/webapp  目录，默认权限是读写，也可以指定为只读(ro)
+
+--volumes-from 在run的时候指定数据卷容器
+</code></pre><ul>
+<li>
+<p>查看数据卷的信息</p>
+<p><code>docker inspect contianerID</code></p>
+</li>
+<li>
+<p>查看所有数据卷</p>
+<p><code>docker volume ls</code></p>
+</li>
+<li>
+<p>清除所有无主数据卷</p>
+<p><code>docker volume prune</code></p>
+</li>
+</ul>
+<h1 id="docker权限验证">Docker权限验证</h1>
+<ol>
+<li>
+<p>版本</p>
+<p><code>docker version</code></p>
+</li>
+<li>
+<p>登陆</p>
+<p><code>docker login</code></p>
+</li>
+<li>
+<p>登出</p>
+<p><code>docker logout</code></p>
+</li>
+</ol>
+<h1 id="docker远程访问">Docker远程访问</h1>
+<h1 id="docker-compose">Docker-Compose</h1>
+<blockquote>
+<p><code>Docker-Compose</code> （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p>
+</blockquote>
+<blockquote>
+<p><a href="https://docs.docker.com/compose/">官方文档</a></p>
+</blockquote>
+<p><code>Docker-Compose</code>将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。</p>
+<!-- raw HTML omitted -->
+<h1 id="docker-compose-命令">docker-compose 命令</h1>
+<h2 id="docker-compse-up-opthions---scale-servicenum-service">docker-compse up [opthions] [&ndash;scale SERVICE=NUM] [SERVICE&hellip;]</h2>
+<blockquote>
+<p>容器启动命令</p>
+</blockquote>
+<ul>
+<li>
+<p><code>-d</code>：在后台运行</p>
+</li>
+<li>
+<p><code>–no-color</code> 不使用颜色来区分不同的服务的控制输出</p>
+</li>
+<li>
+<p><code>–no-deps</code> 不启动服务所链接的容器</p>
+</li>
+<li>
+<p><code>–force-recreate</code> 强制重新创建容器，不能与<code>–no-recreate</code>同时使用</p>
+</li>
+<li>
+<p><code>–no-recreate</code> 如果容器已经存在，则不重新创建，不能与<code>–force-recreate</code>同时使用</p>
+</li>
+<li>
+<p><code>–no-build</code> 不自动构建缺失的服务镜像</p>
+</li>
+<li>
+<p><code>–build</code>：在启动容器前构建服务镜像，或rebuild</p>
+</li>
+<li>
+<p><code>–abort-on-container-exit</code>：停止所有容器，如果任何一个容器被停止，不能与 <code>-d</code> 同时使用</p>
+</li>
+<li>
+<p><code>–scale SERVICE=NUM ...</code> 设置服务运行容器的个数，将覆盖在compose中通过scale指定的参数</p>
+</li>
+</ul>
+<h2 id="docker-compose-ps-service">docker-compose ps [SERVICE&hellip;]</h2>
+<blockquote>
+<p>查看 <code>docker-compose</code> 中列出的容器</p>
+</blockquote>
+<h2 id="docker-compose-startstoprestart">docker-compose [start|stop|restart]</h2>
+<blockquote>
+<p>[开始|停止|重启]项目中运行的容器</p>
+</blockquote>
+<h1 id="docker-compose-文件结构">docker-compose 文件结构</h1>
+<blockquote>
+<p>Docker-Compose标准模板文件应该包含version、services、networks 三大部分，最关键的是services和networks两个部分。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.5&#34;</span>                  <span style="color:#75715e">#docker-compose 版本,不同的版本配置有所不同</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">service</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nats</span>:                         <span style="color:#75715e">#标识,如果设置了网络，这个也是他在网络中的别名，也可以指定alias</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nats:latest         </span> <span style="color:#75715e">#如果本地不存在就会在dockerhub上拉取</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#e6db74">&#34;nats0&#34;</span>     <span style="color:#75715e">#运行时的容器名</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:                      <span style="color:#75715e">#端口与宿主机映射规则</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;4222:4222&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;6222:6222&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8222:8222&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">expose</span>:                     <span style="color:#75715e">#暴露容器端口，仅仅是声明，不会起实际作用，参考 Dockerfile</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;4222&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8222&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;6222&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:                   <span style="color:#75715e">#链接的网络，不存在会自动创建，必须在services同级的networks中指定</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">net1                   </span> <span style="color:#75715e">#指定连接的网络名</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">net2                    </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">gate</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">gateway</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>: <span style="color:#e6db74">&#34;./gateway&#34;</span>          <span style="color:#75715e">#如果此镜像是自定义镜像，需要指定dockerfile文件的目录，将不会拉取远程镜像</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#e6db74">&#34;gateway&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">sh run.sh         </span> <span style="color:#75715e">#覆盖容器的默认执行命令</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:                 <span style="color:#75715e">#指定依赖的启动项，即先启动 nats 再启动此镜像</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">nats</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">login</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;5433:5433&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">expose</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;5433&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">net1</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ipv4_address</span>: <span style="color:#ae81ff">172.18.0.31</span> <span style="color:#75715e">#指定容器的固定ipv4地址</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">login</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">login</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>: <span style="color:#e6db74">&#34;./login&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#e6db74">&#34;login&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;5434:5434&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">expose</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">5433</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">net1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">db</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">build</span>: <span style="color:#e6db74">&#34;./db&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#e6db74">&#34;db&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">net1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/var/etc/:/var/etc/    </span> <span style="color:#75715e">#容器卷映射</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">net1</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">xNet                 </span> <span style="color:#75715e">#虚拟网卡名 version &gt;=3.5</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge             </span> <span style="color:#75715e">#支持三种模式 host bridge(默认) none</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">net2</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">yNet</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">host</span>
+</span></span></code></pre></div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Dockerfile/">Dockerfile</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/Docker'>Docker</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    
+    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

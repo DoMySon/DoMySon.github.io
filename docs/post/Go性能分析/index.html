@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go性能分析 | 薛定谔的BUG</title>
+    <meta property="og:title" content="Go性能分析 - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-23T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-23T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Go单元测试&amp;基准测试">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/post/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#go-test-命令"><code>go test</code> 命令</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#t-方法"><code>T</code> 方法</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#benchmark-命令参数"><code>benchmark</code> 命令参数</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#pprof">pprof</a>
+      <ul>
+        <li><a href="#关注的模块">关注的模块</a></li>
+        <li><a href="#如何使用">如何使用</a></li>
+        <li><a href="#go-tool-pprof--h"><code>go tool pprof -h</code></a></li>
+        <li><a href="#go-tool-trace"><code>go tool trace</code></a></li>
+        <li><a href="#火焰图">火焰图</a></li>
+      </ul>
+    </li>
+    <li><a href="#expvar">expvar</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go性能分析</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月23日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
+</blockquote>
+<h2 id="go-test-命令"><code>go test</code> 命令</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-v</code></td>
+<td style="text-align:center">输出细节信息。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-run regexp</code></td>
+<td style="text-align:center">运行满足正则匹配的函数。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-count=n</code></td>
+<td style="text-align:center">运行多少次，默认一次。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-cover</code></td>
+<td style="text-align:center">开启覆盖率测试。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="测试规范">测试规范</h1>
+<ul>
+<li>测试脚本必须以 <code>*_test.go</code> 来命名，并且不会被编译到执行文件中</li>
+</ul>
+<h1 id="t-测试"><code>T</code> 测试</h1>
+<blockquote>
+<p>又称 <code>单元测试</code>，测试函数以 <code>TestXXX(t *testing.T)</code> 表示，仅接受一个 <code>*testing.T</code> 类型参数</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Test_Sum</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">100000</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">a</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;a&#34;</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">=== RUN   Test_Sum
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--- PASS: Test_Sum (0.75s) 表示测试结果和时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span></code></pre></div><h2 id="t-方法"><code>T</code> 方法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>Fail</code></td>
+<td style="text-align:center">标记失败，但继续执行</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>FailNow</code></td>
+<td style="text-align:center">失败并立即中止当前函数测试</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Log</code></td>
+<td style="text-align:center">输出信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Error</code></td>
+<td style="text-align:center">相当于 <code>Fail + Log</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Fatal</code></td>
+<td style="text-align:center">相当于 <code>FailNow + Log</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Skip</code></td>
+<td style="text-align:center">跳过当前测试函数，用于多个测试同时进行</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>SetBytes</code></td>
+<td style="text-align:center">开启字节数处理</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ReportAllocs</code></td>
+<td style="text-align:center">报告内存分配状况，对应命令行参数 -benchmem</td>
+</tr>
+</tbody>
+</table>
+<h1 id="b-测试"><code>B</code> 测试</h1>
+<blockquote>
+<p>又称 <code>基准测试</code>，基准测试函数以 <code>BenchmarkXXX(b *testing.B)</code> 表示，仅接受一个 <code>*testing.B</code> 参数类型。
+若要使用 <code>go test</code> 执行 <code>Benchmark</code>，必须使用 <code>-bench=functionName</code> 指定性能测试函数，或者 <code>.</code> 测试所有 <code>Benchmark*</code> 函数，也可以再添加测试脚本名，指定测试改脚本内的所有 <code>*</code> 函数。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkJoin</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">a</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;a&#34;</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">goos                :测试系统
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">goarch              :系统架构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">pkg                 :测试包名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Benchmark_main-4    :测试函数使用几个cpu核心
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">5000000             :总执行次数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">1530 ns/op          :执行一次耗时 1530ns
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">1104 B/op           :每次执行分配 1104字节
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">7 allocs/op         :每次执行申请了 7 次内存
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span></code></pre></div><h2 id="benchmark-命令参数"><code>benchmark</code> 命令参数</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-bench=func</code></td>
+<td style="text-align:center">指定测试函数名</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-benchmem</code></td>
+<td style="text-align:center">是否输出内存测试信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-cpu=4</code></td>
+<td style="text-align:center">指定使用多少CPU逻辑核心测试</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-benchtime=3s</code></td>
+<td style="text-align:center">指定测试时长</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-timeout=5s</code></td>
+<td style="text-align:center">测试超时时间</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-memprofile memp.out</code></td>
+<td style="text-align:center">输出内存分析文件</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-cpuprofile cpup.out</code></td>
+<td style="text-align:center">输出cpu分析文件</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-memprofilerate=N</code></td>
+<td style="text-align:center">调整采样率，1/N</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-blockprofile block.out</code></td>
+<td style="text-align:center">输出阻塞性能分析文件</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-count n</code></td>
+<td style="text-align:center">运行多少次测试，默认1次</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-v</code></td>
+<td style="text-align:center">显示测试的详细信息</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>go test</code> 运行测试文件时，会提示找不到该定义，只需要在执行 <code>*_test.go</code> 脚本时，后面加上所引用的库文件即可</p>
+</blockquote>
+<h1 id="性能分析">性能分析</h1>
+<h2 id="pprof">pprof</h2>
+<blockquote>
+<p>Go语言自带强大的性能测试工具pprof。</p>
+</blockquote>
+<h3 id="关注的模块">关注的模块</h3>
+<ul>
+<li>
+<p>CPU profile：报告程序的 CPU 使用情况，按照一定频率去采集应用程序在 CPU 和寄存器上面的数据</p>
+</li>
+<li>
+<p>Memory Profile（Heap Profile）：报告程序的内存使用情况</p>
+</li>
+<li>
+<p>Block Profiling：报告 goroutines 不在运行状态的情况，可以用来分析和查找死锁等性能瓶颈</p>
+</li>
+<li>
+<p>Goroutine Profiling：报告 goroutines 的使用情况，有哪些 goroutine，它们的调用关系是怎样的</p>
+</li>
+</ul>
+<h3 id="如何使用">如何使用</h3>
+<p>pprof开启后，每隔一段时间（10ms）就会收集下当前的堆栈信息，获取格格函数占用的CPU以及内存资源；最后通过对这些采样数据进行分析，形成一个性能分析报告。</p>
+<blockquote>
+<p>注意，只应该在性能测试的时候才在代码中引入pprof。</p>
+</blockquote>
+<p><code>pprof</code> 涉及两个包</p>
+<ul>
+<li>
+<p><code>net/http/pprof</code>：主要是通过 Http 的方式将信息实时显示，如果服务器长久运行，推荐这种方式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;net/http/pprof&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//如果使用默认的 http.DefaultServeMux
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;0.0.0.0:8000&#34;</span>, <span style="color:#66d9ef">nil</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//如果自定义Mux
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Index</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/cmdline&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Cmdline</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/profile&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Profile</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/symbol&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Symbol</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/trace&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Trace</span>)
+</span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
+<li>
+<p><code>runtime/pprof</code>：</p>
+<ol>
+<li>
+<p>通过 <code>pprof.StartCPUProfile(w io.Writer)</code> 开启Cpu分析，<code>pprof.StopCPUProfile()</code> 停止Cpu分析。</p>
+</li>
+<li>
+<p>通过 <code>pprof.WriteHeapProfile(w io.Writer)</code> 记录堆信息。</p>
+</li>
+<li>
+<p>得到 <code>dump</code> 文件后，使用 <code>go tool pprof</code> 来进行分析。</p>
+</li>
+<li>
+<p><code>go tool pprof</code> 默认使用 <code>-inuse-space</code> 进行统计，还可以使用 <code>-inuse-objects</code> 查看对象分配数量。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="go-tool-pprof--h"><code>go tool pprof -h</code></h3>
+<blockquote>
+<p>命令格式：<code>go tool pprof &lt;format&gt; [options] [binary] &lt;source&gt; ...</code></p>
+</blockquote>
+<ul>
+<li>
+<p>format 默认不填的话将打开shell交互命令</p>
+</li>
+<li>
+<p>binary 可选cpu或者memory分析文件</p>
+</li>
+<li>
+<p>go tool pprof -http=:9999 binary 直接网页浏览</p>
+</li>
+</ul>
+<h3 id="go-tool-trace"><code>go tool trace</code></h3>
+<blockquote>
+<p>命令格式：<code>go tool trace [flags] trace.out</code></p>
+</blockquote>
+<p>在代码中如何直接生成</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;runtime/trace&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(){
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">trace</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//do something
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">trace</span>.<span style="color:#a6e22e">Stop</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// go run xxx.go &gt; trace.out
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// go tool trace -http=:7777 trace.out 查看
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// go test -trace xxx.go 也可以生成 trace.out 文件
+</span></span></span></code></pre></div><ul>
+<li>
+<p>支持分析 <code>network blocking</code>,<code>sync</code>,<code>syscall</code>,<code>sche</code></p>
+</li>
+<li>
+<p>-http=:6060 直接在网页上分析</p>
+</li>
+</ul>
+<h3 id="火焰图">火焰图</h3>
+<ol>
+<li>下载 <code>graphviz</code></li>
+</ol>
+<p><a href="https://graphviz.gitlab.io/_pages/Download/Download_windows.html">windows</a></p>
+<p>macOS：<code>brew install graphviz</code></p>
+<p>centos：<code>yum install -y graphviz</code></p>
+<ol start="2">
+<li>名词解释</li>
+</ol>
+<pre tabindex="0"><code>Type: cpu    									分析类型为cpu
+Time: Apr 14, 2020 at 4:20pm (CST)				分析开始时间
+Duration: 30s, Total samples = 140ms ( 0.47%)	采样时间30s，采样间隔140ms
+Entering interactive mode (type &#34;help&#34; for commands, &#34;o&#34; for options)
+(pprof) top10									分析前10的耗时
+Showing nodes accounting for 140ms, 100% of 140ms total		显示出来的函数占用了140ms，占总时间的100%
+Dropped 67 nodes (cum &lt;= 0.03s)					总计耗时小于0.03s的67个函数丢弃不显示
+Showing top 10 nodes out of 47					总共47个函数，只显示了前10个
+      flat  flat%   sum%        cum   cum%
+      50ms 35.71% 35.71%       50ms 35.71%  runtime.stdcall1
+      20ms 14.29% 50.00%       50ms 35.71%  runtime.timerproc
+      10ms  7.14% 57.14%       10ms  7.14%  runtime.casgstatus
+      10ms  7.14% 64.29%       10ms  7.14%  runtime.cgocall
+      10ms  7.14% 71.43%       20ms 14.29%  runtime.chansend
+      10ms  7.14% 78.57%       10ms  7.14%  runtime.mget
+      10ms  7.14% 85.71%       10ms  7.14%  runtime.osyield
+      10ms  7.14% 92.86%       10ms  7.14%  runtime.stdcall2
+      10ms  7.14%   100%       10ms  7.14%  sync.(*entry).load
+         0     0%   100%       10ms  7.14%  encoding/json.(*encodeState).marshal
+
+sum% 	= 上一行的flat%+本行的flat%,
+flat% 	= 自身执行时长和total时长的比例 50ms/140ms=0.3571
+cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
+</code></pre><h2 id="expvar">expvar</h2>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/pprof'>pprof</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    
+    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

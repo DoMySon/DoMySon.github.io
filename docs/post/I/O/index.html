@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>I/O | 薛定谔的BUG</title>
+    <meta property="og:title" content="I/O - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-02-25T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-02-25T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="gc 算法">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/post/I/O/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents"></nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">I/O</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Linux'>Linux</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="前言">前言</h1>
+<ul>
+<li>
+<p>数据的读取分为:</p>
+<ol>
+<li>
+<p>等待数据准备</p>
+</li>
+<li>
+<p>等待内核拷贝至用户空间</p>
+</li>
+</ol>
+</li>
+<li>
+<p>基本模型矩阵</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">阻塞</th>
+<th style="text-align:center">非阻塞</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">同步</td>
+<td style="text-align:center"><code>Read/Write</code></td>
+<td style="text-align:center"><code>Read\Write(O_NONBLOCK)</code></td>
+</tr>
+<tr>
+<td style="text-align:center">异步</td>
+<td style="text-align:center"><code>I/O multiplexing(select/poll)</code></td>
+<td style="text-align:center"><code>AIO</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h1 id="同步阻塞io">同步阻塞I/O</h1>
+<p>此时用户阻塞等待内核完成。</p>
+<p>
+        <img class="mx-auto" alt="同步阻塞IO" src="/images/others/%e5%90%8c%e6%ad%a5%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
+<hr>
+<h1 id="同步非阻塞io">同步非阻塞I/O</h1>
+<p>此时用户进程每过一段时间询问内核操作是否完成，若完成则开始复制，感官上用户进程没有阻塞，可以称之为<code>伪异步</code>，但本质还是同步。</p>
+<p>
+        <img class="mx-auto" alt="同步阻塞IO" src="/images/others/%e5%90%8c%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
+<hr>
+<h1 id="io多路复用">I/O多路复用</h1>
+<p><code>I/O复用</code> 有时又被称为 <code>事件驱动I/O</code>, 它的最大优势在于，我们可以将感兴趣的多个I/O事件（更精确的说，应该是 I/O 所对应的文件描述符）注册到 <code>select/poll/epoll/kqueue</code> 之中某一个系统调用上（很多时候，这些系统调用又被称为多路复用器。假设此时我们选择了 select() ）。此后，调用进程会阻塞在 select() 系统调用之上（而不是阻塞在真正的 I/O 系统调用（如 read(), write() 等）上）。select() 会负责监视所有已注册的 I/O 事件，一旦有任意一个事件的数据准备好，那么 select() 会立即返回，此时我们的用户进程便能够进行数据的复制操作。</p>
+<p>
+        <img class="mx-auto" alt="IO复用" src="/images/others/IO%e5%a4%8d%e7%94%a8.png" />   
+    </p>
+<blockquote>
+<p><code>select</code>、<code>poll</code>、<code>epoll</code>、<code>kqueue</code>。</p>
+</blockquote>
+<ol>
+<li>
+<p><code>select</code></p>
+<p>说的通俗一点就是各个客户端连接的文件描述符也就是套接字，都被放到了一个集合中，调用 <code>select</code> 函数之后会一直监视这些文件描述符中有哪些可读，如果有可读的描述符那么我们的工作进程就去读取资源，仅返回触发事件，不返回事件id，最多只能监测1024个连接，线程不安全</p>
+</li>
+<li>
+<p><code>poll</code></p>
+<p><code>poll</code> 和 <code>select</code> 的实现非常类似，本质上的区别就是存放 fd 集合的数据结构不一样。<code>select</code> 在一个进程内可以维持最多 1024 个连接，<code>poll</code> 在此基础上做了加强，可以维持任意数量的连接。</p>
+</li>
+<li>
+<p><code>epoll</code></p>
+<p><code>epoll</code> 是基于内核的反射机制，在有活跃的 socket 时，系统会调用我们提前设置的回调函数。而 <code>poll</code> 和 <code>select</code> 都是遍历。在大多数客户端都很活跃的情况下，系统会把所有的回调函数都唤醒，所以会导致负载较高。既然要处理这么多的连接，那倒不如 <code>select</code> 遍历简单有效。</p>
+</li>
+</ol>
+<hr>
+<h1 id="信号驱动io">信号驱动I/O</h1>
+<p>在这种模型下，我们首先开启套接字的信号驱动式I/O功能，并通过<code>sigaction系统调用</code>安装一个信号处理函数。该系统调用将立即返回，我们的进程继续工作，也就是说他没有被阻塞。当数据报准备好读取时，内核就为该进程产生一个<code>SIGIO信号</code>。我们随后就可以在信号处理函数中调用read读取数据报，并通知主循环数据已经准备好待处理，也可以立即通知主循环，让它读取数据报。此时在收到内核完成信号之前是非阻塞的，但是内核复制数据时会发生阻塞，所以此模型也是一个<code>伪异步</code>。</p>
+<p>
+        <img class="mx-auto" alt="信号IO" src="/images/others/%e4%bf%a1%e5%8f%b7IO.png" />   
+    </p>
+<hr>
+<h1 id="异步非阻塞io">异步非阻塞I/O</h1>
+<blockquote>
+<p>Windows的<code>IOCP</code>模型</p>
+</blockquote>
+<p><code>异步非阻塞 /O模型</code> 是一种处理与 I/O 重叠进行的模型。读请求会立即返回，说明 read 请求已经成功发起了。在后台完成读操作时，应用程序然后会执行其他处理操作。当 read 的响应到达时，就会产生一个信号或执行一个基于线程的回调函数来完成这次 I/O 处理过程。本质上阻塞是用户 I/O 线程，主线程是非阻塞的，所以此模型是<code>真异步</code>。</p>
+<p>
+        <img class="mx-auto" alt="异步非阻塞IO" src="/images/others/%e5%bc%82%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
+<blockquote>
+<p>仅unix支持</p>
+</blockquote>
+<h1 id="几种io模型的比较">几种I/O模型的比较</h1>
+<blockquote>
+<p>判断是否是真正异步的方式是，内核完成通知之后是否是主线程处理，还是I/O线程处理。</p>
+</blockquote>
+<p>
+        <img class="mx-auto" alt="IO模型的比较" src="/images/others/IO%e6%a8%a1%e5%9e%8b%e7%9a%84%e6%af%94%e8%be%83.png" />   
+    </p>
+<h1 id="reactor和proactor"><code>Reactor</code>和<code>Proactor</code></h1>
+<blockquote>
+<p>还没写</p>
+</blockquote>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/I/O'>I/O</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    
+    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

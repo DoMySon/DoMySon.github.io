@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 12 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/goroutine/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Goroutine</title>
-      <link>https://DoMySon.github.io/2019/05/Goroutine/</link>
+      <link>https://DoMySon.github.io/post/Goroutine/</link>
       <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/05/Goroutine/</guid>
+      <guid>https://DoMySon.github.io/post/Goroutine/</guid>
       <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;

@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx</title>
-      <link>https://DoMySon.github.io/2019/03/Nginx/</link>
+      <link>https://DoMySon.github.io/post/Nginx/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/03/Nginx/</guid>
+      <guid>https://DoMySon.github.io/post/Nginx/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;
