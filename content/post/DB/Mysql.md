@@ -1,5 +1,5 @@
 ---
-title: MySQL
+title: mysql
 date: 2019-03-16
 tags: ["mysql"]
 categories: ["database"]

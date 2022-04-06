@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scheduler on 薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/tags/Scheduler/</link>
+    <description>Recent content in Scheduler on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 12 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/tags/Scheduler/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go Scheduler</title>
+      <link>https://DoMySon.github.io/2019/05/Go-Scheduler/</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/Go-Scheduler/</guid>
+      <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;调度方式&#34;&gt;调度方式&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，&lt;code&gt;Goroutine&lt;/code&gt; 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

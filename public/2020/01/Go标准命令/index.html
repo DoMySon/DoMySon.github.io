@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Go标准命令 | 薛定谔的BUG</title>
+    <meta property="og:title" content="Go标准命令 - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-01-28T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-01-28T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="go 内置命令">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#go-build">go build</a>
+<ul>
+<li>
+<ul>
+<li><a href="#条件编译">条件编译</a></li>
+<li><a href="#编译标签">编译标签</a></li>
+<li><a href="#文件后缀的形式">文件后缀的形式</a></li>
+<li><a href="#交叉编译">交叉编译</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#go-install">go install</a></li>
+<li><a href="#go-tool-command">go tool command</a>
+<ul>
+<li><a href="#go-tool-compile">go tool compile</a></li>
+</ul></li>
+<li><a href="#go-list">go list</a></li>
+<li><a href="#go-run">go run</a></li>
+<li><a href="#go-clean">go clean</a></li>
+<li><a href="#go-test">go test</a></li>
+<li><a href="#go-get">go get</a></li>
+<li><a href="#go-generate">go generate</a>
+<ul>
+<li><a href="#命令格式">命令格式</a></li>
+</ul></li>
+<li><a href="#go-doc">go doc</a></li>
+<li><a href="#go-fmt">go fmt</a></li>
+<li><a href="#go-fix">go fix</a></li>
+<li><a href="#go-tool-vet">go tool vet</a></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go标准命令</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月28日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>Go源码文件包括：命令源码文件、库源码文件和测试源码文件。其中，命令源码文件总应该属于main代码包，且在其中有无参数声明、无结果声明的main函数。单个命令源码文件可以被单独编译，也可以被单独安装</p>
+
+<h1 id="go-build">go build</h1>
+
+<blockquote>
+<p>该命令会把带 <code>main</code> 包源码编译生成的文件放在该命令的执行目录下，否则视为库文件。如果同一个目录存在两个 <code>main</code> 文件，那么需要使用 <code>go build a.go b.go</code></p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">-o</td>
+<td align="center">指定生成文件的路径</td>
+</tr>
+
+<tr>
+<td align="center">-v</td>
+<td align="center">编译时显示被编译的包名</td>
+</tr>
+
+<tr>
+<td align="center">-a</td>
+<td align="center">强制重构</td>
+</tr>
+
+<tr>
+<td align="center">-x</td>
+<td align="center">打印编译期间所用到的命令</td>
+</tr>
+
+<tr>
+<td align="center">-race</td>
+<td align="center">开启竞态条件检测</td>
+</tr>
+
+<tr>
+<td align="center">-work</td>
+<td align="center">打印生成的临时目录，并保留它，默认是编译结束后删除</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li><p><code>-buildmode</code>：
+&gt;指定编译模式</p>
+
+<ul>
+<li><p>archive：将不包含 <code>main</code> 包的 <code>package</code> 生成 <code>.a</code> 文件</p></li>
+
+<li><p>c-archive：将列出的主包以及它导入的所有包构建到一个C存档文件中。唯一可调用的符号将是那些使用 <code>export 注释</code> 导出的函数。需要列出一个主包。</p></li>
+
+<li><p>shared：将所有列出的非主包合并到一个共享库中 <code>.so 或 .dll</code>，当使用<code>-linkshared</code> 选项构建时将使用该库。名为main的包将被忽略。<code>windows/amd64</code> 不支持，需要导入 <code>import &quot;C&quot;</code></p></li>
+
+<li><p>c-shared：同上，不同的是必须有一个 <code>main</code> 包。唯一可调用的符号将是那些使用 <code>export 注释</code> 导出的函数。需要列出一个主包。</p></li>
+
+<li><p>default、exe：默认包含主包，生成一个可执行文件</p></li>
+
+<li><p>plugin：作为插件的形式存在，只能被go调用，而且必须要有主包</p></li>
+</ul></li>
+
+<li><p><code>-ldflags</code></p>
+
+<blockquote>
+<p>传给链接程序的标志</p>
+</blockquote>
+
+<ul>
+<li><p><code>-w</code>：去掉调试信息，不能gdb调试</p></li>
+
+<li><p><code>-s</code>：去掉符号表，stack trace 将没有任何文件名/行号信息，这个在<code>mac</code>平台下无效</p></li>
+
+<li><p><code>-X</code>：设置 <code>importPath package</code> 中变量的值。实际上应当跟代码中的导入路径一致</p></li>
+
+<li><p><code>-H windowsgui</code>：在windows下隐藏黑框</p>
+
+<pre><code>go build -ldflags &quot;-w -s -X main.Verison=1.0.1 -X main.Name=treasure&quot; -o xxx main.go
+</code></pre></li>
+</ul></li>
+
+<li><p><code>-tags</code></p>
+
+<blockquote>
+<p>此标记用于指定在实际编译期间需要受理的编译标签（也可被称为编译约束）的列表。</p>
+</blockquote>
+
+<h3 id="条件编译">条件编译</h3>
+
+<blockquote>
+<p>条件编译解决的是一份代码在不同的编译平台以及不同的语言版本的兼容性问题。</p>
+</blockquote>
+
+<h3 id="编译标签">编译标签</h3>
+
+<table>
+<thead>
+<tr>
+<th align="center">Desc</th>
+<th align="center">Logic</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">空格 &lsquo; &lsquo;</td>
+<td align="center">OR</td>
+</tr>
+
+<tr>
+<td align="center">逗号 &lsquo;,&rsquo;</td>
+<td align="center">AND</td>
+</tr>
+
+<tr>
+<td align="center">感叹号 &lsquo;!&rsquo;</td>
+<td align="center">NOT</td>
+</tr>
+
+<tr>
+<td align="center">换行</td>
+<td align="center">OR</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-go">// +build linux,amd64 darwin,!cgo,go1.13
+</code></pre>
+
+<blockquote>
+<p>上述综合起来就是： <code>(linux AND amd64) OR (darwin AND (NOT cgo)) AND GO_Version&gt;=1.13</code></p>
+</blockquote>
+
+<h3 id="文件后缀的形式">文件后缀的形式</h3>
+
+<ol>
+<li>*_GOOS.go</li>
+<li>*_GOARCH.go</li>
+<li>*_GOOS_GOARCH.go</li>
+</ol>
+
+<h3 id="交叉编译">交叉编译</h3>
+
+<blockquote>
+<p>交叉编译解决的是在不同 <code>OS</code> 和 <code>ARCH</code> 上运行程序</p>
+</blockquote>
+
+<pre><code>[-CGO_ENABLED=0] GOOS=platform GOARCH=arch go [build|install] any.go
+</code></pre>
+
+<blockquote>
+<p><del>CGO_ENABLED=0 表示不使用<code>CGO</code>编译器，1.9版本这个默认取消了，而且交叉编译不支持<code>CGO</code>。实际上如果在go当中使用了C的库，比如<code>import &quot;C&quot;</code>默认使用go build的时候就会启动CGO编译器。</del></p>
+</blockquote>
+
+<ul>
+<li>GOOS:目标操作系统</li>
+<li>GOARCH目标操作系统架构</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th align="center">OS</th>
+<th align="center">ARCH</th>
+<th align="center">OS Version</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">linux</td>
+<td align="center">386/amd64/arm</td>
+<td align="center">&gt;=linux2.6</td>
+</tr>
+
+<tr>
+<td align="center">darwin</td>
+<td align="center">386/adm64</td>
+<td align="center">OS X</td>
+</tr>
+
+<tr>
+<td align="center">windows</td>
+<td align="center">386/amd64</td>
+<td align="center">&gt;=win2000`</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-go">// +build debug !int
+
+//只要不带 int 并且 tags 指定为 debug 都会被编译
+package main
+</code></pre>
+
+<pre><code>go build -tags &quot;debug int&quot;
+</code></pre></li>
+
+<li><p><code>-gcflags</code></p>
+
+<blockquote>
+<p>此标记用于指定在实际编译期间需要受理的编译标签（也可被称为编译约束）的列表。</p>
+</blockquote></li>
+</ul>
+
+<h1 id="go-install">go install</h1>
+
+<blockquote>
+<p>当指定的代码包的依赖包还没有被编译和安装时，该命令会先去处理依赖包。<code>go install</code> 命令只比 <code>go build</code> 命令多做安装编译后的结果文件到指定目录。</p>
+</blockquote>
+
+<ul>
+<li><p><code>go install</code> 会依次查找所有 <code>GOPATH</code> 中的目录并寻找相关依赖包，然后将包名为 <code>main</code> 的包生成平台可执行文件放到 <code>GOBIN</code> 下，将非<code>main</code> 包编译成 <code>.a</code> 文件放在项目的 <code>pkg</code> 下。</p></li>
+
+<li><p><code>go install</code> 会自动检测代码更新，如果有变化则重新编译。可以加上 <code>-x</code> 会输出 <code>go install</code> 中实际执行的命令。</p>
+
+<blockquote>
+<p>但是对于其他文件夹下的其他依赖包，如果发现 <code>.a</code> 文件，则不会重新编译。</p>
+</blockquote></li>
+</ul>
+
+<ol>
+<li><p><code>-a</code> 参数强制编译所有包，包括依赖包。</p></li>
+
+<li><p><code>go install ./dirname/...</code> 强制编译 <code>dirname</code> 下所有包。</p></li>
+
+<li><p>删除对应 <code>.a</code> 文件。</p></li>
+</ol>
+
+<blockquote>
+<p><code>go install</code> 只会检查“参数指定的包所在的 <code>GOPATH</code> 内的源码是否有更新，如果有则重新编译。对于依赖的其他 <code>GOPATH</code> 下的包，如果存在已经编译好的 <code>.a</code>文件，则不会再检查源码是否有更新，不会重新编译。</p>
+</blockquote>
+
+<h1 id="go-tool-command">go tool command</h1>
+
+<h2 id="go-tool-compile">go tool compile</h2>
+
+<blockquote>
+<p>包必须为 <code>src</code>,也必须存在 <code>pkg</code>，否则无法生成 <code>.a</code> 文件，<code>go build</code> 命令已经集成了 <code>编译、链接、运行</code> 几个步骤，如果需要手动指定 <code>.a</code> 文件那么需要手动执行前两个步骤。</p>
+</blockquote>
+
+<ol>
+<li><p><code>go tool compile -I your_path main.go</code>：-I选项指定了demo包的安装路径，供main.go导入使用，编译成功后会生成相应的目标文件main.o。</p></li>
+
+<li><p><code>go tool -o main.exe -L your_path main.o</code>：-L选项指定了静态库demo.a的路径，链接成功后会生成相应的可执行文件main.exe。</p></li>
+
+<li><p>`go tool compile -S main.go：生成汇编文件。</p></li>
+</ol>
+
+<h1 id="go-list">go list</h1>
+
+<blockquote>
+<p>作用是列出指定的代码包的信息</p>
+</blockquote>
+
+<ol>
+<li><p><code>-e</code>:</p></li>
+
+<li><p><code>-json</code>:</p></li>
+</ol>
+
+<h1 id="go-run">go run</h1>
+
+<blockquote>
+<p>编译并执行，只能作用于命令源码文件，一般用于开发中快速测试。但也执行了编译操作，所以与 <code>go build</code> 共用参数。</p>
+</blockquote>
+
+<h1 id="go-clean">go clean</h1>
+
+<blockquote>
+<p>执行该命令会删除掉执行其它命令时产生的一些文件和目录</p>
+</blockquote>
+
+<ul>
+<li><p><code>go build</code> 产生的可执行文件</p></li>
+
+<li><p><code>go test</code> 附带 <code>-c</code> 参数产生的文件</p></li>
+</ul>
+
+<h1 id="go-test">go test</h1>
+
+<blockquote>
+<p>进行单元测试的工具，单元测试代码建议与被测试代码放在同一个代码包中，并以 <code>_test.go</code> 为后缀，测试函数建议以 <code>Test</code> 为名称前缀。该命令可以对代码包进行测试，也可以指定某个测试代码文件运行</p>
+</blockquote>
+
+<p><a href="/2019/08/Go单元测试">Go单元测试</a></p>
+
+<h1 id="go-get">go get</h1>
+
+<blockquote>
+<p>以借助代码管理工具通过远程拉取或更新代码包及其依赖包，并自动完成编译和安装。如 <code>go get [-options] github.com/golang/go</code></p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">-v</td>
+<td align="center">显示执行命令</td>
+</tr>
+
+<tr>
+<td align="center">-u</td>
+<td align="center">强制更新包和其以来，默认只会下载本地不存在的依赖</td>
+</tr>
+
+<tr>
+<td align="center">-d</td>
+<td align="center">只下载不安装</td>
+</tr>
+
+<tr>
+<td align="center">-insecure</td>
+<td align="center">允许使用不安全的 <code>http</code> 方式下载，在内网有用</td>
+</tr>
+
+<tr>
+<td align="center">-f</td>
+<td align="center">仅在包含了 <code>-u</code> 参数才有效，对当前语言版本的不规范检查并修正，然后再下载依赖包，最后编译安装</td>
+</tr>
+
+<tr>
+<td align="center">-fix</td>
+<td align="center">让命令程序在下载代码包后先执行修正动作，而后再进行编译和安装</td>
+</tr>
+
+<tr>
+<td align="center">-t</td>
+<td align="center">让命令程序同时下载并安装指定的代码包中的测试源码文件中依赖的代码包</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="go-generate">go generate</h1>
+
+<blockquote>
+<p>当运行该命令时，它将扫描与当前包相关的源代码文件，找出所有包含//go:generate的特殊注释，提取并执行该特殊注释后面的命令。</p>
+</blockquote>
+
+<ul>
+<li><p>该特殊注释必须在 .go 源码文件中</p></li>
+
+<li><p>每个源码文件可以包含多个 generate 特殊注释</p></li>
+
+<li><p>运行go generate命令时，才会执行特殊注释后面的命令</p></li>
+
+<li><p>当go generate命令执行出错时，将终止程序的运行</p></li>
+
+<li><p>特殊注释必须以 <code>//go:generate</code> 开头，双斜线后面没有空格。</p></li>
+</ul>
+
+<h2 id="命令格式">命令格式</h2>
+
+<blockquote>
+<p>go generate [-run regexp] [-n] [-v] [-x] [command] [build flags] [file.go&hellip; |packages]</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">-x</td>
+<td align="center">显示并执行命令</td>
+</tr>
+
+<tr>
+<td align="center">-n</td>
+<td align="center">显示不执行命令</td>
+</tr>
+
+<tr>
+<td align="center">-v</td>
+<td align="center">显示处理的包和源文件</td>
+</tr>
+
+<tr>
+<td align="center">-run</td>
+<td align="center">仅运行正则匹配到的命令</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-go">package main
+
+//go:generate go run main.go
+//go:generate go version
+func main(){
+}
+</code></pre>
+
+<h1 id="go-doc">go doc</h1>
+
+<h1 id="go-fmt">go fmt</h1>
+
+<blockquote>
+<p>格式化<code>.go</code>脚本</p>
+</blockquote>
+
+<h1 id="go-fix">go fix</h1>
+
+<h1 id="go-tool-vet">go tool vet</h1>
+
+<blockquote>
+<p>检查逻辑错误，而非编译错误，也可以自定义检查</p>
+</blockquote>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/08/Snowflake/">Snowflake</a></li>
+        
+        <li><a href="/2019/05/Protobuf3/">Protobuf3</a></li>
+        
+        <li><a href="/2019/02/GC/">GC</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-dark"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="">database (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/">Tags</a>
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C/">C</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
+    
+    <a href="https://DoMySon.github.io/tags/Scheduler/">Scheduler</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
+    
+    <a href="">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>

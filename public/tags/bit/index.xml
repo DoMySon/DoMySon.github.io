@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bit on 薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/tags/bit/</link>
+    <description>Recent content in bit on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/tags/bit/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>位运算</title>
+      <link>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
+    </item>
+    
+  </channel>
+</rss>
