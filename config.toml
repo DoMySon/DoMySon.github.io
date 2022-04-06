@@ -51,19 +51,25 @@ enableRobotsTXT = true
   identifier = "tools"
   url = "/tools/"
 
+[author]
+  name = '<a href="https://DoMySon.github.com" class="theme-link">DoMySon</a>'
+
 [params]
   #卜算子页面计数
+  since = "2019"
   busuanzi = true
   subtitle = "专注于各种划水"
   author = "Treasure"
-  # keywords = "Unity、Golang、热更新"
-  # description = "Unity、Golang、热更新等"
+ 
 
 # URL样式
 #将改变content/post/文件夹下所有文章的URL。
 #/:monthname/:day/:weekday/:weekdayname/:yearday/:section/:title/:slug/:filename/:title/ 所有可用属性
 [permalinks]
   post = "/:year/:month/:title/" #"/:section/:title" #
+
+# 字数统计和预计时间
+moreMeta = true
 
 # 友情链接
 [[params.links]]
