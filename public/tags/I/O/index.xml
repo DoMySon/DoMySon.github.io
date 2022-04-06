@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>I/O on 薛定谔的BUG</title>
+    <link>http://www.domyson.cn/tags/I/O/</link>
+    <description>Recent content in I/O on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.domyson.cn/tags/I/O/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>I/O</title>
+      <link>http://www.domyson.cn/2019/02/I/O/</link>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/02/I/O/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;数据的读取分为:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;等待数据准备&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;等待内核拷贝至用户空间&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;基本模型矩阵&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;阻塞&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;非阻塞&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;同步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read/Write&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read\Write(O_NONBLOCK)&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;异步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;I/O multiplexing(select/poll)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;AIO&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

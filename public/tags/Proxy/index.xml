@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Proxy on 薛定谔的BUG</title>
+    <link>http://www.domyson.cn/tags/Proxy/</link>
+    <description>Recent content in Proxy on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.domyson.cn/tags/Proxy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Nginx</title>
+      <link>http://www.domyson.cn/2019/03/Nginx/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/03/Nginx/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nginx.org/en/download.html&#34;&gt;Nginx下载&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;常用功能&#34;&gt;常用功能&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;负载均衡&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;反向代理&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;正向代理&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;文件服务器&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

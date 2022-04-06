@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Docker-Compose | 薛定谔的BUG</title>
+    <meta property="og:title" content="Docker-Compose - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-11-25T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-11-25T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Dockerfile是一个好东西">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://www.domyson.cn/2019/11/Docker-Compose/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.domyson.cn/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.domyson.cn/">首页</a>
+                    
+                    <a  href="http://www.domyson.cn/archives/" title="文章">文章</a>
+                    
+                    <a  href="http://www.domyson.cn/about/" title="关于">关于</a>
+                    
+                    <a  href="http://www.domyson.cn/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#docker-compose-命令">docker-compose 命令</a>
+<ul>
+<li><a href="#docker-compse-up-opthions-scale-service-num-service">docker-compse up [opthions] [&ndash;scale SERVICE=NUM] [SERVICE&hellip;]</a></li>
+<li><a href="#docker-compose-ps-service">docker-compose ps [SERVICE&hellip;]</a></li>
+<li><a href="#docker-compose-start-stop-restart">docker-compose [start|stop|restart]</a></li>
+</ul></li>
+<li><a href="#docker-compose-文件结构">docker-compose 文件结构</a></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Docker-Compose</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年11月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='http://www.domyson.cn/categories/Docker'>Docker</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p><code>Docker-Compose</code> （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p>
+
+<p><a href="https://docs.docker.com/compose/">官方文档</a></p>
+</blockquote>
+
+<p><code>Docker-Compose</code>将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。</p>
+
+<h1 id="docker-compose-命令">docker-compose 命令</h1>
+
+<h2 id="docker-compse-up-opthions-scale-service-num-service">docker-compse up [opthions] [&ndash;scale SERVICE=NUM] [SERVICE&hellip;]</h2>
+
+<blockquote>
+<p>容器启动命令</p>
+</blockquote>
+
+<ul>
+<li><p><code>-d</code>：在后台运行</p></li>
+
+<li><p><code>–no-color</code> 不使用颜色来区分不同的服务的控制输出</p></li>
+
+<li><p><code>–no-deps</code> 不启动服务所链接的容器</p></li>
+
+<li><p><code>–force-recreate</code> 强制重新创建容器，不能与<code>–no-recreate</code>同时使用</p></li>
+
+<li><p><code>–no-recreate</code> 如果容器已经存在，则不重新创建，不能与<code>–force-recreate</code>同时使用</p></li>
+
+<li><p><code>–no-build</code> 不自动构建缺失的服务镜像</p></li>
+
+<li><p><code>–build</code>：在启动容器前构建服务镜像，或rebuild</p></li>
+
+<li><p><code>–abort-on-container-exit</code>：停止所有容器，如果任何一个容器被停止，不能与 <code>-d</code> 同时使用</p></li>
+
+<li><p><code>–scale SERVICE=NUM ...</code> 设置服务运行容器的个数，将覆盖在compose中通过scale指定的参数</p></li>
+</ul>
+
+<h2 id="docker-compose-ps-service">docker-compose ps [SERVICE&hellip;]</h2>
+
+<blockquote>
+<p>查看 <code>docker-compose</code> 中列出的容器</p>
+</blockquote>
+
+<h2 id="docker-compose-start-stop-restart">docker-compose [start|stop|restart]</h2>
+
+<blockquote>
+<p>[开始|停止|重启]项目中运行的容器</p>
+</blockquote>
+
+<h1 id="docker-compose-文件结构">docker-compose 文件结构</h1>
+
+<blockquote>
+<p>Docker-Compose标准模板文件应该包含version、services、networks 三大部分，最关键的是services和networks两个部分。</p>
+</blockquote>
+
+<pre><code class="language-yaml">version: &quot;3.5&quot;                  #docker-compose 版本,不同的版本配置有所不同
+service:
+  nats:                         #标识,如果设置了网络，这个也是他在网络中的别名，也可以指定alias
+    image: nats:latest          #如果本地不存在就会在dockerhub上拉取
+    container_name: &quot;nats0&quot;     #运行时的容器名
+    ports:                      #端口与宿主机映射规则
+      - &quot;4222:4222&quot;
+      - &quot;6222:6222&quot;
+      - &quot;8222:8222&quot;
+    expose:                     #暴露容器端口，仅仅是声明，不会起实际作用，参考 Dockerfile
+      - &quot;4222&quot;
+      - &quot;8222&quot;
+      - &quot;6222&quot;
+    networks:                   #链接的网络，不存在会自动创建，必须在services同级的networks中指定
+      - net1                    #指定连接的网络名
+      - net2                    
+
+
+  gate:
+    image: gateway
+    build: &quot;./gateway&quot;          #如果此镜像是自定义镜像，需要指定dockerfile文件的目录，将不会拉取远程镜像
+    container_name: &quot;gateway&quot;
+    command: sh run.sh          #覆盖容器的默认执行命令
+    depends_on:                 #指定依赖的启动项，即先启动 nats 再启动此镜像
+      - nats
+      - login
+    ports:
+      - &quot;5433:5433&quot;
+    expose:
+      - &quot;5433&quot;
+    networks:
+      net1:
+        ipv4_address: 172.18.0.31 #指定容器的固定ipv4地址
+
+  login:
+    image: login
+    build: &quot;./login&quot;
+    container_name: &quot;login&quot;
+    ports:
+      - &quot;5434:5434&quot;
+    expose:
+      - 5433
+    networks:
+      - net1
+  db:
+    image: db
+    build: &quot;./db&quot;
+    container_name: &quot;db&quot;
+    networks:
+      - net1
+    volumes:
+      - /var/etc/:/var/etc/     #容器卷映射
+
+
+networks:
+  net1:
+    name: xNet                  #虚拟网卡名 version &gt;=3.5
+    driver: bridge              #支持三种模式 host bridge(默认) none
+  net2:
+    name: yNet
+    driver: host
+</code></pre>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/03/Docker/">Docker</a></li>
+        
+        <li><a href="/2019/03/Dockerfile/">Dockerfile</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='http://www.domyson.cn/tags/Docker'>Docker</a></li>
+                
+                <li><a href='http://www.domyson.cn/tags/DockerCompose'>DockerCompose</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.domyson.cn/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="http://www.domyson.cn/categories/Algorithm/">Algorithm (8)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/C/">C (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/CSharp/">CSharp (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Database/">Database (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Javascript/">Javascript (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/tools/">tools (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="http://www.domyson.cn/tags/">Tags</a>
+    
+    <a href="http://www.domyson.cn/tags/Async/">Async</a>
+    
+    <a href="http://www.domyson.cn/tags/Bitmap/">Bitmap</a>
+    
+    <a href="http://www.domyson.cn/tags/C/">C</a>
+    
+    <a href="http://www.domyson.cn/tags/C#/">C#</a>
+    
+    <a href="http://www.domyson.cn/tags/Cgo/">Cgo</a>
+    
+    <a href="http://www.domyson.cn/tags/Csharp/">Csharp</a>
+    
+    <a href="http://www.domyson.cn/tags/Docker/">Docker</a>
+    
+    <a href="http://www.domyson.cn/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="http://www.domyson.cn/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="http://www.domyson.cn/tags/GC/">GC</a>
+    
+    <a href="http://www.domyson.cn/tags/Hash/">Hash</a>
+    
+    <a href="http://www.domyson.cn/tags/Hotfix/">Hotfix</a>
+    
+    <a href="http://www.domyson.cn/tags/I/O/">I/O</a>
+    
+    <a href="http://www.domyson.cn/tags/Lock/">Lock</a>
+    
+    <a href="http://www.domyson.cn/tags/Locker/">Locker</a>
+    
+    <a href="http://www.domyson.cn/tags/Lua/">Lua</a>
+    
+    <a href="http://www.domyson.cn/tags/Module/">Module</a>
+    
+    <a href="http://www.domyson.cn/tags/Mutex/">Mutex</a>
+    
+    <a href="http://www.domyson.cn/tags/Network/">Network</a>
+    
+    <a href="http://www.domyson.cn/tags/Nodejs/">Nodejs</a>
+    
+    <a href="">Pointer</a>
+    
+    <a href="http://www.domyson.cn/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="http://www.domyson.cn/tags/Proxy/">Proxy</a>
+    
+    <a href="http://www.domyson.cn/tags/Redis/">Redis</a>
+    
+    <a href="http://www.domyson.cn/tags/Scheduler/">Scheduler</a>
+    
+    <a href="http://www.domyson.cn/tags/Sort/">Sort</a>
+    
+    <a href="http://www.domyson.cn/tags/TLS/">TLS</a>
+    
+    <a href="http://www.domyson.cn/tags/Thread/">Thread</a>
+    
+    <a href="http://www.domyson.cn/tags/TopK/">TopK</a>
+    
+    <a href="http://www.domyson.cn/tags/Tree/">Tree</a>
+    
+    <a href="http://www.domyson.cn/tags/Unity/">Unity</a>
+    
+    <a href="http://www.domyson.cn/tags/Web/">Web</a>
+    
+    <a href="http://www.domyson.cn/tags/bit/">bit</a>
+    
+    <a href="http://www.domyson.cn/tags/http/">http</a>
+    
+    <a href="http://www.domyson.cn/tags/msys2/">msys2</a>
+    
+    <a href="http://www.domyson.cn/tags/mysql/">mysql</a>
+    
+    <a href="http://www.domyson.cn/tags/pointer/">pointer</a>
+    
+    <a href="http://www.domyson.cn/tags/pprof/">pprof</a>
+    
+    <a href="http://www.domyson.cn/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.domyson.cn/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="http://www.domyson.cn/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>

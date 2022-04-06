@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dockerfile | 薛定谔的BUG</title>
+    <meta property="og:title" content="Dockerfile - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-03-12T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-12T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Dockerfile是一个好东西">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/2019/03/Dockerfile/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#dockerfile">Dockerfile</a>
+<ul>
+<li><a href="#from">FROM</a></li>
+<li><a href="#maintainer">MAINTAINER</a></li>
+<li><a href="#add-copy">ADD、COPY</a></li>
+<li><a href="#workdir">WORKDIR</a></li>
+<li><a href="#user">USER</a></li>
+<li><a href="#label">LABEL</a></li>
+<li><a href="#env">ENV</a></li>
+<li><a href="#expose">EXPOSE</a></li>
+<li><a href="#volume">VOLUME</a></li>
+<li><a href="#run">RUN</a></li>
+<li><a href="#cmd">CMD</a></li>
+<li><a href="#entrypoint">ENTRYPOINT</a></li>
+<li><a href="#user-1">USER</a></li>
+<li><a href="#arg">ARG</a></li>
+<li><a href="#onbuild">ONBUILD</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Dockerfile</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Docker'>Docker</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="dockerfile">Dockerfile</h1>
+
+<blockquote>
+<p><code>Dockerfile</code> 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。<code>docker build</code> 命令用于从 <code>Dockerfile</code>构建映像。命令中使用 <code>-f</code> 标志指向文件系统中任何位置的 <code>Dockerfile</code> 文件。</p>
+</blockquote>
+
+<h2 id="from">FROM</h2>
+
+<blockquote>
+<p>指定基础镜像</p>
+</blockquote>
+
+<p><code>FROM &lt;image&gt;:&lt;tag&gt;</code></p>
+
+<pre><code class="language-dockerfile">FROM node:10.14.2
+# tag为可选项，如果没有指定，默认为latest
+# 指定基础，FROM必须作为第一个指令，若镜像不存在则会下载，如果不以任何镜像为基础，则写法为：FROM scratch，意味着接下来的指令作为第一层镜像的开始。
+</code></pre>
+
+<h2 id="maintainer">MAINTAINER</h2>
+
+<blockquote>
+<p>镜像作者 已过时，用  <a href="#LABEL">Label</a> 代替</p>
+</blockquote>
+
+<p><del><code>MAINTAINER &lt;name&gt;</code></del></p>
+
+<pre><code class="language-dockerfile">#MAINTAINER Treasure
+LABEL maintainer=Treasure
+</code></pre>
+
+<h2 id="add-copy">ADD、COPY</h2>
+
+<blockquote>
+<p>ADD、COPY目标文件夹若不存在会自动创建。ADD指令包含类似tar的解压功能，而COPY只单纯复制文件，而且路径不能是url。ADD和COPY只能复制文件，若碰到文件夹只会复制其中的文件。<code>dst</code> 只能是目标容器的绝对位置。 所有拷贝到容器中的文件和文件夹权限为 <code>0755</code>，uid和gid为0；如果是一个目录，那么会将该目录下的所 有文件拷贝到目录下，不包括目录；如果是文件且中不使用斜杠结束，则会将视为文件，则内容会写入；如果是文件且中使用斜杠结束，则会文件拷贝到目录下。</p>
+</blockquote>
+
+<p><code>ADD src ... dst</code></p>
+
+<p><code>COPY src ... dst</code></p>
+
+<pre><code class="language-dockerfile">ADD ./* /data
+
+COPY ./ /data
+</code></pre>
+
+<h2 id="workdir">WORKDIR</h2>
+
+<blockquote>
+<p>将会设置 RUN、CMD、ENTRYPOINT指定的工作目录,相当于切换目录至path</p>
+</blockquote>
+
+<p><code>WORKDIR path</code></p>
+
+<pre><code class="language-dockerfile">WORKDIR /app    #工作目录为 /app
+
+WORKDIR gateway #工作目录为 /app/gateway
+</code></pre>
+
+<h2 id="user">USER</h2>
+
+<blockquote>
+<p>指定运行容器的用户</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">USER root
+</code></pre>
+
+<h2 id="label">LABEL</h2>
+
+<blockquote>
+<p>为镜像指定标签，LABEL会继承基础镜像中的LABEL，如遇到key相同，则会被覆盖。</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...
+
+LABEL &lt;key&gt;=&lt;value&gt; \
+    &lt;key&gt;=&lt;value&gt;
+</code></pre>
+
+<h2 id="env">ENV</h2>
+
+<blockquote>
+<p>ENV指令用来定义镜像的环境变量，在Dockerfile中这些设置的环境变量也会影响到RUN指令，当运行生成的镜像时这些环境变量依然有效，如果需要在运行时更改这些环境变量可以在运行docker run时添加–e <key>=<value>参数来修改。可以通过 docker inspect 查看环境变量。其他命令通过 $EVNNAME 来引用,最好不要定义那些可能和系统预定义的环境变量冲突的名字，否则可能会产生意想不到的结果。</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">ENV HOST=0.0.0.0 PORT=8000 #可以设置多个,但`=`两侧不允许有空格
+
+ENV A1=Treasure \
+    A2=DoMySon
+
+WORKDIR ${foo} #引用ENV设置的变量
+</code></pre>
+
+<h2 id="expose">EXPOSE</h2>
+
+<blockquote>
+<p>功能为暴漏容器运行时的监听端口给外部（只允许能被连接的服务访问）,但是EXPOSE并不会使容器访问主机的端口,如果想使得容器与主机的端口有映射关系，必须在容器启动的时候加上 <code>-p</code> 参数</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">EXPOSE 8000 3306 
+
+EXPOSE 80
+
+EXPOSE 5433/tcp 5434/udp
+</code></pre>
+
+<h2 id="volume">VOLUME</h2>
+
+<blockquote>
+<p>可实现挂载功能，可以将本地文件夹或者其他容器种得文件夹挂在到这个容器中，若目标文件夹或文件不存在则创建</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">VOLUME [&quot;path1&quot;,&quot;path2&quot;] #主机上的挂点是随即生成的 
+
+VOLUME /var/log /var/db #挂载多个
+</code></pre>
+
+<h2 id="run">RUN</h2>
+
+<blockquote>
+<p>在容器中构建时执行的命令，RUN指令创建的中间镜像会被缓存，并会在下次构建中使用。如果不想使用这些缓存镜像，可以在构建时指定&ndash;no-cache参数：<code>docker build --no-cache</code></p>
+</blockquote>
+
+<pre><code class="language-dockerfile">RUN npm install                         #使用 shell 执行
+
+RUN [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]    #使用可执行程序执行 
+</code></pre>
+
+<h2 id="cmd">CMD</h2>
+
+<blockquote>
+<p>功能为容器启动时要运行的命令CMD指令中指定的命令会在镜像运行时执行，在Dockerfile中只能存在一个，如果使用了多个CMD指令，则只有最后一个CMD指令有效。当出现ENTRYPOINT指令时，CMD中定义的内容会作为ENTRYPOINT指令的默认参数，也就是说可以使用CMD指令给ENTRYPOINT传递参数。<code>RUN</code>和<code>CMD</code>都是执行命令，他们的差异在于<code>RUN</code>中定义的命令会在执行<code>docker build</code>命令创建镜像时执行，而<code>CMD</code>会在<code>docker run</code>时执行。</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">CMD npm install                         #使用 shell 执行
+
+CMD [&quot;executable&quot;,&quot;param1&quot;,&quot;param2&quot;]    #使用可执行程序执行 
+</code></pre>
+
+<h2 id="entrypoint">ENTRYPOINT</h2>
+
+<blockquote>
+<p>功能是启动时的默认命令，与 <code>CMD</code> 相似，如果有多条则最后一条生效。但ENTRYPOINT不会被command覆盖，而 CMD 则会被覆盖。</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">ENTRYPOINT [&quot;exec&quot;,&quot;param1&quot;,&quot;param2&quot;]
+
+ENTRYPOINT command
+</code></pre>
+
+<h2 id="user-1">USER</h2>
+
+<blockquote>
+<p>设置启动容器的用户，可以是用户名或UID,如果设置了容器以daemon用户去运行，那么 RUN, CMD 和 ENTRYPOINT 都会以这个用户去运行</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">USER daemo
+
+USER UID
+</code></pre>
+
+<h2 id="arg">ARG</h2>
+
+<blockquote>
+<p>设置变量命令，ARG命令定义了一个变量，在 docker build 创建镜像的时候，使用 &ndash;build-arg <varname>=<value>来指定参数，如果用户在build镜像时指定了一个参数没有定义在Dockerfile中，那么将有一个 Warning</p>
+</blockquote>
+
+<pre><code class="language-dockerfile">ARG &lt;name&gt;[=&lt;default_value&gt;]
+
+ARG user1=10 #默认值变量
+
+ARG build #不带默认值变量
+</code></pre>
+
+<h2 id="onbuild">ONBUILD</h2>
+
+<blockquote>
+<p>这是一个特殊的指令，它后面跟的是其它指令，比如 RUN , COPY等，而这些指令， 在当前镜像构建时并不会被执行。只有当以当前镜像为基础镜像，去构建下一级镜像的时候才会被执行。</p>
+</blockquote>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/03/Docker/">Docker</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://DoMySon.github.io/tags/Docker'>Docker</a></li>
+                
+                <li><a href='https://DoMySon.github.io/tags/Dockerfile'>Dockerfile</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/">Tags</a>
+    
+    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C/">C</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
+    
+    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
+    
+    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
+    
+    <a href="https://DoMySon.github.io/tags/Scheduler/">Scheduler</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
+    
+    <a href="">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>

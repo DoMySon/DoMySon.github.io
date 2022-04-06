@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pointer on 薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/tags/Pointer/</link>
+    <description>Recent content in Pointer on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 31 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/tags/Pointer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>C#不安全代码</title>
+      <link>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</link>
+      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</guid>
+      <description>&lt;h1 id=&#34;关键字&#34;&gt;关键字&lt;/h1&gt;
+
+&lt;h2 id=&#34;volatile&#34;&gt;&lt;code&gt;volatile&lt;/code&gt;&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;用于多线程变量&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;int i1;
+
+//作用于多线程变量
+//但不能作用于局部变量
+volatile int i2;
+
+/*
+多个线程同时访问一个变量，CLR为了效率，允许每个线程进行本地缓存，这就导致了变量的不一致性。volatile就是为了解决这个问题，volatile修饰的变量，不允许线程进行本地缓存，每个线程的读写都是直接操作在共享内存上，这就保证了变量始终具有一致性。
+
+编译器在优化代码时，可能会把经常用到的代码存在Cache里面，然后下一次调用就直接读取Cache而不是内存，这样就大大提高了效率。但是问题也随之而来了。
+
+在多线程程序中，如果把一个变量放入Cache后，又有其他线程改变了变量的值，那么本线程是无法知道这个变化的。它可能会直接读Cache里的数据。但是很不幸，Cache里的数据已经过期了，读出来的是不合时宜的脏数据。这时就会出现bug。
+
+用Volatile声明变量可以解决这个问题。用Volatile声明的变量就相当于告诉编译器，我不要把这个变量写Cache，因为这个变量是可能发生改变的。
+*/
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go不安全指针</title>
+      <link>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cgo</title>
+      <link>https://DoMySon.github.io/2019/08/Cgo/</link>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Cgo/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

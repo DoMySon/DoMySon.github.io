@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javascript on 薛定谔的BUG</title>
+    <link>http://www.domyson.cn/categories/Javascript/</link>
+    <description>Recent content in Javascript on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.domyson.cn/categories/Javascript/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Node.js</title>
+      <link>http://www.domyson.cn/2019/04/Node.js/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/04/Node.js/</guid>
+      <description>&lt;h1 id=&#34;异步原理&#34;&gt;异步原理&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 底层封装了 &lt;code&gt;libuv&lt;/code&gt; 库&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 只有执行完主线程，才会进入 &lt;code&gt;EventLoop&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 基于事件驱动&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;事件机制的底层依赖库：&lt;code&gt;libuv&lt;/code&gt;、&lt;code&gt;libeio&lt;/code&gt;、&lt;code&gt;libev&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;epoll&lt;/code&gt; 用于Linux系统，&lt;code&gt;IOCP&lt;/code&gt; 用于Windows系统；&lt;code&gt;epoll&lt;/code&gt; 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；&lt;code&gt;IOCP&lt;/code&gt; 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 &lt;code&gt;异步非阻塞I/O模型&lt;/code&gt;，内核会立刻返回信号，其他事件会有机会执行&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Javascript&#39;s v8</title>
+      <link>http://www.domyson.cn/2019/03/Javascripts-v8/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/03/Javascripts-v8/</guid>
+      <description>&lt;h1 id=&#34;v8内存管理机制&#34;&gt;V8内存管理机制&lt;/h1&gt;
+
+&lt;h2 id=&#34;一-内存模型&#34;&gt;一、内存模型&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://www.domyson.cn/images/javascript/v8内存结构图.png&#34; alt=&#34;V8内存&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;堆外内存：不通过V8分配，也不受管理，Buffer对象数据存放于此除堆外内存外，其余由V8管理&lt;/p&gt;
+
+&lt;p&gt;栈（Stack）的分配与回收非常直接，当程序离开某作用域后，其栈指针下移（回退），整个作用域的局部变量都会出栈，内存收回。&lt;/p&gt;
+
+&lt;p&gt;最复杂的部分是堆（Heap）的管理，V8使用垃圾回收机制进行堆的内存管理，也是开发中可能造成内存泄漏的部分&lt;/p&gt;
+
+&lt;p&gt;通过 &lt;code&gt;process.memoryUsage()&lt;/code&gt; 查看内存。&lt;code&gt;rss&lt;/code&gt; 是Resident Set Size的缩写，为常驻内存的总大小，&lt;code&gt;heapTotal&lt;/code&gt; 是V8为堆分配的总大小，&lt;code&gt;heapUsed&lt;/code&gt;是已使用的堆大小。可以看到，rss是大于heapTotal的，因为rss包括且不限于堆。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;二-堆内存限制&#34;&gt;二、堆内存限制&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;默认情况，V8分配内存不超过&lt;code&gt;1.4G(x64 1.4G,x86 0.7G)&lt;/code&gt;,如果读取大于 &lt;code&gt;1.4G&lt;/code&gt; 的文件是无法实现的，但可以通过Node命令更改V8为堆设置内存上限&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//更改老生代堆内存
+--max-old-space-size = 3000 //MB
+//更改新生代堆内存
+--max-new-space-size = 2000//KB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;堆的内存上限在启动时就已经决定，无法动态更改，想要更改，唯一的方法是关闭进程，使用新的配置重新启动。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>http://www.domyson.cn/2019/02/Javascript/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/02/Javascript/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt; 一种直译式脚本语言，是一种动态类型、弱类型、基于原型的语言，内置支持类型。它的解释器被称为JavaScript引擎，为浏览器的一部分，广泛用于客户端的脚本语言，最早是在HTML（标准通用标记语言下的一个应用）网页上使用，用来给HTML网页增加动态功能。后来拓展到了服务端 &lt;a href=&#34;https://nodejs.org/en/&#34;&gt;Node.js&lt;/a&gt; 以及App应用 &lt;a href=&#34;https://electronjs.org/&#34;&gt;Electron&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;数据类型&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;定义未赋值表示空值(在条件表达式中为false)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;undefined&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;未定义(在条件表达式中为false)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;true 和 false&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;number&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;数字 &lt;code&gt;NaN&lt;/code&gt; &lt;code&gt;Infinity&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;用单引号或双引号表示,多行 ``,模板字符串 &amp;lsquo;${arg1},${arg2}&amp;rsquo;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;object&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一组由键-值组成的无序集合&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Symbol&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;唯一标记值 &lt;code&gt;ES6&lt;/code&gt; 新增&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;function&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;变量&#34;&gt;变量&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;变量默认为 &lt;code&gt;null&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;变量作用域&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;全局作用域&lt;/li&gt;
+&lt;li&gt;局部作用域&lt;/li&gt;
+&lt;li&gt;块级作用域&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

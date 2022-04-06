@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/</link>
+    <description>Recent content on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Preprocessor</title>
+      <link>https://DoMySon.github.io/2020/07/Preprocessor/</link>
+      <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/07/Preprocessor/</guid>
+      <description>&lt;h1 id=&#34;预处理器&#34;&gt;预处理器&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;#pragma&lt;/code&gt; 用于指示编译器完成一些特定的动作&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;#pragma message usermessage&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.c
+#include &amp;lt;stdio.h&amp;gt;
+#define IOS
+#if defined IOS
+    #pragma message &amp;quot;ready complie ios...&amp;quot;
+#endif
+//complie output:
+    note: #pragma message: ready complie ios...
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;#pragma once 确保头文件仅被编译一次&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.h
+#pragma once
+int value = 10;
+//example:test.c
+#include &amp;quot;test.h&amp;quot;
+#include &amp;quot;test.h&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;#pragma pack(size_t) 指定内存对齐&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.c
+// 2byte 对齐
+#pragma pack(2)
+struct foo{
+    char c1;
+    char c2:
+    short 2;
+    int i;
+};
+
+// 4byte 对齐
+#pragma pack(4)
+struct bar{
+    char c1;
+    shirt s;
+    char c2;
+    int i;
+};
+
+void main(){
+    printf(&amp;quot;%d\n&amp;quot;,sizeof(struct foo)); //8
+    printf(&amp;quot;%d\n&amp;quot;,sizeof(struct bar)); //12
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;指令&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;描述&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;示例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#define&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;定义宏&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#include&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;包含一个源代码文件&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#undef&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;取消一个定义的宏&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#ifdef&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;是否定义了宏&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#ifndef&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;是否没有定义一个宏&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#if&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;条件检测&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#else&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;条件分支&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#elif&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;条件分支&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#endif&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;结束条件分支&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#error&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;当遇到标准错误，输出错误消息&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#pragma&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;使用标准化方法，向编译器发布特殊的命令到编译器中&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;#line&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;重置下一行行数&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;#line 100&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>pointer</title>
+      <link>https://DoMySon.github.io/2020/05/pointer/</link>
+      <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/05/pointer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go 编译指示</title>
+      <link>https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</link>
+      <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
+      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</description>
+    </item>
+    
+    <item>
+      <title>Msys2</title>
+      <link>https://DoMySon.github.io/2020/03/Msys2/</link>
+      <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/03/Msys2/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;msys2的包管理器是使用的是 &lt;code&gt;pacman&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.msys2.org/&#34;&gt;下载地址&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go GC分析</title>
+      <link>https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/</link>
+      <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/</guid>
+      <description>&lt;h1 id=&#34;如何启用gc跟踪&#34;&gt;如何启用GC跟踪&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;GODEBUG=gctrace=1 go run *.go&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;其中 &lt;code&gt;gctrace=1&lt;/code&gt; 表示只针对这个进程进行GC追踪&lt;/p&gt;
+
+&lt;h1 id=&#34;输出分析&#34;&gt;输出分析&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
+scvg: 0 MB released
+scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
+GC forced
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go History</title>
+      <link>https://DoMySon.github.io/2020/02/Go-History/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/Go-History/</guid>
+      <description>&lt;h1 id=&#34;go-版本变迁差异&#34;&gt;Go 版本变迁差异&lt;/h1&gt;</description>
+    </item>
+    
+    <item>
+      <title>Http</title>
+      <link>https://DoMySon.github.io/2020/02/Http/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/Http/</guid>
+      <description>&lt;h1 id=&#34;http-请求构成&#34;&gt;Http 请求构成&lt;/h1&gt;
+
+&lt;h2 id=&#34;请求行&#34;&gt;请求行&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;请求行以一个方法符号开头，以空格分开，后面跟着请求的URI和协议的版本，格式如下：Method Request-URI HTTP-Version CRLF  其中 Method表示请求方法；Request-URI是一个统一资源标识符；HTTP-Version表示请求的HTTP协议版本；CRLF表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;Method&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Desc&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;GET&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求获取Request-URI所标识的资源&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;POST&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;在Request-URI所标识的资源后附加新的数据&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;HEAD&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求获取由Request-URI所标识的资源的响应消息报头&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;PUT&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求服务器存储一个资源，并用Request-URI作为其标识&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;DELETE&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求服务器删除Request-URI所标识的资源&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;TRACE&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求服务器回送收到的请求信息，主要用于测试或诊断&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;CONNECT&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;保留将来使用&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;OPTIONS&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;请求查询服务器的性能，或者查询与资源相关的选项和需求&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;POST&lt;/code&gt; 和 &lt;code&gt;GET&lt;/code&gt; 的区别:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;副作用：服务器上的资源做改变，如搜索是无副作用的，注册是副作用的。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;幂等：幂等指发送 M 和 N 次请求（两者不相同且都大于 1），服务器上资源的状态一致。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在规范的应用场景上说，Get 多用于无副作用，幂等的场景，例如搜索关键字。Post 多用于副作用，不幂等的场景，例如注册。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Get 请求能缓存，Post 不能&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里（当然你想写到 body 里也是可以的），且会被浏览器保存历史纪录。Post 不会，但是在抓包的情况下都是一样。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Post 支持更多的编码类型且不对数据类型限制&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>TLS</title>
+      <link>https://DoMySon.github.io/2020/02/TLS/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/TLS/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;p&gt;传输层安全性协议（Transport Layer Security），及其前身 &lt;code&gt;SSL3.0&lt;/code&gt; 之后安全套接层（Secure Sockets Layer，缩写作SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。SSL包含记录层（Record Layer）和传输层，记录层协议确定传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用&lt;code&gt;RSA&lt;/code&gt; 加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>位运算</title>
+      <link>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
+    </item>
+    
+    <item>
+      <title>Go标准命令</title>
+      <link>https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</guid>
+      <description>&lt;p&gt;Go源码文件包括：命令源码文件、库源码文件和测试源码文件。其中，命令源码文件总应该属于main代码包，且在其中有无参数声明、无结果声明的main函数。单个命令源码文件可以被单独编译，也可以被单独安装&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Channel</title>
+      <link>https://DoMySon.github.io/2020/01/Channel/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/01/Channel/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;channel&lt;/code&gt; 提供了一种通信机制，通过它，一个 &lt;code&gt;goroutine&lt;/code&gt; 可以与另一 &lt;code&gt;goroutine&lt;/code&gt; 发送消息。&lt;code&gt;channel&lt;/code&gt; 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 &lt;code&gt;len()&lt;/code&gt; 获取通道当前缓冲数量。 &lt;code&gt;cap()&lt;/code&gt; 获取通道最大缓冲。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>DockerNetwork</title>
+      <link>https://DoMySon.github.io/2020/01/DockerNetwork/</link>
+      <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2020/01/DockerNetwork/</guid>
+      <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;docker network create --driver [bridge|host|none|container] networkname&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;bridge&lt;/code&gt;：默认模式，容器使用独立 network Namespace，并连接到&lt;code&gt;docker0&lt;/code&gt;虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 &lt;code&gt;docker0&lt;/code&gt; 中。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;host&lt;/code&gt;：与宿主机共享网络，此时容器没有使用网络的namespace，&lt;code&gt;-p&lt;/code&gt; 将不会起任何作用。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;none&lt;/code&gt;：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：与指定的容器共享网络，如果有的话。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go Module</title>
+      <link>https://DoMySon.github.io/2019/12/Go-Module/</link>
+      <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/12/Go-Module/</guid>
+      <description>&lt;h1 id=&#34;module&#34;&gt;Module&lt;/h1&gt;
+
+&lt;p&gt;Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 &lt;code&gt;go.mod&lt;/code&gt; 文件来建立依赖管理。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Unity内存管理</title>
+      <link>https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <description>&lt;h1 id=&#34;unity-托管内存&#34;&gt;Unity 托管内存&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;用户代码分配的内存本质上在 &lt;code&gt;IL2CPP&lt;/code&gt; 构建的 &lt;code&gt;VM&lt;/code&gt; 的托管内存(&lt;code&gt;Managed Memory&lt;/code&gt;)上，所以用户代码分配遵从于这个 &lt;code&gt;VM&lt;/code&gt; 的分配方式。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;IL2CPP&lt;/code&gt; 采用的是 &lt;code&gt;Boehm&lt;/code&gt; 回收算法,这算法的缺陷是 &lt;code&gt;不分代&lt;/code&gt;，&lt;code&gt;不压缩&lt;/code&gt;，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;内存以 &lt;code&gt;Block&lt;/code&gt; 来管理，当一个 &lt;code&gt;Block&lt;/code&gt; 6次GC没有被访问，才会返回给 OS。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;Zombie Memory&lt;/code&gt;,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对于一个物体，应该是 &lt;code&gt;Destory&lt;/code&gt; 而不是置为 &lt;code&gt;Null&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;下一代采用 &lt;code&gt;渐进式GC&lt;/code&gt;（分帧GC，使CPU峰值更平滑），可以手动开关。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go锁</title>
+      <link>https://DoMySon.github.io/2019/12/Go%E9%94%81/</link>
+      <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/12/Go%E9%94%81/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker-Compose</title>
+      <link>https://DoMySon.github.io/2019/11/Docker-Compose/</link>
+      <pubDate>Mon, 25 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/11/Docker-Compose/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt; （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt;将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tree</title>
+      <link>https://DoMySon.github.io/2019/09/Tree/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/09/Tree/</guid>
+      <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
+
+&lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;树（Tree）是n（n&amp;gt;=0)个结点的有限集。&lt;code&gt;n=0&lt;/code&gt; 时称为空树。在任意一颗非空树中：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;有且仅有一个特定的称为根（Root）的结点；&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互不相交的有限集T1、T2、&amp;hellip;&amp;hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;n&amp;gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;m&amp;gt;0时，子树的个数没有限制，但它们一定是互不相交的。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;节点的度&#34;&gt;节点的度&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;节点又有子树数目成为节点的 &lt;code&gt;度&lt;/code&gt;，如上图&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;节点的深度&#34;&gt;节点的深度&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;该节点的深度为 4&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>C#不安全代码</title>
+      <link>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</link>
+      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</guid>
+      <description>&lt;h1 id=&#34;关键字&#34;&gt;关键字&lt;/h1&gt;
+
+&lt;h2 id=&#34;volatile&#34;&gt;&lt;code&gt;volatile&lt;/code&gt;&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;用于多线程变量&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;int i1;
+
+//作用于多线程变量
+//但不能作用于局部变量
+volatile int i2;
+
+/*
+多个线程同时访问一个变量，CLR为了效率，允许每个线程进行本地缓存，这就导致了变量的不一致性。volatile就是为了解决这个问题，volatile修饰的变量，不允许线程进行本地缓存，每个线程的读写都是直接操作在共享内存上，这就保证了变量始终具有一致性。
+
+编译器在优化代码时，可能会把经常用到的代码存在Cache里面，然后下一次调用就直接读取Cache而不是内存，这样就大大提高了效率。但是问题也随之而来了。
+
+在多线程程序中，如果把一个变量放入Cache后，又有其他线程改变了变量的值，那么本线程是无法知道这个变化的。它可能会直接读Cache里的数据。但是很不幸，Cache里的数据已经过期了，读出来的是不合时宜的脏数据。这时就会出现bug。
+
+用Volatile声明变量可以解决这个问题。用Volatile声明的变量就相当于告诉编译器，我不要把这个变量写Cache，因为这个变量是可能发生改变的。
+*/
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>ConsistentHash</title>
+      <link>https://DoMySon.github.io/2019/08/ConsistentHash/</link>
+      <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/ConsistentHash/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 &lt;code&gt;Key&lt;/code&gt; 从多个节点（也就是服务器）中找到缓存数据所在的节点。&lt;/p&gt;
+
+&lt;p&gt;一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Snowflake</title>
+      <link>https://DoMySon.github.io/2019/08/Snowflake/</link>
+      <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Snowflake/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;snowflake&lt;/code&gt;（雪花算法）是一种分布式ID算法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;对比其他的优缺点&#34;&gt;对比其他的优缺点&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;UUID&lt;/code&gt; : 对于数据敏感场景不宜使用，且不适合于分布式场景。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;GUID&lt;/code&gt; : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go不安全指针</title>
+      <link>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cgo</title>
+      <link>https://DoMySon.github.io/2019/08/Cgo/</link>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Cgo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go性能分析</title>
+      <link>https://DoMySon.github.io/2019/08/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</link>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Tools</title>
+      <link>https://DoMySon.github.io/tools/</link>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/tools/</guid>
+      <description>常用表 Http状态码、Header、方法 ASCII对照 16进制RGB颜色 正则表达式 Markdown文档 私人资源</description>
+    </item>
+    
+    <item>
+      <title>CSharp&#39;s GC</title>
+      <link>https://DoMySon.github.io/2019/08/CSharps-GC/</link>
+      <pubDate>Tue, 20 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/08/CSharps-GC/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;.NET的GC机制有这样两个问题：&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;GC并不是能释放所有的资源。它并不能自动释放非托管资源。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;GC并不是实时性的，这将会造成系统性能上的瓶颈和不确定性。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;GC并不是实时性的，这会造成系统性能上的瓶颈和不确定性。所以有了&lt;code&gt;IDisposable&lt;/code&gt;接口，&lt;code&gt;IDisposable&lt;/code&gt;接口定义了&lt;code&gt;Dispose&lt;/code&gt;方法，这个方法用来供程序员显式调用以释放非托管资源。使用&lt;code&gt;using&lt;/code&gt;语句可以简化资源管理。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://DoMySon.github.io/images/abc.png&#34; alt=&#34;XX&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>TopK</title>
+      <link>https://DoMySon.github.io/2019/07/TopK/</link>
+      <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/07/TopK/</guid>
+      <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
+    </item>
+    
+    <item>
+      <title>ClassicSort</title>
+      <link>https://DoMySon.github.io/2019/07/ClassicSort/</link>
+      <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/07/ClassicSort/</guid>
+      <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
+
+&lt;h2 id=&#34;稳定排序-非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  &lt;code&gt;非稳定排序&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;原地排序-非原地排序&#34;&gt;原地排序，非原地排序&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 &lt;code&gt;非原地排序&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;时间复杂度&#34;&gt;时间复杂度&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个算法执行所耗费的时间&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;空间复杂度&#34;&gt;空间复杂度&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;完成算法所需的内存空间大小&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>ILRuntime</title>
+      <link>https://DoMySon.github.io/2019/07/ILRuntime/</link>
+      <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/07/ILRuntime/</guid>
+      <description>这是一个介绍</description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://DoMySon.github.io/2019/07/Redis/</link>
+      <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/07/Redis/</guid>
+      <description>&lt;h1 id=&#34;liunx安装&#34;&gt;Liunx安装&lt;/h1&gt;
+
+&lt;h1 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;类型&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;介绍&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;键值对&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;has&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;hash表&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;list&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;字符串列表&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;set&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;无重复列表&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;sorted set&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;有序无重复列表&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;subscribe/publish&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;发布订阅模式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://doc.redisfans.com/index.html&#34;&gt;Redis命令&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://redis.io/download&#34;&gt;Redis下载&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>C#多线程</title>
+      <link>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;进程是CPU资源分配的最小单位，线程是CPU调度的最小单位。可以理解为，打开一个应用程序时，操作系统启动一个进程，为其分配虚拟内存、文件句柄等资源，一个进程至少拥有一个线程，这些线程共享该进程的资源（内存和堆），但是每个线程都有独立的栈，以记录函数的执行位置和局部变量。CPU对线程的调度可以实现任务的并行执行，提高程序的运行效率。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;锁&lt;/code&gt; 确保同一份资源不会被多个线程同时使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Protobuf3</title>
+      <link>https://DoMySon.github.io/2019/05/Protobuf3/</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/Protobuf3/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;Protocol Buffers&lt;/code&gt;，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 &lt;code&gt;syntax = proto3&lt;/code&gt; 的协议语法。&lt;/p&gt;
+
+&lt;h1 id=&#34;标准类型对照&#34;&gt;标准类型对照&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;.proto&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;注释&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;C++&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Python&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Go&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;C#&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;定长编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;定长编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint32&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint64&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;long&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unit64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;sint32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int32&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;sint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int64&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;long&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;fixed32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;总是&lt;code&gt;4&lt;/code&gt;字节，如果值大于&lt;code&gt;2^28&lt;/code&gt;比&lt;code&gt;uint32&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;fixed64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;总是&lt;code&gt;8&lt;/code&gt;字节，如果值大于&lt;code&gt;2^56&lt;/code&gt;比&lt;code&gt;uint64&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1或0的变长编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;boolean&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;必须是&lt;code&gt;UTF-8&lt;/code&gt;编码&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;str/unicode&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;bytes&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;可包含任意的字节顺序&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;str&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;[]byte&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;ByteString&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go Scheduler</title>
+      <link>https://DoMySon.github.io/2019/05/Go-Scheduler/</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/Go-Scheduler/</guid>
+      <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;调度方式&#34;&gt;调度方式&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，&lt;code&gt;Goroutine&lt;/code&gt; 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Bitmap</title>
+      <link>https://DoMySon.github.io/2019/05/Bitmap/</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/Bitmap/</guid>
+      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
+    </item>
+    
+    <item>
+      <title>Node.js</title>
+      <link>https://DoMySon.github.io/2019/04/Node.js/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/04/Node.js/</guid>
+      <description>&lt;h1 id=&#34;异步原理&#34;&gt;异步原理&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 底层封装了 &lt;code&gt;libuv&lt;/code&gt; 库&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 只有执行完主线程，才会进入 &lt;code&gt;EventLoop&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 基于事件驱动&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;事件机制的底层依赖库：&lt;code&gt;libuv&lt;/code&gt;、&lt;code&gt;libeio&lt;/code&gt;、&lt;code&gt;libev&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;epoll&lt;/code&gt; 用于Linux系统，&lt;code&gt;IOCP&lt;/code&gt; 用于Windows系统；&lt;code&gt;epoll&lt;/code&gt; 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；&lt;code&gt;IOCP&lt;/code&gt; 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 &lt;code&gt;异步非阻塞I/O模型&lt;/code&gt;，内核会立刻返回信号，其他事件会有机会执行&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Javascript&#39;s v8</title>
+      <link>https://DoMySon.github.io/2019/03/Javascripts-v8/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/Javascripts-v8/</guid>
+      <description>&lt;h1 id=&#34;v8内存管理机制&#34;&gt;V8内存管理机制&lt;/h1&gt;
+
+&lt;h2 id=&#34;一-内存模型&#34;&gt;一、内存模型&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://DoMySon.github.io/images/javascript/v8内存结构图.png&#34; alt=&#34;V8内存&#34; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;堆外内存：不通过V8分配，也不受管理，Buffer对象数据存放于此除堆外内存外，其余由V8管理&lt;/p&gt;
+
+&lt;p&gt;栈（Stack）的分配与回收非常直接，当程序离开某作用域后，其栈指针下移（回退），整个作用域的局部变量都会出栈，内存收回。&lt;/p&gt;
+
+&lt;p&gt;最复杂的部分是堆（Heap）的管理，V8使用垃圾回收机制进行堆的内存管理，也是开发中可能造成内存泄漏的部分&lt;/p&gt;
+
+&lt;p&gt;通过 &lt;code&gt;process.memoryUsage()&lt;/code&gt; 查看内存。&lt;code&gt;rss&lt;/code&gt; 是Resident Set Size的缩写，为常驻内存的总大小，&lt;code&gt;heapTotal&lt;/code&gt; 是V8为堆分配的总大小，&lt;code&gt;heapUsed&lt;/code&gt;是已使用的堆大小。可以看到，rss是大于heapTotal的，因为rss包括且不限于堆。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;二-堆内存限制&#34;&gt;二、堆内存限制&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;默认情况，V8分配内存不超过&lt;code&gt;1.4G(x64 1.4G,x86 0.7G)&lt;/code&gt;,如果读取大于 &lt;code&gt;1.4G&lt;/code&gt; 的文件是无法实现的，但可以通过Node命令更改V8为堆设置内存上限&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//更改老生代堆内存
+--max-old-space-size = 3000 //MB
+//更改新生代堆内存
+--max-new-space-size = 2000//KB
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;堆的内存上限在启动时就已经决定，无法动态更改，想要更改，唯一的方法是关闭进程，使用新的配置重新启动。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL</title>
+      <link>https://DoMySon.github.io/2019/03/MySQL/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/MySQL/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;下载地址&#34;&gt;下载地址&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://dev.mysql.com/downloads/mysql/&#34;&gt;MySQL下载地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;名称&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;大小&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;范围&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;tinyint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-2^7~2^7-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;smallint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-2^15~2^15-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;mediumint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;3字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-2^23~2^23-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;int(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;4字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-2^31~2^31-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;bigint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-2^63~2^63-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;char(n)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1字节&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多255个字符&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;varchar(n)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多65535个字符&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;tinytext&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多255个字符&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;text&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多65535个字符&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;mediumtext&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多2的24次方-1个字符&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;longtext&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;最多2的32次方-1个字符&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;日期 &amp;lsquo;2008-12-2&amp;rsquo;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;时间 &amp;lsquo;12:25:36&amp;rsquo;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;datetime&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;日期时间 &amp;lsquo;2008-12-2 22:06:44&amp;rsquo;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;自动存储记录修改时间&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://DoMySon.github.io/2019/03/Docker/</link>
+      <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/Docker/</guid>
+      <description>&lt;h1 id=&#34;docker简介&#34;&gt;Docker简介&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dockerfile</title>
+      <link>https://DoMySon.github.io/2019/03/Dockerfile/</link>
+      <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/Dockerfile/</guid>
+      <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://DoMySon.github.io/2019/03/Nginx/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/Nginx/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nginx.org/en/download.html&#34;&gt;Nginx下载&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;常用功能&#34;&gt;常用功能&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;负载均衡&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;反向代理&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;正向代理&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;文件服务器&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>xLua</title>
+      <link>https://DoMySon.github.io/2019/03/xLua/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/03/xLua/</guid>
+      <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Lock</title>
+      <link>https://DoMySon.github.io/2019/02/Lock/</link>
+      <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/Lock/</guid>
+      <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;优点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;缺点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;即乐观锁的优点&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
+    </item>
+    
+    <item>
+      <title>I/O</title>
+      <link>https://DoMySon.github.io/2019/02/I/O/</link>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/I/O/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;数据的读取分为:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;等待数据准备&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;等待内核拷贝至用户空间&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;基本模型矩阵&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;阻塞&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;非阻塞&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;同步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read/Write&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read\Write(O_NONBLOCK)&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;异步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;I/O multiplexing(select/poll)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;AIO&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>GC</title>
+      <link>https://DoMySon.github.io/2019/02/GC/</link>
+      <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/GC/</guid>
+      <description>&lt;h1 id=&#34;何谓-gc&#34;&gt;何谓 &lt;code&gt;GC&lt;/code&gt;&lt;/h1&gt;
+
+&lt;p&gt;GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
+1. 内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(&lt;code&gt;Garbage-Collect&lt;/code&gt;)。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>https://DoMySon.github.io/2019/02/Javascript/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/Javascript/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt; 一种直译式脚本语言，是一种动态类型、弱类型、基于原型的语言，内置支持类型。它的解释器被称为JavaScript引擎，为浏览器的一部分，广泛用于客户端的脚本语言，最早是在HTML（标准通用标记语言下的一个应用）网页上使用，用来给HTML网页增加动态功能。后来拓展到了服务端 &lt;a href=&#34;https://nodejs.org/en/&#34;&gt;Node.js&lt;/a&gt; 以及App应用 &lt;a href=&#34;https://electronjs.org/&#34;&gt;Electron&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;数据类型&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;定义未赋值表示空值(在条件表达式中为false)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;undefined&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;未定义(在条件表达式中为false)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;true 和 false&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;number&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;数字 &lt;code&gt;NaN&lt;/code&gt; &lt;code&gt;Infinity&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;用单引号或双引号表示,多行 ``,模板字符串 &amp;lsquo;${arg1},${arg2}&amp;rsquo;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;object&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;一组由键-值组成的无序集合&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Symbol&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;唯一标记值 &lt;code&gt;ES6&lt;/code&gt; 新增&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;function&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&#34;变量&#34;&gt;变量&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;变量默认为 &lt;code&gt;null&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;变量作用域&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;全局作用域&lt;/li&gt;
+&lt;li&gt;局部作用域&lt;/li&gt;
+&lt;li&gt;块级作用域&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>https://DoMySon.github.io/about/</link>
+      <pubDate>Wed, 13 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/about/</guid>
+      <description>专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 C、Golang、CSharp、Lua、Js、MySQL、Redis 等单词 技术</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description>Liunx 文件系统  对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook
+ 文件类型    符号 描述     d 目录   l 符号链接   s 套接字文件   b 块设备文件   c 字符设备文件   p 命名管道文件   - 普通文件，不属于上述任意一种    权限更换  chmod [who] operator [permission] filename
+  who
+   符号 描述     u 文件属主权限   g 同组用户权限   o 其他用户权限   a 所有用户    operator</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Archives</title>
+      <link>https://DoMySon.github.io/1/01/Archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/Archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>归档</title>
+      <link>https://DoMySon.github.io/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/archives/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

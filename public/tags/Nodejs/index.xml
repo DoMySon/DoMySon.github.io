@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nodejs on 薛定谔的BUG</title>
+    <link>http://www.domyson.cn/tags/Nodejs/</link>
+    <description>Recent content in Nodejs on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.domyson.cn/tags/Nodejs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Node.js</title>
+      <link>http://www.domyson.cn/2019/04/Node.js/</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/04/Node.js/</guid>
+      <description>&lt;h1 id=&#34;异步原理&#34;&gt;异步原理&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 底层封装了 &lt;code&gt;libuv&lt;/code&gt; 库&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 只有执行完主线程，才会进入 &lt;code&gt;EventLoop&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 基于事件驱动&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;事件机制的底层依赖库：&lt;code&gt;libuv&lt;/code&gt;、&lt;code&gt;libeio&lt;/code&gt;、&lt;code&gt;libev&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;epoll&lt;/code&gt; 用于Linux系统，&lt;code&gt;IOCP&lt;/code&gt; 用于Windows系统；&lt;code&gt;epoll&lt;/code&gt; 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；&lt;code&gt;IOCP&lt;/code&gt; 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 &lt;code&gt;异步非阻塞I/O模型&lt;/code&gt;，内核会立刻返回信号，其他事件会有机会执行&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

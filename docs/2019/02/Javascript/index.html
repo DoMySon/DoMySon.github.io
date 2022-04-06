@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Javascript | 薛定谔的BUG</title>
+    <meta property="og:title" content="Javascript - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-02-14T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-02-14T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="关于Js中的 Object 以及 this 指向。">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/2019/02/Javascript/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#基本类型">基本类型</a></li>
+<li><a href="#变量">变量</a>
+<ul>
+<li><a href="#原型链">原型链</a></li>
+<li><a href="#原型链继承">原型链继承</a></li>
+</ul></li>
+<li><a href="#class-es6-关键字">class（ES6） 关键字</a>
+<ul>
+<li><a href="#instanceof-typeof"><code>instanceof</code>,<code>typeof</code></a></li>
+</ul></li>
+<li><a href="#object">Object</a>
+<ul>
+<li><a href="#解构赋值-es6标准">解构赋值（ES6标准）</a></li>
+<li><a href="#this-call-apply-bind"><code>this，call，apply，bind</code></a>
+<ul>
+<li><a href="#this">this</a></li>
+<li><a href="#call-apply-bind"><code>call,apply,bind</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#柯里化-currying">柯里化(<code>Currying</code>)</a>
+<ul>
+<li><a href="#示例">示例</a></li>
+</ul></li>
+<li><a href="#symbol"><code>Symbol</code></a>
+<ul>
+<li><a href="#它是什么">它是什么？</a></li>
+<li><a href="#其他">其他</a></li>
+</ul></li>
+<li><a href="#promise"><code>Promise</code></a>
+<ul>
+<li><a href="#构造">构造</a></li>
+<li><a href="#静态方法">静态方法</a></li>
+<li><a href="#async-await"><code>async/await</code></a></li>
+<li><a href="#await-的等待"><code>await</code> 的等待</a></li>
+<li><a href="#async-await-的优势"><code>async/await</code> 的优势</a></li>
+<li><a href="#async-await-处理异常"><code>async/await</code> 处理异常</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Javascript</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月14日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Javascript'>Javascript</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p><code>JavaScript</code> 一种直译式脚本语言，是一种动态类型、弱类型、基于原型的语言，内置支持类型。它的解释器被称为JavaScript引擎，为浏览器的一部分，广泛用于客户端的脚本语言，最早是在HTML（标准通用标记语言下的一个应用）网页上使用，用来给HTML网页增加动态功能。后来拓展到了服务端 <a href="https://nodejs.org/en/">Node.js</a> 以及App应用 <a href="https://electronjs.org/">Electron</a></p>
+</blockquote>
+
+<h1 id="基本类型">基本类型</h1>
+
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>null</code></td>
+<td align="center">定义未赋值表示空值(在条件表达式中为false)</td>
+</tr>
+
+<tr>
+<td align="center"><code>undefined</code></td>
+<td align="center">未定义(在条件表达式中为false)</td>
+</tr>
+
+<tr>
+<td align="center"><code>boolean</code></td>
+<td align="center">true 和 false</td>
+</tr>
+
+<tr>
+<td align="center"><code>number</code></td>
+<td align="center">数字 <code>NaN</code> <code>Infinity</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>string</code></td>
+<td align="center">用单引号或双引号表示,多行 ``,模板字符串 &lsquo;${arg1},${arg2}&rsquo;</td>
+</tr>
+
+<tr>
+<td align="center"><code>object</code></td>
+<td align="center">一组由键-值组成的无序集合</td>
+</tr>
+
+<tr>
+<td align="center"><code>Symbol</code></td>
+<td align="center">唯一标记值 <code>ES6</code> 新增</td>
+</tr>
+
+<tr>
+<td align="center"><code>function</code></td>
+<td align="center">函数</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="变量">变量</h1>
+
+<ol>
+<li><p>变量默认为 <code>null</code></p></li>
+
+<li><p>变量作用域</p>
+
+<ul>
+<li>全局作用域</li>
+<li>局部作用域</li>
+<li>块级作用域</li>
+</ul></li>
+</ol>
+
+<h2 id="原型链">原型链</h2>
+
+<p><a href="https://www.jianshu.com/p/826b485c5696">原型链详解</a></p>
+
+<p><code>每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针。</code></p>
+
+<pre><code class="language-js">//构造方法
+function Student(name){
+    this.name = name;
+    this.say = function(){
+        //TODO
+    }
+}
+
+let a = new Student(&quot;a&quot;); //使用了new关键字
+//原型链是: a -&gt; Student.prototype -&gt; Object.prottype -&gt; null
+let b = new Student(&quot;b&quot;);
+//原型链是: b -&gt; Student.prototype -&gt; Object.prottype -&gt; null
+
+/*
+s1.say === s2.say 是不相等的，因为不是从同一个原型链上面继承过来
+2018.12.21 node v10.14.原型链方法不能使用lambda，否则this不指向自身
+*/
+Student.prototype.say = function(){
+    //TODO
+}
+//这么做是在Student的原型链上绑定了一个say方法，其所有Student对象和其继承对象都会继承这个方法
+</code></pre>
+
+<h2 id="原型链继承">原型链继承</h2>
+
+<pre><code class="language-js">//继承
+function Sub(name,age){
+    //这么做可以访问 Student 的属性，但无法继承 prototype 上的属性
+    Student.call(this,name);
+    this.age = age;
+}
+
+/*
+将 Sub 的原型指向 Student 的实例
+这是最常用的方法来模拟单继承，缺点是始终要保留Student的对象
+*/
+Sub.prototype = new Student();
+
+/*
+将 Sub 的原型指向 Student 的原型
+当修改了Sub.prototype上的方法时会影响Student.prototype
+*/
+Sub.prototype = Student.prototype;
+</code></pre>
+
+<h1 id="class-es6-关键字">class（ES6） 关键字</h1>
+
+<pre><code class="language-js">class Student{
+    //必须显示声明构造函数
+    constructor(name){
+        //普通字段应该在方法内声明
+        this.name = name;
+    }
+    //类方法 不需要function关键字，以下划线开头约定为私有方法
+    say(){
+        //TODO
+    }
+    //静态方法 通过 Student.st() 调用
+    static st(){
+
+    }
+    //get 属性 let A = st.f0
+    get f0(){
+        
+    }
+    //set 属性 st.f1 = A
+    set f1(){
+
+    }
+}
+//增加静态字段
+Student.Max = 10; 
+
+class Sub extends Student{
+    constructor(name,age){
+        //必须显式调用基类的构造方法
+        super(name);
+        this.age = age;
+    }
+    
+    sleep(){
+        //TODO
+    }
+}
+
+let s0 = new Student(&quot;A&quot;);
+//原型链是: s0 -&gt;  Student.prototype -&gt; Object.prototype -&gt; null
+let s1 = new Sub(&quot;B&quot;,20);
+//原型链是: s1 -&gt; Sub.prototype -&gt; Student.prototype -&gt; Object.prototype -&gt; null
+
+//此时 s0.say === s1.say 是相等的，因为是从同一个原型链上面继承过来
+</code></pre>
+
+<h2 id="instanceof-typeof"><code>instanceof</code>,<code>typeof</code></h2>
+
+<ul>
+<li><p><code>instanceof</code> 运算符用来判断一个构造函数的 <code>prototype</code> 属性所指向的对象是否存在另外一个要检测对象的原型链上,所以也能检测是否继承了某个类型。</p></li>
+
+<li><p><code>typeof</code> 判断实例类型，一般只有 <code>number</code>,<code>string</code>,<code>boolean</code>,<code>object</code>,<code>function</code>,<code>undefined</code>,对于自定义类型只会返回 <code>object</code></p></li>
+</ul>
+
+<h1 id="object">Object</h1>
+
+<p><a href="https://www.cnblogs.com/pingchuanxin/p/5773326.html">Object详解</a></p>
+
+<ul>
+<li><p>删除属性</p>
+
+<pre><code class="language-js">let o =  {x:1,y:1};
+
+delete o.x;
+
+&quot;x&quot; in o;//false
+
+let arr = [1,2,3];
+
+delete arr[1];
+
+2 in arr // false arr.length === 3 undefined替换了2
+</code></pre></li>
+
+<li><p>检测属性</p>
+
+<pre><code class="language-js">let obj = { x: 10};
+
+x in obj; //true 是属于obj原型链或则自身的属性
+
+obj.hasOwnProperty(&quot;x&quot;); //true 判断是否是自身的属性，继承过来的不算
+</code></pre></li>
+
+<li><p>创建对象</p>
+
+<pre><code class="language-js">let foo = {
+    x:10,
+    say:()=&gt;{
+        //TODO
+    }
+}
+
+let f0 = Object.create(null); //此方式创建的对象实例不继承任何，包括Object
+/*
+    f0 instanceof Object  =&gt; false
+    console.log(f0); //=&gt; {}
+    console.log(f0.constructor); //=&gt; undefined
+    console.log(f0.toString); //=&gt; undefined
+    console.log(f0.hasOwnProperty); //=&gt; undefined
+*/
+
+let f2 = Object.create(foo);
+//此方式创建的对象实例是继承foo的
+// f2 instanceof foo
+</code></pre></li>
+</ul>
+
+<h2 id="解构赋值-es6标准">解构赋值（ES6标准）</h2>
+
+<ol>
+<li><p><a href="https://www.cnblogs.com/koto/p/5865064.html">ES6解构赋值</a></p></li>
+
+<li><p>数组解构赋值</p>
+
+<pre><code class="language-js">let [a,b,c] = [1,2,3];
+// a = 1,b = 2,c = 3
+//默认值
+let [foo = true] = [];
+// foo = true
+</code></pre></li>
+
+<li><p>对象结构赋值</p>
+
+<pre><code class="language-js">//如果不同名则会被设置为 undefined
+let {foo,bar} = {foo:&quot;foo&quot;,bar:&quot;bar&quot;};
+// foo = &quot;foo&quot; bar = &quot;bar&quot;
+
+//等价于
+let {foo:foo,bar:bar} = {foo:&quot;foo&quot;,bar:&quot;bar&quot;};
+//所以赋值的后者而非前者
+
+let{foo:bar} = {foo:&quot;foo&quot;};
+//foo = undefined
+//bar = &quot;foo&quot;
+
+//指定默认值 包括完全指定和不完全指定
+let{x,y = 2} = {x:1};
+// x = 1,y = 2
+
+//不完全解构
+let {name} = {
+    name:&quot;zs&quot;,
+    age : 18,
+};
+// name = &quot;zs&quot; 只需要读取所需要的数据
+</code></pre></li>
+
+<li><p>字符串解构赋值</p>
+
+<pre><code class="language-js">let [a,b,c,d,e] = &quot;hello&quot;;
+//原因是字符串是 ascii码的数组
+
+let {length:len} = &quot;hello&quot;;
+// len = 5
+//数组对象都有 length 这个属性
+</code></pre></li>
+
+<li><p>数值和布尔值解构赋值</p>
+
+<pre><code class="language-js">let {toString} = 123;
+// toString === Number.prototype.toString() true
+
+let {toString:s} = true;
+// s === Boolen.prototype.toString() true
+</code></pre></li>
+
+<li><p>函数参数解构赋值</p>
+
+<pre><code class="language-js">//本质传入一个匿名对象
+function objArg0({name,age}){
+    //TODO
+}
+//指定一个默认值
+function objArg({name,age} = {name:&quot;cz&quot;}){
+    //TODO
+}
+//数组类似
+</code></pre></li>
+</ol>
+
+<hr />
+
+<h2 id="this-call-apply-bind"><code>this，call，apply，bind</code></h2>
+
+<h3 id="this">this</h3>
+
+<pre><code>`本质上来说，在 js 里 this 是一个指向函数执行环境的指针。this 永远指向最后调用它的对象，并且在执行时才能获取值，定义是无法确认他的值。`
+
+1. 作为构造函数
+    ```js
+    let f = new foo(&quot;js&quot;,22);
+
+    function foo(name,age){
+        this.name = name; // this === f
+        this.age = age; // this === f
+    }
+    ```
+
+2. 作为普通函数
+    ```js
+    function foo(){
+        // this === global (node)   this === window (浏览器)
+        console.log(this);
+    }
+    foo();
+    ```
+
+3. 作为对象属性
+    ```js
+    let obj = {
+        name:&quot;A&quot;,
+        say:function(){
+            console.log(this.name); // this === obj
+        }
+    }
+    ```
+</code></pre>
+
+<h3 id="call-apply-bind"><code>call,apply,bind</code></h3>
+
+<pre><code>`call`、`apply`和`bind`是`Function`对象自带的三个方法，这三个方法的主要作用是改变函数中的`this`指向。
+
+```js
+let o = {
+    x: 1
+};
+
+let b = function (y, z) {
+    console.log(this.x, y, z);
+
+    return this.x+y+z;
+}
+
+//将函数b绑定到对象o身上，并立刻调用b函数，b中的this指向了o，并且马上调用了
+//等价于 o.b();
+let b1 = b.call(o, 1, 1); //1,1,1 b1 == 3
+
+//仅仅是参数的传入方式不同
+//等价于 o.b();
+let b2 = b.apply(o, [2, 3]); // 1,2,3 b2 == 6
+
+//也是将函数b绑定到对象o身上，并立刻调用b函数，b中的this指向了o，并返回了一个函数，调用时机由用户确定,等价于 c = o.b; 
+//如果bind后面指定了参数，那么 c(rest...)传入参数将不再起作用
+let c = b.bind(o);
+
+let c1 = c(5, 5555); //1,5,5555  c1 == 5561
+```
+
+call，apply，bind 第一个参数都是 this 指向的对象，call 和 apply 如果第一个参数指向 null 或 undefined 时，那么 this 会指向 window 或 global 对象。call，apply 都是改变上下文中的 this，并且是立即执行。bind 方法只是绑定，具体执行之间由用户确定。
+</code></pre>
+
+<h1 id="柯里化-currying">柯里化(<code>Currying</code>)</h1>
+
+<blockquote>
+<p>柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，并且返回接受余下的参数且返回结果的函数的技术。</p>
+</blockquote>
+
+<h2 id="示例">示例</h2>
+
+<pre><code class="language-js">//普通函数求体积
+function volume(l,w,h){
+    return l*w*h;
+}
+
+let v0 = volume(10,20,30);
+//若都高都为30，且长宽不定 那么：
+let v1 = volume(10,20,30);
+let v2 = volume(11,21,30);
+let v3 = volume(10,22,30);
+//...
+
+//柯里化这个函数
+function volume(h){
+    return (l)=&gt;{
+        return (w)=&gt;{
+            return h*w*l;
+        };
+    };
+}
+
+//同求上一题
+let tenHight = volume(10);
+let v1 = tenHight(20)(30);
+let v2 = tenHight(11)(21);
+let v3 = tenHight(10)(22);
+//若求高恒为40 那么:
+let fthight = volume(40);
+//若高长恒定则
+let constHL = volume(10)(20);
+</code></pre>
+
+<h1 id="symbol"><code>Symbol</code></h1>
+
+<h2 id="它是什么">它是什么？</h2>
+
+<blockquote>
+<p>ES6加入的第七种基本类型，表示一个独一无二的值</p>
+</blockquote>
+
+<pre><code class="language-js">let s0 = Symbol(&quot;s0&quot;); //传入字符串只是为了方便区别，以及控制台显示 
+
+let s1 = Symbol(); //不能使用 new
+
+let s2 = Symbol();
+
+console.log(typeof(s1)) //Output:symbol
+
+console.log(s1 === s2) //Output:false
+</code></pre>
+
+<h2 id="其他">其他</h2>
+
+<ol>
+<li><p>不能是用 <code>new</code> 是因为一种原始类型，而非对象，所以也不能添加属性。</p></li>
+
+<li><p><code>Symbol</code> 作为对象属性时，放在 <code>[s]</code> 中只能通过 <code>obj[s]</code> 访问，其他的不变。</p></li>
+
+<li><p>可以作为全局唯一的定义。</p></li>
+
+<li><p><code>Symbol.for(string):string</code> 如果能找到便返回这个 <code>symbol</code>，否则就创建一个新的。</p></li>
+
+<li><p><code>Symbol.keyFor(symbol):string|undefined</code> 返回一个已登记的 Symbol 类型值的key。</p></li>
+
+<li><p>直接使用<code>Symbol()</code>创建的不会被登记，所以也就获取不到。</p></li>
+</ol>
+
+<h1 id="promise"><code>Promise</code></h1>
+
+<blockquote>
+<p>所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。</p>
+</blockquote>
+
+<h2 id="构造">构造</h2>
+
+<pre><code class="language-js">let p = new Promise((resolve,reject)=&gt;{
+    let value = Math.random()*2;
+    if(value &lt; 1){
+        resolve(&quot;success&quot;);
+    }else{
+        reject(&quot;fail&quot;);
+    }
+});
+/*
+    带有 resolve 、reject两个参数的一个函数。这个函数在创建Promise对象的时候
+    会立即得到执行（在Promise构造函数返回Promise对象之前就会被执行），并把成
+    功回调函数（resolve）和失败回调函数（reject）作为参数传递进来。调用成功回
+    调函数（resolve）和失败回调函数（reject）会分别触发promise的成功或失败。
+    这个函数通常被用来执行一些异步操作，操作完成以后可以选择调用成功回调函数
+    （resolve）来触发promise的成功状态，或者，在出现错误的时候调用失败回调函
+    数（reject）来触发promise的失败
+*/
+p.then(result=&gt;{
+    //TODO
+    //若执行成功将resolve的传入值作为参数
+}).catch(reason =&gt;{
+    //TODO
+    //若执行失败则将reject的传入值作为参数
+});
+
+
+new Promise((resolve,reject)=&gt;{
+    //TODO
+}).then(value =&gt;{
+    return new Promise((resolve,reject)=&gt;{
+        //TODO
+    };
+}).then(value1 =&gt;{
+    //Promise 的连用
+});
+
+</code></pre>
+
+<!--more-->
+
+<blockquote>
+<p><code>Promise</code> 的状态
++ <code>pending</code>     初始状态
++ <code>fulfilled</code>   成功状态
++ <code>rejected</code>    失败状态</p>
+</blockquote>
+
+<h2 id="静态方法">静态方法</h2>
+
+<ul>
+<li><p><code>Promise.all</code></p>
+
+<pre><code class="language-js">function asyncTask(num){
+    return new Promise((resolve,reject)=&gt;{
+        setTimeout(()=&gt;{
+            resolve(num);
+        },num);
+    });
+}
+
+//同时进行多个Promise异步任务
+Promise.all([
+    asyncTask(1);
+    asyncTask(2);
+    asyncTask(3);
+    asyncTask(4);
+]).then(values =&gt;{
+    // value是一个数组，其对应这任务传入顺序的值
+}).catch(reason =&gt;{
+    //只要有一个reject，那么后面的将不会再运行了
+});
+
+
+Promise.race([
+    asyncTask(1);
+    asyncTask(2);
+    asyncTask(3);
+    asyncTask(4);
+]).then(value =&gt;{
+    //value是最先完成异步任务的resolve值，其他的将不会在继续执行
+}).catch(err =&gt;{
+    //如果最先完成的任务没有reject，那么就不会再reject了
+});
+    
+
+//直接保证返回一个指定值，在下一次 EventLoop
+Promise.resolve(&quot;finished!&quot;);
+Promise.reject(&quot;error&quot;);
+</code></pre></li>
+</ul>
+
+<h2 id="async-await"><code>async/await</code></h2>
+
+<ol>
+<li><p><code>async</code> 是声明一个方法为异步，<code>await</code> 等待一个方法的返回值</p></li>
+
+<li><p><code>await</code> 必须写在 <code>async</code> 方法中，而 <code>await</code> 等待的不必是 <code>async</code> 方法</p></li>
+
+<li><p><code>async</code> 方法</p>
+
+<blockquote>
+<p><code>async</code> 函数（包含函数语句、函数表达式、Lambda表达式）会返回一个 <code>Promise</code> 对象，如果在函数中 <code>return</code> 一个直接量，<code>async</code> 会把这个直接量通过 <code>Promise.resolve()</code> 封装成 <code>Promise</code> 对象。</p>
+</blockquote>
+
+<pre><code class="language-js">async function Async(){
+    return 0;
+}
+Async().then((value) =&gt;{
+//若Async函数没有返回值，则 value = undefined
+console.log(value);
+});
+console.log(Async());
+//Output:Promise{ 0 }
+</code></pre></li>
+</ol>
+
+<h2 id="await-的等待"><code>await</code> 的等待</h2>
+
+<blockquote>
+<p><code>await</code> 等待的是 <code>Promise</code> 的处理值和其他值</p>
+</blockquote>
+
+<pre><code class="language-js">async function Await(){
+    let v1 = await (() =&gt;{
+        return 0;
+    })();
+
+    let v2 = await (async () =&gt;{
+        return 1;
+    })();
+    console.log(v1,v2);
+}
+
+Await();
+console.log(&quot;done&quot;);
+//Output: done -&gt; 0,1
+</code></pre>
+
+<blockquote>
+<p>当 <code>await</code> 等待返回值(普通函数的返回值或 <code>Promise</code> 的 <code>resolve</code> 的传入值), 其后面的代码将会阻塞(让出线程占用)，所以 <code>await</code> 必须在 <code>async</code> 里面</p>
+</blockquote>
+
+<h2 id="async-await-的优势"><code>async/await</code> 的优势</h2>
+
+<blockquote>
+<p>处理 <code>then</code> 链,以及引用上一次的结果</p>
+</blockquote>
+
+<pre><code class="language-js">function takeLongTime(n) {
+    return new Promise.resolve(() =&gt; {
+        setTimeout(() =&gt; resolve(n + 200), n);
+    });
+}
+
+function step1(n) {
+    console.log(`step1 with ${n}`);
+    return takeLongTime(n);
+}
+
+function step2(m, n) {
+    console.log(`step2 with ${m} and ${n}`);
+    return takeLongTime(m + n);
+}
+
+function step3(k, m, n) {
+    console.log(`step3 with ${k}, ${m} and ${n}`);
+    return takeLongTime(k + m + n);
+}
+
+//async/await 的实现
+async function DoAsync(){
+    let t0 = 1000;
+    let time1 = await step1(t0);
+    let time2 = await step2(t0,time1);
+    let r = await step3(t0,time1,time2);
+    console.log(`result:${r}`);
+}
+
+//Promise的实现
+function DoPromise() {
+    const t0 = 300;
+    step1(t0).then(time2 =&gt; {
+            return step2(t0, time2).then(time3 =&gt; [t0, time2, time3]);
+        }).then(times =&gt; {
+            const [t0, time2, time3] = times;
+            return step3(t0, time2, time3);
+        }).then(result =&gt; {
+            console.log(`result is ${result}`);
+            console.timeEnd(&quot;doIt&quot;);
+        });
+}
+</code></pre>
+
+<h2 id="async-await-处理异常"><code>async/await</code> 处理异常</h2>
+
+<blockquote>
+<p><code>await</code> 命令后面的 <code>Promise</code> 对象，运行结果可能是 <code>rejected</code>,通过<code>try...catch</code> 抓取错误</p>
+
+<pre><code class="language-js">async function DoAsync(){
+    try{
+        let t0 = 1000;
+        let time1 = await step1(t0);
+        let time2 = await step2(t0,time1);
+        let r = await step3(t0,time1,time2);
+        console.log(`result:${r}`);
+    }catch(err){
+        //TODO
+    }
+}
+</code></pre>
+</blockquote>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/">Tags</a>
+    
+    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C/">C</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
+    
+    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
+    
+    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
+    
+    <a href="https://DoMySon.github.io/tags/Scheduler/">Scheduler</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
+    
+    <a href="">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>

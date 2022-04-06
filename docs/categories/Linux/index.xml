@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on 薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/categories/Linux/</link>
+    <description>Recent content in Linux on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 26 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/categories/Linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lock</title>
+      <link>https://DoMySon.github.io/2019/02/Lock/</link>
+      <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/Lock/</guid>
+      <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;优点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;缺点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;即乐观锁的优点&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
+    </item>
+    
+    <item>
+      <title>I/O</title>
+      <link>https://DoMySon.github.io/2019/02/I/O/</link>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/02/I/O/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;数据的读取分为:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;等待数据准备&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;等待内核拷贝至用户空间&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;基本模型矩阵&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;阻塞&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;非阻塞&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;同步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read/Write&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read\Write(O_NONBLOCK)&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;异步&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;I/O multiplexing(select/poll)&lt;/code&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;code&gt;AIO&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

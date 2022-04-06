@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lock on 薛定谔的BUG</title>
+    <link>http://www.domyson.cn/tags/Lock/</link>
+    <description>Recent content in Lock on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 30 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.domyson.cn/tags/Lock/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>C#多线程</title>
+      <link>http://www.domyson.cn/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;进程是CPU资源分配的最小单位，线程是CPU调度的最小单位。可以理解为，打开一个应用程序时，操作系统启动一个进程，为其分配虚拟内存、文件句柄等资源，一个进程至少拥有一个线程，这些线程共享该进程的资源（内存和堆），但是每个线程都有独立的栈，以记录函数的执行位置和局部变量。CPU对线程的调度可以实现任务的并行执行，提高程序的运行效率。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;锁&lt;/code&gt; 确保同一份资源不会被多个线程同时使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Lock</title>
+      <link>http://www.domyson.cn/2019/02/Lock/</link>
+      <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.domyson.cn/2019/02/Lock/</guid>
+      <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;优点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;缺点:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;即乐观锁的优点&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

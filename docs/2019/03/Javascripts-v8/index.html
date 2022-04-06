@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Javascript&#39;s v8 | 薛定谔的BUG</title>
+    <meta property="og:title" content="Javascript&#39;s v8 - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-03-25T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-25T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Node的一个runtime。">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://DoMySon.github.io/2019/03/Javascripts-v8/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://DoMySon.github.io/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://DoMySon.github.io/">首页</a>
+                    
+                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
+                    
+                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#v8内存管理机制">V8内存管理机制</a>
+<ul>
+<li><a href="#一-内存模型">一、内存模型</a></li>
+<li><a href="#二-堆内存限制">二、堆内存限制</a></li>
+<li><a href="#三-v8垃圾回收机制">三、V8垃圾回收机制</a>
+<ul>
+<li><a href="#新生代的垃圾回收">新生代的垃圾回收</a></li>
+<li><a href="#老生代的垃圾回收">老生代的垃圾回收</a></li>
+<li><a href="#增量标记-incremental-marking">增量标记 <code>Incremental Marking</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#内存管理与优化">内存管理与优化</a></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Javascript&#39;s v8</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Javascript'>Javascript</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="v8内存管理机制">V8内存管理机制</h1>
+
+<h2 id="一-内存模型">一、内存模型</h2>
+
+<p><img src="/images/javascript/v8内存结构图.png" alt="V8内存" /></p>
+
+<blockquote>
+<p>堆外内存：不通过V8分配，也不受管理，Buffer对象数据存放于此除堆外内存外，其余由V8管理</p>
+
+<p>栈（Stack）的分配与回收非常直接，当程序离开某作用域后，其栈指针下移（回退），整个作用域的局部变量都会出栈，内存收回。</p>
+
+<p>最复杂的部分是堆（Heap）的管理，V8使用垃圾回收机制进行堆的内存管理，也是开发中可能造成内存泄漏的部分</p>
+
+<p>通过 <code>process.memoryUsage()</code> 查看内存。<code>rss</code> 是Resident Set Size的缩写，为常驻内存的总大小，<code>heapTotal</code> 是V8为堆分配的总大小，<code>heapUsed</code>是已使用的堆大小。可以看到，rss是大于heapTotal的，因为rss包括且不限于堆。</p>
+</blockquote>
+
+<hr />
+
+<h2 id="二-堆内存限制">二、堆内存限制</h2>
+
+<blockquote>
+<p>默认情况，V8分配内存不超过<code>1.4G(x64 1.4G,x86 0.7G)</code>,如果读取大于 <code>1.4G</code> 的文件是无法实现的，但可以通过Node命令更改V8为堆设置内存上限</p>
+
+<pre><code>//更改老生代堆内存
+--max-old-space-size = 3000 //MB
+//更改新生代堆内存
+--max-new-space-size = 2000//KB
+</code></pre>
+
+<p>堆的内存上限在启动时就已经决定，无法动态更改，想要更改，唯一的方法是关闭进程，使用新的配置重新启动。</p>
+</blockquote>
+
+<h2 id="三-v8垃圾回收机制">三、V8垃圾回收机制</h2>
+
+<blockquote>
+<p>V8将堆内存分类
+&gt;默认情况下，V8为老年代分配的空间，大概是新生代的<code>40</code>多倍。新对象都会被分配到新生代中，当新生代空间不足以分配新对象时，将触发新生代的垃圾回收。
+1. <code>新生代</code> : 未经历过垃圾回收或仅一次的对象
+2. <code>老生代</code> : 存活时间长的老对象，经历过一次或更多次回收的对象</p>
+</blockquote>
+
+<h3 id="新生代的垃圾回收">新生代的垃圾回收</h3>
+
+<blockquote>
+<p><code>Scavenge</code> 算法将新生代的总空间一分为二，只使用其中一个，另一个处于闲置，等待垃圾回收时使用。使用中的那块空间称为From，闲置的空间称为To。
+<img src="/images/javascript/Scavenge算法.png" alt="Scavenge算法" /></p>
+</blockquote>
+
+<h3 id="老生代的垃圾回收">老生代的垃圾回收</h3>
+
+<blockquote>
+<p>标记 - 回收</p>
+</blockquote>
+
+<h3 id="增量标记-incremental-marking">增量标记 <code>Incremental Marking</code></h3>
+
+<blockquote>
+<p>早期V8在垃圾回收阶段，采用全停顿 <code>(stop the world)</code>，也就是垃圾回收时程序运行会被暂停。这在JavaScript还仅被用于浏览器端开发时，并没有什么明显的缺点，前端开发使用的内存少，大多数时候仅触发新生代垃圾回收，速度快，卡顿几乎感觉不到。但是对于Node程序，使用内存更多，在老年代垃圾回收时，全停顿很容易带来明显的程序迟滞，标记阶段很容易就会超过100ms，因此V8引入了增量标记，将标记阶段分为若干小步骤，每个步骤控制在5ms内，每运行一段时间标记动作，就让JavaScript程序执行一会儿，如此交替，明显地提高了程序流畅性，一定程度上避免了长时间卡顿。</p>
+</blockquote>
+
+<hr />
+
+<h1 id="内存管理与优化">内存管理与优化</h1>
+
+<ol>
+<li><p>手动变量销毁
+使用var声明的变量，都会成为全局对象的属性，而全局对象不手动置null，则直到程序停止运行才会销毁</p></li>
+
+<li><p>闭包
+每一个闭包都会引用其外部函数的Context，以此访问需要读取的外部变量。被闭包捕捉，加入Context中的变量，我们称为Context变量，分配在堆。而真正的局部变量（local variable）是 x ，保存在栈，当outer执行完毕后，其信息出栈，变量 x 自然销毁，而Context被闭包引用，如果有任何一个闭包存活，Context都将存活，y 将不会被销毁,
+而且应该避免深层闭包嵌套</p></li>
+
+<li><p>大内存使用
+使用 <code>stream</code> 和 <code>pipe</code> 读取大内容，防止占用过多内存
+<code>Buffer</code> 本身对象保存在堆中，由V8管理，而保存的内容是由C++申请分配的，是保存在堆外的</p></li>
+</ol>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/02/GC/">GC</a></li>
+        
+        <li><a href="/2019/02/Javascript/">Javascript</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://DoMySon.github.io/tags/">Tags</a>
+    
+    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
+    
+    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    
+    <a href="https://DoMySon.github.io/tags/C/">C</a>
+    
+    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    
+    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
+    
+    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    
+    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    
+    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    
+    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    
+    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    
+    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    
+    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    
+    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
+    
+    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
+    
+    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    
+    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
+    
+    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    
+    <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
+    
+    <a href="https://DoMySon.github.io/tags/Scheduler/">Scheduler</a>
+    
+    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    
+    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    
+    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
+    
+    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    
+    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    
+    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    
+    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    
+    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    
+    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
+    
+    <a href="">pointer</a>
+    
+    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>

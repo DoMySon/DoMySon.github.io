@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mutex on 薛定谔的BUG</title>
+    <link>https://DoMySon.github.io/tags/Mutex/</link>
+    <description>Recent content in Mutex on 薛定谔的BUG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 30 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://DoMySon.github.io/tags/Mutex/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>C#多线程</title>
+      <link>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;进程是CPU资源分配的最小单位，线程是CPU调度的最小单位。可以理解为，打开一个应用程序时，操作系统启动一个进程，为其分配虚拟内存、文件句柄等资源，一个进程至少拥有一个线程，这些线程共享该进程的资源（内存和堆），但是每个线程都有独立的栈，以记录函数的执行位置和局部变量。CPU对线程的调度可以实现任务的并行执行，提高程序的运行效率。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;锁&lt;/code&gt; 确保同一份资源不会被多个线程同时使用&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

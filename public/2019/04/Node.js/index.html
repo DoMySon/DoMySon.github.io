@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Node.js | 薛定谔的BUG</title>
+    <meta property="og:title" content="Node.js - 薛定谔的BUG">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-04-22T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-04-22T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Go是一个好东西">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://www.domyson.cn/2019/04/Node.js/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://www.domyson.cn/">
+                        薛定谔的BUG
+                    </a>
+                
+                <p class="description">专注于各种划水</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://www.domyson.cn/">首页</a>
+                    
+                    <a  href="http://www.domyson.cn/archives/" title="文章">文章</a>
+                    
+                    <a  href="http://www.domyson.cn/about/" title="关于">关于</a>
+                    
+                    <a  href="http://www.domyson.cn/tools/" title="工具">工具</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+<ul>
+<li><a href="#异步原理">异步原理</a></li>
+<li><a href="#api文档">API文档</a></li>
+<li><a href="#eventloop">EventLoop</a></li>
+<li><a href="#buffer">Buffer</a>
+<ul>
+<li><a href="#buffer文档-https-www-nodeapp-cn-buffer-html"><a href="https://www.nodeapp.cn/buffer.html">Buffer文档</a></a></li>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#初始化">初始化</a></li>
+<li><a href="#buffer的字符编码">Buffer的字符编码</a></li>
+<li><a href="#node支持的字符编码">Node支持的字符编码</a></li>
+<li><a href="#迭代buffer">迭代Buffer</a></li>
+</ul></li>
+<li><a href="#commonjs">CommonJs</a>
+<ul>
+<li><a href="#模块导出">模块导出</a></li>
+<li><a href="#index-js文件">index.js文件</a></li>
+<li><a href="#package-json">package.json</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Node.js</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年4月22日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='http://www.domyson.cn/categories/Javascript'>Javascript</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="异步原理">异步原理</h1>
+
+<ol>
+<li><p>Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行</p></li>
+
+<li><p>Node 底层封装了 <code>libuv</code> 库</p></li>
+
+<li><p>Node 只有执行完主线程，才会进入 <code>EventLoop</code></p></li>
+
+<li><p>Node 基于事件驱动</p></li>
+
+<li><p>事件机制的底层依赖库：<code>libuv</code>、<code>libeio</code>、<code>libev</code></p>
+
+<blockquote>
+<p><code>epoll</code> 用于Linux系统，<code>IOCP</code> 用于Windows系统；<code>epoll</code> 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；<code>IOCP</code> 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了</p>
+</blockquote></li>
+
+<li><p>Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。</p></li>
+
+<li><p>如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 <code>异步非阻塞I/O模型</code>，内核会立刻返回信号，其他事件会有机会执行</p></li>
+</ol>
+
+<p><img src="/images/Js/Node执行流程.png" alt="Node执行流程" /></p>
+
+<ol>
+<li><p>主线将同步代码执行完毕,开始执行异步代码
+&gt;异步分为两种</p>
+
+<ol>
+<li>非I/O:setTimeout() setInterval()</li>
+<li>I/O:从线程池中取出一个I/O线程</li>
+</ol></li>
+
+<li><p>若事件队列清空，则进程退出</p>
+
+<blockquote>
+<p>V8引擎解析JavaScript脚本,解析后的代码，调用Node API libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个Event Loop（事件循环），以异步的方式将任务的执行结果返回给V8引擎,V8引擎再将结果返回给用户</p>
+</blockquote></li>
+</ol>
+
+<p><img src="/images/Js/eventloop.png" alt="Node执行流程图" /></p>
+
+<p><img src="/images/Js/eventloop1.png" alt="Node执行流程图" /></p>
+
+<p><img src="/images/Js/eventloop2.png" alt="Node执行流程图" /></p>
+
+<h1 id="api文档">API文档</h1>
+
+<ul>
+<li><p><a href="https://www.nodeapp.cn">Node v8.x文档</a></p></li>
+
+<li><p><a href="http://nodejs.cn/api">Node v10.x中文文档</a></p></li>
+
+<li><p><a href="https://nodejs.org/dist/latest-v10.x/docs/api/">Node v10.x文档</a></p></li>
+</ul>
+
+<h1 id="eventloop">EventLoop</h1>
+
+<ol>
+<li><p>关于 <code>setTimeout</code></p>
+
+<blockquote>
+<p>即便主线程为空，0毫秒实际上也是达不到的。根据HTML的标准，最低是 4 毫秒，也跟硬件最小计时间隔有关,setTimeout 当主线程阻塞，或者在他之前调用的事件阻塞时，延时将不会准确</p>
+</blockquote></li>
+
+<li><p>执行顺序</p>
+
+<blockquote>
+<p>主线程逻辑 &gt; <code>process.nextTick</code> &gt; <code>Promise.then</code> &gt; <code>setInterval</code> &gt; <code>setTimeout</code> &gt; <code>setImmediate</code>   (若相同，则按调用顺序执行)</p>
+</blockquote></li>
+
+<li><p>宏任务</p>
+
+<blockquote>
+<p>主js代码 ，<code>setTimeout</code>， <code>setInerval</code>， <code>setImmediate</code></p>
+</blockquote></li>
+
+<li><p>微任务
+&gt;<code>Promise.then</code> ，<code>process.nextTick</code></p>
+
+<pre><code>在每次轮训检查中，各观察者的优先级分别是:
+主线程逻辑 &gt; idle观察者 &gt; I/O观察者 &gt; check观察者
+
+idle观察者：process.nextTick
+I/O观察者：一般性的I/O回调，如网络，文件，数据库I/O等
+check观察者：setTimeout&gt;setImmediate
+</code></pre></li>
+
+<li><p>总结</p>
+
+<blockquote>
+<p>同步代码执行顺序优先级高于异步代码执行顺序优先级；new Promise(fn)中的fn是同步执行；Promise 只是在获取返回值的时候加入下一次循环时调用Node整体运行在 事件循环中当进行 I/O 交互时，由主线程向 libuv 发起，libuv 分配I/O线程，负责与内核交互。总体来看，Js 还是单线程，而且 libuv 库只对 I/O线程有效，对于 Cpu 密集型计算不会放入I/O 线程，还在会在主线程中计算</p>
+</blockquote></li>
+</ol>
+
+<hr />
+
+<h1 id="buffer">Buffer</h1>
+
+<h2 id="buffer文档-https-www-nodeapp-cn-buffer-html"><a href="https://www.nodeapp.cn/buffer.html">Buffer文档</a></h2>
+
+<h2 id="介绍">介绍</h2>
+
+<blockquote>
+<p>Buffer 作为 Node.js 的 API 而非 JavaScript 的 API,使其能应用在 socket流和文件流等处理二进制的场景。Buffer 是全局变量，所以不需要引用</p>
+</blockquote>
+
+<hr />
+
+<h2 id="初始化">初始化</h2>
+
+<pre><code class="language-js">//Buffer.from()
+let b0 = Buffer.from([1,2,3]);
+
+let b1 = Buffer.from(&quot;123&quot;);
+
+let b2 = Buffer.from(&quot;123&quot;,&quot;base64&quot;);
+//返回与b0共享同一内存的Buffer
+let b3 = Buffer.from(b0)
+
+//Buffer.alloc()
+//分配20byte，默认为0的Buffer
+let b4 = Buffer.alloc(20);
+//分配10byte，默认为1的Buffer
+let b5 = Buffer.alloc(10,1);
+
+//Buffer.allocUnsafe()
+//返回长度为10byte，但可能包含旧数据的Buffer，需要 write，fill重写数据，比alloc性能更好
+let b6 = Bufferr.allocUnsafe(10);
+</code></pre>
+
+<hr />
+
+<h2 id="buffer的字符编码">Buffer的字符编码</h2>
+
+<pre><code class="language-js">let b = Buffer.from(&quot;hello world&quot;,&quot;ascii&quot;);
+
+b.toString(&quot;hex&quot;);
+
+b.toString(&quot;base64&quot;);
+</code></pre>
+
+<hr />
+
+<h2 id="node支持的字符编码">Node支持的字符编码</h2>
+
+<table>
+<thead>
+<tr>
+<th align="center">编码</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">ascii</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">utf8</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">utf16le</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">ucs2</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">base64</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">lantin1</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">binary</td>
+<td align="center">sds</td>
+</tr>
+
+<tr>
+<td align="center">hex</td>
+<td align="center">sds</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="迭代buffer">迭代Buffer</h2>
+
+<pre><code class="language-js">let b = Buffer.from(&quot;hello world&quot;,&quot;ascii&quot;);
+
+for(let bt of b){
+    //返回对应的byte值
+}
+</code></pre>
+
+<blockquote>
+<p>此外，buf.values()、buf.keys()、buf.entrues() 可用于创建迭代器</p>
+</blockquote>
+
+<hr />
+
+<h1 id="commonjs">CommonJs</h1>
+
+<h2 id="模块导出">模块导出</h2>
+
+<blockquote>
+<p><code>exports</code> 和 <code>module.exports</code></p>
+
+<pre><code class="language-js">const PI = 3.1415;
+
+function f0(){
+    //TODO
+}
+
+function f1(){
+    //TODO
+}
+
+class Export{
+    constructor(){
+
+    }
+}
+
+/*
+    外部需要 
+    const ff = require(&quot;&quot;);
+    ff();即可执行到f0这个函数
+*/
+module.exports = f0;
+
+/*
+    外部需要 
+    const ff = require(&quot;&quot;);
+    ff.f();执行到f0这个函数
+*/
+exports.f = f0;
+
+</code></pre>
+
+<ol>
+<li>对于 <code>z = require();</code> <code>exports.y = x</code>需要 z.y.x才能调用到, <code>module.exports = x</code> 需要 z.x 就可以调用到了</li>
+</ol>
+</blockquote>
+
+<ol>
+<li><p><code>module.exports = {fn:f0}</code> 等价于 <code>exports.fn = f0</code></p></li>
+
+<li><p><code>export</code> 推荐 常量、函数和<code>index</code> 文件中使用</p></li>
+
+<li><p><code>module.exports</code> 导出对象 包内使用</p></li>
+</ol>
+
+<hr />
+
+<h2 id="index-js文件">index.js文件</h2>
+
+<blockquote>
+<p>作为一个包的整体索引，提供了此包所有模块的配合，以及相互引用关系，将初始化，耦合关系全部集中在此文件中，提供了隐私保护，提供了调用接口，保护了内部实现的关系，方便了后期管理和包其他文件的解耦</p>
+</blockquote>
+
+<hr />
+
+<h2 id="package-json">package.json</h2>
+
+<blockquote>
+<p><code>npm</code> 的包管理文件</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">描述</th>
+<th align="center">必须性</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>name</code></td>
+<td align="center">项目名称</td>
+<td align="center">必须</td>
+</tr>
+
+<tr>
+<td align="center"><code>version</code></td>
+<td align="center">项目版本</td>
+<td align="center">必须</td>
+</tr>
+
+<tr>
+<td align="center"><code>author</code></td>
+<td align="center">项目作者</td>
+<td align="center">非必需</td>
+</tr>
+
+<tr>
+<td align="center"><code>description</code></td>
+<td align="center">项目描述</td>
+<td align="center">非必需</td>
+</tr>
+
+<tr>
+<td align="center"><code>main</code></td>
+<td align="center">主程序入口文件</td>
+<td align="center">必须</td>
+</tr>
+
+<tr>
+<td align="center"><code>dependencies</code></td>
+<td align="center">项目依赖包</td>
+<td align="center">必须</td>
+</tr>
+
+<tr>
+<td align="center"><code>scripts</code></td>
+<td align="center">项目执行命令</td>
+<td align="center">必须</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-json">{
+    &quot;name&quot;: &quot;MA&quot;,
+    &quot;version&quot;: &quot;1.0.0&quot;,
+    &quot;author&quot;: &quot;Treasure&quot;,
+    &quot;description&quot;: &quot;maserver for js&quot;,
+    &quot;main&quot;: &quot;test_Service.js&quot;,
+    &quot;scripts&quot;: {
+        &quot;start&quot;: &quot;node test_Service.js&quot;
+    },
+    &quot;dependencies&quot;: {
+        &quot;log4js&quot;: &quot;3.0.6&quot;,
+        &quot;mysql&quot;: &quot;2.11.1&quot;,
+        &quot;node-schedule&quot;: &quot;1.3.0&quot;,
+        &quot;redis&quot;: &quot;2.8.0&quot;,
+        &quot;request&quot;: &quot;latest&quot;,
+        &quot;rxjs&quot;: &quot;6.3.3&quot;,
+        &quot;sequelize&quot;: &quot;3.24.1&quot;
+    }
+}
+</code></pre>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='http://www.domyson.cn/tags/Nodejs'>Nodejs</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "DoMySon/Treasure"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://www.domyson.cn/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/03/Msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Go-History/" title="Go History">Go History</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/Http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/TLS/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+    <li>
+        <a href="http://www.domyson.cn/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li><a href="http://www.domyson.cn/categories/Algorithm/">Algorithm (8)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/C/">C (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/CSharp/">CSharp (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Database/">Database (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Docker/">Docker (4)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Go/">Go (11)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Javascript/">Javascript (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Linux/">Linux (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Network/">Network (2)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Nginx/">Nginx (1)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/Unity/">Unity (3)</a></li>
+    
+    <li><a href="http://www.domyson.cn/categories/tools/">tools (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="http://www.domyson.cn/tags/">Tags</a>
+    
+    <a href="http://www.domyson.cn/tags/Async/">Async</a>
+    
+    <a href="http://www.domyson.cn/tags/Bitmap/">Bitmap</a>
+    
+    <a href="http://www.domyson.cn/tags/C/">C</a>
+    
+    <a href="http://www.domyson.cn/tags/C#/">C#</a>
+    
+    <a href="http://www.domyson.cn/tags/Cgo/">Cgo</a>
+    
+    <a href="http://www.domyson.cn/tags/Csharp/">Csharp</a>
+    
+    <a href="http://www.domyson.cn/tags/Docker/">Docker</a>
+    
+    <a href="http://www.domyson.cn/tags/DockerCompose/">DockerCompose</a>
+    
+    <a href="http://www.domyson.cn/tags/Dockerfile/">Dockerfile</a>
+    
+    <a href="http://www.domyson.cn/tags/GC/">GC</a>
+    
+    <a href="http://www.domyson.cn/tags/Hash/">Hash</a>
+    
+    <a href="http://www.domyson.cn/tags/Hotfix/">Hotfix</a>
+    
+    <a href="http://www.domyson.cn/tags/I/O/">I/O</a>
+    
+    <a href="http://www.domyson.cn/tags/Lock/">Lock</a>
+    
+    <a href="http://www.domyson.cn/tags/Locker/">Locker</a>
+    
+    <a href="http://www.domyson.cn/tags/Lua/">Lua</a>
+    
+    <a href="http://www.domyson.cn/tags/Module/">Module</a>
+    
+    <a href="http://www.domyson.cn/tags/Mutex/">Mutex</a>
+    
+    <a href="http://www.domyson.cn/tags/Network/">Network</a>
+    
+    <a href="http://www.domyson.cn/tags/Nodejs/">Nodejs</a>
+    
+    <a href="">Pointer</a>
+    
+    <a href="http://www.domyson.cn/tags/Preprocessor/">Preprocessor</a>
+    
+    <a href="http://www.domyson.cn/tags/Proxy/">Proxy</a>
+    
+    <a href="http://www.domyson.cn/tags/Redis/">Redis</a>
+    
+    <a href="http://www.domyson.cn/tags/Scheduler/">Scheduler</a>
+    
+    <a href="http://www.domyson.cn/tags/Sort/">Sort</a>
+    
+    <a href="http://www.domyson.cn/tags/TLS/">TLS</a>
+    
+    <a href="http://www.domyson.cn/tags/Thread/">Thread</a>
+    
+    <a href="http://www.domyson.cn/tags/TopK/">TopK</a>
+    
+    <a href="http://www.domyson.cn/tags/Tree/">Tree</a>
+    
+    <a href="http://www.domyson.cn/tags/Unity/">Unity</a>
+    
+    <a href="http://www.domyson.cn/tags/Web/">Web</a>
+    
+    <a href="http://www.domyson.cn/tags/bit/">bit</a>
+    
+    <a href="http://www.domyson.cn/tags/http/">http</a>
+    
+    <a href="http://www.domyson.cn/tags/msys2/">msys2</a>
+    
+    <a href="http://www.domyson.cn/tags/mysql/">mysql</a>
+    
+    <a href="http://www.domyson.cn/tags/pointer/">pointer</a>
+    
+    <a href="http://www.domyson.cn/tags/pprof/">pprof</a>
+    
+    <a href="http://www.domyson.cn/tags/pragma/">pragma</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="" title=""></a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://www.domyson.cn/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+    <div class="container">
+        &copy; 2022 <a href="http://www.domyson.cn/">薛定谔的BUG By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
+        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+</body>
+
+</html>
