@@ -1,7 +1,7 @@
 ---
-title: Go Scheduler
+title: Goroutine
 date: 2019-05-12
-tags: ["Scheduler"]
+tags: ["goroutine"]
 categories: ["Go"]
 description: Go 并发原理
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png

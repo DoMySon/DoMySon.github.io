@@ -64,8 +64,6 @@ Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目
 /*
     go.mod文件
 
-    replace JB/Core/Packet v0.0.0 => ../JB/
+    replace utopia v0.0.1 => ../utopia
 */
-
-import "JB/Core/Packet" //将会引用到本地包
 ```
