@@ -1,10 +1,9 @@
 ---
-title: Go不安全指针
+title: unsafe包
 date: 2019-08-25
-tags: ["Pointer"]
+tags: ["go"]
 categories: ["Go"]
 description: 
-img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false
 ---
@@ -33,7 +32,7 @@ func Alignof(x AribitraryType) uintptr{}
 
 + `Pointer` : 指向任意类型，类似于 C 中的 `void*`。
 
-+ `Sizeof` : 返回所传类型的大小，比如指针，只返回指针的本身（`x64 8byte x32 4byte`），而不会返回所指向的内存大小。
++ `Sizeof` : 返回所传类型的大小，指针只返回指针的本身（`x64 8byte x86 4byte`），而不会返回所指向的内存大小。
 
 + `Offsetof` : 返回 `struct` 成员在内存中的位置，相对于此结构体的头位置，所传参数必须是结构体成员。传入指针，或者结构体本身，会 `error`
 
@@ -43,7 +42,8 @@ func Alignof(x AribitraryType) uintptr{}
 
 + `uintptr` 可以和 `unsafe.Pointer` 相互转换。
 
-> 综上，`unsafe.Pointer` 是不能进行指针运算的，只能先转为 `uintptr` 计算完再转回 `unsafe.Pointer` ,还有一点要注意的是，`uintptr` 并没有指针的语义，意思就是 `uintptr` 所指向的对象会被 gc。而 `unsafe.Pointer` 有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。
+> 综上，`unsafe.Pointer` 是不能进行指针运算的，只能先转为 `uintptr` 计算完再转回 `unsafe.Pointer` ,还有一点要注意的是，
+`uintptr` 并没有指针的语义，意思就是 `uintptr` 所指向的对象会被 gc。而 `unsafe.Pointer` 有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。
 
 # 注意
 
@@ -70,7 +70,7 @@ func makeslice(et *_type,len,cap int) slice
 //那么
 s := make([]int,10,20)
 
-//这一步网上教程有一个错误：直接加上8的偏移，这在x32机器上这个偏移将会是4
+//这一步网上教程有一个错误：直接加上8的偏移，这在x64机器上这个偏移将会是4
 l := *(*int(unsafe.Pointer((uintptr(unsafe.Pointer(&s))+unsafe.Alignof(s)))))
 
 c := *(*int(unsafe.Pointer((uintptr(unsafe.Pointer(&s))+unsafe.Alignof(s)*2))))

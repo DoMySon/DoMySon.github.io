@@ -256,11 +256,11 @@
 </table>
 <h1 id="测试规范">测试规范</h1>
 <ul>
-<li>测试脚本必须以 <code>*_test.go</code> 来命名，这个脚本不会被编译到执行文件中</li>
+<li>测试脚本必须以 <code>*_test.go</code> 来命名，并且不会被编译到执行文件中</li>
 </ul>
 <h1 id="t-测试"><code>T</code> 测试</h1>
 <blockquote>
-<p>又称 <code>单元测试</code>，测试函数以 <code>Test_*(t *testing.T)</code> 表示，仅接受一个 <code>*testing.T</code> 类型参数</p>
+<p>又称 <code>单元测试</code>，测试函数以 <code>TestXXX(t *testing.T)</code> 表示，仅接受一个 <code>*testing.T</code> 类型参数</p>
 </blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Test_Sum</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>){
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
@@ -318,7 +318,8 @@
 </table>
 <h1 id="b-测试"><code>B</code> 测试</h1>
 <blockquote>
-<p>又称 <code>基准测试</code>，基准测试函数以 <code>BenchmarkXXX(b *testing.B)</code> 表示，仅接受一个 <code>*testing.B</code> 参数类型。若要使用 <code>go test</code> 执行 <code>Benchmark</code>，必须使用 <code>-bench=functionName</code> 指定性能测试函数，或者 <code>.</code> 测试所有 <code>Benchmark*</code> 函数，也可以再添加测试脚本名，指定测试改脚本内的所有 <code>*</code> 函数。</p>
+<p>又称 <code>基准测试</code>，基准测试函数以 <code>BenchmarkXXX(b *testing.B)</code> 表示，仅接受一个 <code>*testing.B</code> 参数类型。
+若要使用 <code>go test</code> 执行 <code>Benchmark</code>，必须使用 <code>-bench=functionName</code> 指定性能测试函数，或者 <code>.</code> 测试所有 <code>Benchmark*</code> 函数，也可以再添加测试脚本名，指定测试改脚本内的所有 <code>*</code> 函数。</p>
 </blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkJoin</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
 </span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;&#34;</span>
@@ -327,7 +328,7 @@
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span><span style="color:#75715e">/*
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Output：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">Output:
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">goos                :测试系统
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">goarch              :系统架构
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">pkg                 :测试包名
@@ -434,9 +435,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/profile&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Profile</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/symbol&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Symbol</span>)
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/debug/pprof/trace&#34;</span>,<span style="color:#a6e22e">pprof</span>.<span style="color:#a6e22e">Trace</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//用的是gin框架，那么推荐使用&#34;github.com/DeanThompson/ginpprof&#34;
-</span></span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
+</span></span></code></pre></div><pre tabindex="0"><code></code></pre></li>
 <li>
 <p><code>runtime/pprof</code>：</p>
 <ol>
@@ -610,7 +609,7 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+        <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
@@ -660,13 +659,13 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (10)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -678,9 +677,11 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -695,17 +696,11 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/C/">C</a>
-    
     <a href="https://DoMySon.github.io/tags/C#/">C#</a>
-    
-    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
     
     <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
     
     <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
-    
-    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
     
     <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
     
@@ -727,10 +722,6 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
-    
     <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
     
     <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
@@ -748,6 +739,10 @@ cum% 	= 自身代码+所有调用的函数的执行时长和total时长的比例
     <a href="https://DoMySon.github.io/tags/Web/">Web</a>
     
     <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
     
     <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
     

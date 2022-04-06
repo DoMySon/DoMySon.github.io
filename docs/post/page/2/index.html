@@ -251,37 +251,6 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/11/Docker-Compose/" title="Docker-Compose">Docker-Compose</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年11月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/Docker'>Docker</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p><code>Docker-Compose</code> （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p>
-</blockquote>
-<blockquote>
-<p><a href="https://docs.docker.com/compose/">官方文档</a></p>
-</blockquote>
-<p><code>Docker-Compose</code>将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。</p>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/11/Docker-Compose/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/09/Tree/" title="Tree">Tree</a>
             </h1>
         </header>
@@ -438,7 +407,7 @@ G H I   J
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/" title="Go不安全指针">Go不安全指针</a>
+                <a href="https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/" title="unsafe包">unsafe包</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -457,7 +426,34 @@ G H I   J
 <p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
 </blockquote>……
         </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/">阅读全文</a></p>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/08/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月23日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
     </article>
     
     
@@ -550,7 +546,7 @@ G H I   J
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+        <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
@@ -600,13 +596,13 @@ G H I   J
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (10)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -618,9 +614,11 @@ G H I   J
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -635,17 +633,11 @@ G H I   J
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/C/">C</a>
-    
     <a href="https://DoMySon.github.io/tags/C#/">C#</a>
-    
-    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
     
     <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
     
     <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
-    
-    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
     
     <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
     
@@ -667,10 +659,6 @@ G H I   J
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
-    
     <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
     
     <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
@@ -688,6 +676,10 @@ G H I   J
     <a href="https://DoMySon.github.io/tags/Web/">Web</a>
     
     <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
     
     <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
     

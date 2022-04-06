@@ -42,6 +42,8 @@ draft: false
 
 4. 使用 `range` 读取，如果管道未关闭触发 `deadlock`。
 
+5. 未初始化的 `channel` 读会一直阻塞
+
 >对于未关闭的 `channel` 也不会 `deadlocks`，每个 `case` 都有机会执行，并且不会在关闭的 `channel` 等待。
 
 
@@ -132,7 +134,6 @@ draft: false
     ```
 
 # 其它 
-
    `Mutex` 和 `channel` 本质都是处理并发竞争问题，但是对于给予特定 `Goroutine` 的数据，`channel` 可能更加适合，而对于同一时间任何`Goroutine`都能访问的数据，`Mutex`更好,而且`Mutex`比`channel`更轻量。
     
 

@@ -72,29 +72,6 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/05/Bitmap/" title="Bitmap">Bitmap</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月1日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Bitmap/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/03/mysql/" title="mysql">mysql</a>
             </h1>
         </header>
@@ -392,6 +369,66 @@
         <p class="readmore"><a href="https://DoMySon.github.io/2019/02/Lock/">阅读全文</a></p>
     </article>
     
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/02/I/O/" title="I/O">I/O</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Linux'>Linux</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="前言">前言</h1>
+<ul>
+<li>
+<p>数据的读取分为:</p>
+<ol>
+<li>
+<p>等待数据准备</p>
+</li>
+<li>
+<p>等待内核拷贝至用户空间</p>
+</li>
+</ol>
+</li>
+<li>
+<p>基本模型矩阵</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">阻塞</th>
+<th style="text-align:center">非阻塞</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">同步</td>
+<td style="text-align:center"><code>Read/Write</code></td>
+<td style="text-align:center"><code>Read\Write(O_NONBLOCK)</code></td>
+</tr>
+<tr>
+<td style="text-align:center">异步</td>
+<td style="text-align:center"><code>I/O multiplexing(select/poll)</code></td>
+<td style="text-align:center"><code>AIO</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/02/I/O/">阅读全文</a></p>
+    </article>
+    
     
 
 
@@ -485,7 +522,7 @@
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+        <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
@@ -535,13 +572,13 @@
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (10)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -553,9 +590,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -570,17 +609,11 @@
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/C/">C</a>
-    
     <a href="https://DoMySon.github.io/tags/C#/">C#</a>
-    
-    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
     
     <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
     
     <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
-    
-    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
     
     <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
     
@@ -602,10 +635,6 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
-    
     <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
     
     <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
@@ -623,6 +652,10 @@
     <a href="https://DoMySon.github.io/tags/Web/">Web</a>
     
     <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
     
     <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
     

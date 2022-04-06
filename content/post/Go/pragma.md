@@ -2,8 +2,8 @@
 title: Go 编译指示
 date: 2020-04-18
 tags: ["pragma"]
-categories: ["Go"]
-description: Go Mutex
+categories: ["go"]
+description: go pragma
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false

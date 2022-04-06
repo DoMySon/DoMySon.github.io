@@ -1,10 +1,9 @@
 ---
-title: Preprocessor
+title: 预处理器
 date: 2020-07-04
-tags: ["Preprocessor"]
-categories: ["C"]
-description: xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。
-img: http://www.lua.org/images/lua.gif
+tags: ["c"]
+categories: ["c"]
+description: 
 toc: true
 draft: false
 ---

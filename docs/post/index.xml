@@ -8,11 +8,11 @@
     <language>zh-CN</language>
     <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Preprocessor</title>
-      <link>https://DoMySon.github.io/2020/07/Preprocessor/</link>
+      <title>预处理器</title>
+      <link>https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2020/07/Preprocessor/</guid>
+      <guid>https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>&lt;h1 id=&#34;预处理器&#34;&gt;预处理器&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -419,21 +419,6 @@ GC forced
     </item>
     
     <item>
-      <title>Docker-Compose</title>
-      <link>https://DoMySon.github.io/2019/11/Docker-Compose/</link>
-      <pubDate>Mon, 25 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/11/Docker-Compose/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt; （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt;将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>Tree</title>
       <link>https://DoMySon.github.io/2019/09/Tree/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
@@ -542,11 +527,11 @@ G H I   J
     </item>
     
     <item>
-      <title>Go不安全指针</title>
-      <link>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</link>
+      <title>unsafe包</title>
+      <link>https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</guid>
+      <guid>https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -558,7 +543,7 @@ G H I   J
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/2019/08/Cgo/</guid>
-      <description></description>
+      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
     </item>
     
     <item>

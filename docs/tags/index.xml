@@ -8,11 +8,11 @@
     <language>zh-CN</language>
     <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Preprocessor</title>
-      <link>https://DoMySon.github.io/tags/Preprocessor/</link>
+      <title>c</title>
+      <link>https://DoMySon.github.io/tags/c/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/tags/Preprocessor/</guid>
+      <guid>https://DoMySon.github.io/tags/c/</guid>
       <description></description>
     </item>
     
@@ -125,15 +125,6 @@
     </item>
     
     <item>
-      <title>DockerCompose</title>
-      <link>https://DoMySon.github.io/tags/DockerCompose/</link>
-      <pubDate>Mon, 25 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/tags/DockerCompose/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Tree</title>
       <link>https://DoMySon.github.io/tags/Tree/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
@@ -152,20 +143,11 @@
     </item>
     
     <item>
-      <title>C</title>
-      <link>https://DoMySon.github.io/tags/C/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
+      <title>go</title>
+      <link>https://DoMySon.github.io/tags/go/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/tags/C/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cgo</title>
-      <link>https://DoMySon.github.io/tags/Cgo/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/tags/Cgo/</guid>
+      <guid>https://DoMySon.github.io/tags/go/</guid>
       <description></description>
     </item>
     

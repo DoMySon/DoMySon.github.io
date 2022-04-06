@@ -9,21 +9,21 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>C | 薛定谔的BUG</title>
-    <meta property="og:title" content="C - 薛定谔的BUG">
+    <title>c | 薛定谔的BUG</title>
+    <meta property="og:title" content="c - 薛定谔的BUG">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="C">
+    <meta name="description" content="c">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://DoMySon.github.io/tags/C/">
+    <meta property="og:url" content="https://DoMySon.github.io/tags/c/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/tags/C/index.xml" title="薛定谔的BUG" />
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/tags/c/index.xml" title="薛定谔的BUG" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -72,11 +72,161 @@
     
     <h3 class="archive-title">
         包含标签
-        <span class="keyword">C</span>
+        <span class="keyword">c</span>
         的文章
     </h3>
     
 
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/">预处理器</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年7月4日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/c'>c</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="预处理器">预处理器</h1>
+<ul>
+<li>
+<p><code>#pragma</code> 用于指示编译器完成一些特定的动作</p>
+<ol>
+<li>
+<p>#pragma message usermessage</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#if defined IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">#pragma message &#34;ready complie ios...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">//complie output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   note: <span style="color:#960050;background-color:#1e0010">#</span>pragma message: ready complie ios...
+</span></span></code></pre></div></li>
+<li>
+<p>#pragma once 确保头文件仅被编译一次</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> value <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span></code></pre></div></li>
+<li>
+<p>#pragma pack(size_t) 指定内存对齐</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 2byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> foo{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(4)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> bar{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    shirt s;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> foo)); <span style="color:#75715e">//8
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bar)); <span style="color:#75715e">//12
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div></li>
+<li>
+<p>在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令</p>
+</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">#define</td>
+<td style="text-align:center">定义宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#include</td>
+<td style="text-align:center">包含一个源代码文件</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#undef</td>
+<td style="text-align:center">取消一个定义的宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifdef</td>
+<td style="text-align:center">是否定义了宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifndef</td>
+<td style="text-align:center">是否没有定义一个宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#if</td>
+<td style="text-align:center">条件检测</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#else</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#elif</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#endif</td>
+<td style="text-align:center">结束条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#error</td>
+<td style="text-align:center">当遇到标准错误，输出错误消息</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#pragma</td>
+<td style="text-align:center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#line</td>
+<td style="text-align:center">重置下一行行数</td>
+<td style="text-align:center">#line 100</td>
+</tr>
+</tbody>
+</table>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/">阅读全文</a></p>
+        </div>
+    </article>
     
     <article class="post">
         <header>
@@ -91,14 +241,12 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/Go'>Go</a>
-            
-            <a href='/categories/C'>C</a>
+            <a href='/categories/go'>go</a>
             
         </div>
         
         <div class="post-content">
-            ……
+            cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环……
             <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Cgo/">阅读全文</a></p>
         </div>
     </article>
@@ -157,7 +305,7 @@
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/2020/07/Preprocessor/" title="Preprocessor">Preprocessor</a>
+        <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
@@ -207,13 +355,13 @@
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (10)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -225,9 +373,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Go/">Go (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -242,17 +392,11 @@
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/C/">C</a>
-    
     <a href="https://DoMySon.github.io/tags/C#/">C#</a>
-    
-    <a href="https://DoMySon.github.io/tags/Cgo/">Cgo</a>
     
     <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
     
     <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
-    
-    <a href="https://DoMySon.github.io/tags/DockerCompose/">DockerCompose</a>
     
     <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
     
@@ -274,10 +418,6 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
-    
     <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
     
     <a href="https://DoMySon.github.io/tags/Redis/">Redis</a>
@@ -295,6 +435,10 @@
     <a href="https://DoMySon.github.io/tags/Web/">Web</a>
     
     <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    
+    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    
+    <a href="https://DoMySon.github.io/tags/go/">go</a>
     
     <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
     
