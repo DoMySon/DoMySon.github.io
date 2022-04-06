@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Snowflake | 薛定谔的BUG</title>
     <meta property="og:title" content="Snowflake - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/08/Snowflake/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,13 +137,9 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#对比其他的优缺点">对比其他的优缺点</a></li>
-<li><a href="#描述">描述</a>
-<ul>
-<li><a href="#实现">实现</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#实现">实现</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -149,8 +148,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -169,6 +168,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -182,7 +185,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
@@ -203,74 +206,76 @@
             <blockquote>
 <p><code>snowflake</code>（雪花算法）是一种分布式ID算法。</p>
 </blockquote>
-
 <h1 id="对比其他的优缺点">对比其他的优缺点</h1>
-
 <ul>
-<li><p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p></li>
-
-<li><p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p></li>
+<li>
+<p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p>
+</li>
+<li>
+<p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p>
+</li>
 </ul>
-
 <h1 id="描述">描述</h1>
-
 <ul>
-<li><p>最高位是符号位，始终为0，不可用。</p></li>
-
-<li><p>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据时间进行排序。</p></li>
-
-<li><p>10位的机器标识，10位的长度最多支持部署1024个节点。</p></li>
-
-<li><p>12位的计数序列号，序列号即一系列的自增id，可以支持同一节点同一毫秒生成多个ID序号，12位的计数序列号支持每个节点每毫秒产生4096个ID序号。</p></li>
+<li>
+<p>最高位是符号位，始终为0，不可用。</p>
+</li>
+<li>
+<p>41位的时间序列，精确到毫秒级，41位的长度可以使用69年。时间位还有一个很重要的作用是可以根据时间进行排序。</p>
+</li>
+<li>
+<p>10位的机器标识，10位的长度最多支持部署1024个节点。</p>
+</li>
+<li>
+<p>12位的计数序列号，序列号即一系列的自增id，可以支持同一节点同一毫秒生成多个ID序号，12位的计数序列号支持每个节点每毫秒产生4096个ID序号。</p>
+</li>
 </ul>
-
 <h2 id="实现">实现</h2>
-
-<pre><code class="language-go">/* snowFlake 64bit
-|-+----------------41bit----------------+---10bit---+----12bit----|
-|0 00000000 00000000 00000000 00000000 0 00000000 00 00000000 0000|
-|-+--------------时间戳-----------------+---机器ID---+----序列号---|
-*/
-
-var(
-    sn int64                          //序列号 从0开始 范围为 0~4095
-    lastTs int64 = time.Now().Unix()  //基于秒
-)
-
-func SnowFalke(machineID int64) int64 {
-	// 同一毫秒
-	curTS := time.Now().Unix()
-	if time.Now().Unix() == lastTS {
-		sn++
-		// 序列号占 12 位,十进制范围是 [ 0, 4095 ]
-		if sn &gt; 4095 {
-			sn = 0
-		}
-		// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
-		// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
-		rightBinValue := curTS &amp; 0x1FFFFFFFFFF
-		// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
-		rightBinValue &lt;&lt;= 22
-		id := rightBinValue | machineID | sn
-		return id
-	}
-	if curTS &gt; lastTS {
-		sn = 0
-		lastTS = curTS
-		// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
-		// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
-		rightBinValue := curTS &amp; 0x1FFFFFFFFFF
-		// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
-		rightBinValue &lt;&lt;= 22
-		id := rightBinValue | machineID | sn
-		return id
-	}
-	if curTS &lt; lastTS {
-		return 0
-	}
-	return 0
-}
-</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">/* snowFlake 64bit
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|-+----------------41bit----------------+---10bit---+----12bit----|
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|0 00000000 00000000 00000000 00000000 0 00000000 00 00000000 0000|
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|-+--------------时间戳-----------------+---机器ID---+----序列号---|
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sn</span> <span style="color:#66d9ef">int64</span>                          <span style="color:#75715e">//序列号 从0开始 范围为 0~4095
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">lastTs</span> <span style="color:#66d9ef">int64</span> = <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>()  <span style="color:#75715e">//基于秒
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SnowFalke</span>(<span style="color:#a6e22e">machineID</span> <span style="color:#66d9ef">int64</span>) <span style="color:#66d9ef">int64</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 同一毫秒
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">curTS</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>() <span style="color:#f92672">==</span> <span style="color:#a6e22e">lastTS</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sn</span><span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 序列号占 12 位,十进制范围是 [ 0, 4095 ]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sn</span> &gt; <span style="color:#ae81ff">4095</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">sn</span> = <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">curTS</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x1FFFFFFFFFF</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">id</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rightBinValue</span> | <span style="color:#a6e22e">machineID</span> | <span style="color:#a6e22e">sn</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">id</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">curTS</span> &gt; <span style="color:#a6e22e">lastTS</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sn</span> = <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">lastTS</span> = <span style="color:#a6e22e">curTS</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 取 64 位的二进制数 0000000000 0000000000 0000000000 0001111111111 1111111111 1111111111 1 ( 这里共 41 个 1 )和时间戳进行并操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75715e">// 并结果( 右数 )第 42 位必然是 0, 低 41 位也就是时间戳的低 41 位
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">curTS</span> <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x1FFFFFFFFFF</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// 机器 id 占用10位空间,序列号占用12位空间,所以左移 22 位; 经过上面的并操作,左移后的第 1 位,必然是 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">rightBinValue</span> <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">id</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rightBinValue</span> | <span style="color:#a6e22e">machineID</span> | <span style="color:#a6e22e">sn</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">id</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">curTS</span> &lt; <span style="color:#a6e22e">lastTS</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
         </div>
 
         
@@ -294,7 +299,7 @@ func SnowFalke(machineID int64) int64 {
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                <li><a href='/tags/'></a></li>
                 
             </ul>
             
@@ -305,17 +310,46 @@ func SnowFalke(machineID int64) int64 {
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -379,14 +413,14 @@ func SnowFalke(machineID int64) int64 {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -402,7 +436,7 @@ func SnowFalke(machineID int64) int64 {
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -412,10 +446,8 @@ func SnowFalke(machineID int64) int64 {
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -451,7 +483,7 @@ func SnowFalke(machineID int64) int64 {
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -481,7 +513,7 @@ func SnowFalke(machineID int64) int64 {
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -513,39 +545,6 @@ func SnowFalke(machineID int64) int64 {
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

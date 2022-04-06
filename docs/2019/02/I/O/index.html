@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>I/O | 薛定谔的BUG</title>
     <meta property="og:title" content="I/O - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/02/I/O/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -133,18 +136,7 @@
 <div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-        <nav id="TableOfContents">
-<ul>
-<li><a href="#前言">前言</a></li>
-<li><a href="#同步阻塞i-o">同步阻塞I/O</a></li>
-<li><a href="#同步非阻塞i-o">同步非阻塞I/O</a></li>
-<li><a href="#i-o多路复用">I/O多路复用</a></li>
-<li><a href="#信号驱动i-o">信号驱动I/O</a></li>
-<li><a href="#异步非阻塞i-o">异步非阻塞I/O</a></li>
-<li><a href="#几种i-o模型的比较">几种I/O模型的比较</a></li>
-<li><a href="#reactor-和-proactor"><code>Reactor</code>和<code>Proactor</code></a></li>
-</ul>
-</nav>
+        <nav id="TableOfContents"></nav>
     </div>
 </div>
 <script type="text/javascript">
@@ -152,8 +144,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -172,6 +164,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -185,7 +181,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Linux'>Linux</a></span>
+            <span class="meta-category"><a href='/categories/Linux'>Linux</a></span>
             
         </div>
         
@@ -204,117 +200,103 @@
         
         <div class="post-content">
             <h1 id="前言">前言</h1>
-
 <ul>
-<li><p>数据的读取分为:</p>
-
+<li>
+<p>数据的读取分为:</p>
 <ol>
-<li><p>等待数据准备</p></li>
-
-<li><p>等待内核拷贝至用户空间</p></li>
-</ol></li>
-
-<li><p>基本模型矩阵</p>
-
+<li>
+<p>等待数据准备</p>
+</li>
+<li>
+<p>等待内核拷贝至用户空间</p>
+</li>
+</ol>
+</li>
+<li>
+<p>基本模型矩阵</p>
 <table>
 <thead>
 <tr>
-<th align="center"></th>
-<th align="center">阻塞</th>
-<th align="center">非阻塞</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">阻塞</th>
+<th style="text-align:center">非阻塞</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">同步</td>
-<td align="center"><code>Read/Write</code></td>
-<td align="center"><code>Read\Write(O_NONBLOCK)</code></td>
+<td style="text-align:center">同步</td>
+<td style="text-align:center"><code>Read/Write</code></td>
+<td style="text-align:center"><code>Read\Write(O_NONBLOCK)</code></td>
 </tr>
-
 <tr>
-<td align="center">异步</td>
-<td align="center"><code>I/O multiplexing(select/poll)</code></td>
-<td align="center"><code>AIO</code></td>
+<td style="text-align:center">异步</td>
+<td style="text-align:center"><code>I/O multiplexing(select/poll)</code></td>
+<td style="text-align:center"><code>AIO</code></td>
 </tr>
 </tbody>
-</table></li>
+</table>
+</li>
 </ul>
-
-<h1 id="同步阻塞i-o">同步阻塞I/O</h1>
-
+<h1 id="同步阻塞io">同步阻塞I/O</h1>
 <p>此时用户阻塞等待内核完成。</p>
-
-<p><img src="/images/others/同步阻塞IO.png" alt="同步阻塞IO" /></p>
-
-<hr />
-
-<h1 id="同步非阻塞i-o">同步非阻塞I/O</h1>
-
+<p>
+        <img class="mx-auto" alt="同步阻塞IO" src="/images/others/%e5%90%8c%e6%ad%a5%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
+<hr>
+<h1 id="同步非阻塞io">同步非阻塞I/O</h1>
 <p>此时用户进程每过一段时间询问内核操作是否完成，若完成则开始复制，感官上用户进程没有阻塞，可以称之为<code>伪异步</code>，但本质还是同步。</p>
-
-<p><img src="/images/others/同步非阻塞IO.png" alt="同步阻塞IO" /></p>
-
-<hr />
-
-<h1 id="i-o多路复用">I/O多路复用</h1>
-
+<p>
+        <img class="mx-auto" alt="同步阻塞IO" src="/images/others/%e5%90%8c%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
+<hr>
+<h1 id="io多路复用">I/O多路复用</h1>
 <p><code>I/O复用</code> 有时又被称为 <code>事件驱动I/O</code>, 它的最大优势在于，我们可以将感兴趣的多个I/O事件（更精确的说，应该是 I/O 所对应的文件描述符）注册到 <code>select/poll/epoll/kqueue</code> 之中某一个系统调用上（很多时候，这些系统调用又被称为多路复用器。假设此时我们选择了 select() ）。此后，调用进程会阻塞在 select() 系统调用之上（而不是阻塞在真正的 I/O 系统调用（如 read(), write() 等）上）。select() 会负责监视所有已注册的 I/O 事件，一旦有任意一个事件的数据准备好，那么 select() 会立即返回，此时我们的用户进程便能够进行数据的复制操作。</p>
-
-<p><img src="/images/others/IO复用.png" alt="IO复用" /></p>
-
+<p>
+        <img class="mx-auto" alt="IO复用" src="/images/others/IO%e5%a4%8d%e7%94%a8.png" />   
+    </p>
 <blockquote>
 <p><code>select</code>、<code>poll</code>、<code>epoll</code>、<code>kqueue</code>。</p>
 </blockquote>
-
 <ol>
-<li><p><code>select</code></p>
-
-<p>说的通俗一点就是各个客户端连接的文件描述符也就是套接字，都被放到了一个集合中，调用 <code>select</code> 函数之后会一直监视这些文件描述符中有哪些可读，如果有可读的描述符那么我们的工作进程就去读取资源，仅返回触发事件，不返回事件id，最多只能监测1024个连接，线程不安全</p></li>
-
-<li><p><code>poll</code></p>
-
-<p><code>poll</code> 和 <code>select</code> 的实现非常类似，本质上的区别就是存放 fd 集合的数据结构不一样。<code>select</code> 在一个进程内可以维持最多 1024 个连接，<code>poll</code> 在此基础上做了加强，可以维持任意数量的连接。</p></li>
-
-<li><p><code>epoll</code></p>
-
-<p><code>epoll</code> 是基于内核的反射机制，在有活跃的 socket 时，系统会调用我们提前设置的回调函数。而 <code>poll</code> 和 <code>select</code> 都是遍历。在大多数客户端都很活跃的情况下，系统会把所有的回调函数都唤醒，所以会导致负载较高。既然要处理这么多的连接，那倒不如 <code>select</code> 遍历简单有效。</p></li>
+<li>
+<p><code>select</code></p>
+<p>说的通俗一点就是各个客户端连接的文件描述符也就是套接字，都被放到了一个集合中，调用 <code>select</code> 函数之后会一直监视这些文件描述符中有哪些可读，如果有可读的描述符那么我们的工作进程就去读取资源，仅返回触发事件，不返回事件id，最多只能监测1024个连接，线程不安全</p>
+</li>
+<li>
+<p><code>poll</code></p>
+<p><code>poll</code> 和 <code>select</code> 的实现非常类似，本质上的区别就是存放 fd 集合的数据结构不一样。<code>select</code> 在一个进程内可以维持最多 1024 个连接，<code>poll</code> 在此基础上做了加强，可以维持任意数量的连接。</p>
+</li>
+<li>
+<p><code>epoll</code></p>
+<p><code>epoll</code> 是基于内核的反射机制，在有活跃的 socket 时，系统会调用我们提前设置的回调函数。而 <code>poll</code> 和 <code>select</code> 都是遍历。在大多数客户端都很活跃的情况下，系统会把所有的回调函数都唤醒，所以会导致负载较高。既然要处理这么多的连接，那倒不如 <code>select</code> 遍历简单有效。</p>
+</li>
 </ol>
-
-<hr />
-
-<h1 id="信号驱动i-o">信号驱动I/O</h1>
-
+<hr>
+<h1 id="信号驱动io">信号驱动I/O</h1>
 <p>在这种模型下，我们首先开启套接字的信号驱动式I/O功能，并通过<code>sigaction系统调用</code>安装一个信号处理函数。该系统调用将立即返回，我们的进程继续工作，也就是说他没有被阻塞。当数据报准备好读取时，内核就为该进程产生一个<code>SIGIO信号</code>。我们随后就可以在信号处理函数中调用read读取数据报，并通知主循环数据已经准备好待处理，也可以立即通知主循环，让它读取数据报。此时在收到内核完成信号之前是非阻塞的，但是内核复制数据时会发生阻塞，所以此模型也是一个<code>伪异步</code>。</p>
-
-<p><img src="/images/others/信号IO.png" alt="信号IO" /></p>
-
-<hr />
-
-<h1 id="异步非阻塞i-o">异步非阻塞I/O</h1>
-
+<p>
+        <img class="mx-auto" alt="信号IO" src="/images/others/%e4%bf%a1%e5%8f%b7IO.png" />   
+    </p>
+<hr>
+<h1 id="异步非阻塞io">异步非阻塞I/O</h1>
 <blockquote>
 <p>Windows的<code>IOCP</code>模型</p>
 </blockquote>
-
 <p><code>异步非阻塞 /O模型</code> 是一种处理与 I/O 重叠进行的模型。读请求会立即返回，说明 read 请求已经成功发起了。在后台完成读操作时，应用程序然后会执行其他处理操作。当 read 的响应到达时，就会产生一个信号或执行一个基于线程的回调函数来完成这次 I/O 处理过程。本质上阻塞是用户 I/O 线程，主线程是非阻塞的，所以此模型是<code>真异步</code>。</p>
-
-<p><img src="/images/others/异步非阻塞IO.png" alt="异步非阻塞IO" /></p>
-
+<p>
+        <img class="mx-auto" alt="异步非阻塞IO" src="/images/others/%e5%bc%82%e6%ad%a5%e9%9d%9e%e9%98%bb%e5%a1%9eIO.png" />   
+    </p>
 <blockquote>
 <p>仅unix支持</p>
 </blockquote>
-
-<h1 id="几种i-o模型的比较">几种I/O模型的比较</h1>
-
+<h1 id="几种io模型的比较">几种I/O模型的比较</h1>
 <blockquote>
 <p>判断是否是真正异步的方式是，内核完成通知之后是否是主线程处理，还是I/O线程处理。</p>
 </blockquote>
-
-<p><img src="/images/others/IO模型的比较.png" alt="IO模型的比较" /></p>
-
-<h1 id="reactor-和-proactor"><code>Reactor</code>和<code>Proactor</code></h1>
-
+<p>
+        <img class="mx-auto" alt="IO模型的比较" src="/images/others/IO%e6%a8%a1%e5%9e%8b%e7%9a%84%e6%af%94%e8%be%83.png" />   
+    </p>
+<h1 id="reactor和proactor"><code>Reactor</code>和<code>Proactor</code></h1>
 <blockquote>
 <p>还没写</p>
 </blockquote>
@@ -330,7 +312,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/I/O'>I/O</a></li>
+                <li><a href='/tags/I/O'>I/O</a></li>
                 
             </ul>
             
@@ -341,17 +323,46 @@
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -415,14 +426,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -438,7 +449,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -448,10 +459,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -487,7 +496,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -517,7 +526,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -549,39 +558,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

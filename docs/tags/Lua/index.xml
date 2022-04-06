@@ -6,11 +6,7 @@
     <description>Recent content in Lua on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/tags/Lua/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Lua/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>xLua</title>
       <link>https://DoMySon.github.io/2019/03/xLua/</link>
@@ -18,13 +14,16 @@
       
       <guid>https://DoMySon.github.io/2019/03/xLua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     

@@ -6,11 +6,7 @@
     <description>Recent content in Tags on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Preprocessor</title>
       <link>https://DoMySon.github.io/tags/Preprocessor/</link>
@@ -22,10 +18,10 @@
     
     <item>
       <title>pointer</title>
-      <link></link>
+      <link>https://DoMySon.github.io/tags/pointer/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid></guid>
+      <guid>https://DoMySon.github.io/tags/pointer/</guid>
       <description></description>
     </item>
     
@@ -152,15 +148,6 @@
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/tags/Hash/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pointer</title>
-      <link>https://DoMySon.github.io/tags/Pointer/</link>
-      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/tags/Pointer/</guid>
       <description></description>
     </item>
     
@@ -320,7 +307,7 @@
     <item>
       <title>I/O</title>
       <link>https://DoMySon.github.io/tags/I/O/</link>
-      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/tags/I/O/</guid>
       <description></description>

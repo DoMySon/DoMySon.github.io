@@ -6,11 +6,7 @@
     <description>Recent content in Go on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 18 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/categories/Go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 18 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 编译指示</title>
       <link>https://DoMySon.github.io/2020/04/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</link>
@@ -27,16 +23,12 @@
       
       <guid>https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/</guid>
       <description>&lt;h1 id=&#34;如何启用gc跟踪&#34;&gt;如何启用GC跟踪&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;GODEBUG=gctrace=1 go run *.go&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;其中 &lt;code&gt;gctrace=1&lt;/code&gt; 表示只针对这个进程进行GC追踪&lt;/p&gt;
-
 &lt;h1 id=&#34;输出分析&#34;&gt;输出分析&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
 scvg: 0 MB released
 scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
 GC forced
@@ -69,7 +61,8 @@ GC forced
       <guid>https://DoMySon.github.io/2020/01/Channel/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;channel&lt;/code&gt; 提供了一种通信机制，通过它，一个 &lt;code&gt;goroutine&lt;/code&gt; 可以与另一 &lt;code&gt;goroutine&lt;/code&gt; 发送消息。&lt;code&gt;channel&lt;/code&gt; 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 &lt;code&gt;len()&lt;/code&gt; 获取通道当前缓冲数量。 &lt;code&gt;cap()&lt;/code&gt; 获取通道最大缓冲。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -81,7 +74,6 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/12/Go-Module/</guid>
       <description>&lt;h1 id=&#34;module&#34;&gt;Module&lt;/h1&gt;
-
 &lt;p&gt;Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 &lt;code&gt;go.mod&lt;/code&gt; 文件来建立依赖管理。&lt;/p&gt;</description>
     </item>
     
@@ -92,7 +84,6 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/12/Go%E9%94%81/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -136,13 +127,10 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/05/Go-Scheduler/</guid>
       <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h1 id=&#34;调度方式&#34;&gt;调度方式&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，&lt;code&gt;Goroutine&lt;/code&gt; 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。&lt;/p&gt;
 &lt;/blockquote&gt;</description>

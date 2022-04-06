@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Go History | 薛定谔的BUG</title>
     <meta property="og:title" content="Go History - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2020/02/Go-History/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,19 +137,15 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#go-版本变迁差异">Go 版本变迁差异</a></li>
-<li><a href="#go-1-14">Go 1.14</a>
-<ul>
-<li><a href="#defer-大幅度提升-相较于上个版本-开销几乎为0"><code>defer</code> 大幅度提升，相较于上个版本，开销几乎为0</a></li>
-<li><a href="#支持异步抢占">支持异步抢占</a></li>
-<li><a href="#ticker-性能提升">ticker 性能提升</a></li>
-<li><a href="#允许嵌入有相同方法集的接口">允许嵌入有相同方法集的接口</a></li>
-<li><a href="#添加了新包hash-maphash">添加了新包hash/maphash</a></li>
-<li><a href="#移除了-sslv3">移除了 SSLv3</a></li>
-<li><a href="#go-test-t-log-不再在结束时输出">go test t.Log 不再在结束时输出</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#defer-大幅度提升相较于上个版本开销几乎为0"><code>defer</code> 大幅度提升，相较于上个版本，开销几乎为0</a></li>
+    <li><a href="#支持异步抢占">支持异步抢占</a></li>
+    <li><a href="#ticker-性能提升">ticker 性能提升</a></li>
+    <li><a href="#允许嵌入有相同方法集的接口">允许嵌入有相同方法集的接口</a></li>
+    <li><a href="#添加了新包hashmaphash">添加了新包hash/maphash</a></li>
+    <li><a href="#移除了-sslv3">移除了 SSLv3</a></li>
+    <li><a href="#go-test-tlog-不再在结束时输出">go test t.Log 不再在结束时输出</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -155,8 +154,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -175,6 +174,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -188,7 +191,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
         </div>
         
@@ -207,53 +210,46 @@
         
         <div class="post-content">
             <h1 id="go-版本变迁差异">Go 版本变迁差异</h1>
-
-<h1 id="go-1-14">Go 1.14</h1>
-
+<h1 id="go-114">Go 1.14</h1>
 <blockquote>
 <p><a href="https://www.toutiao.com/i6792777465518359054/">摘自</a></p>
 </blockquote>
-
-<h2 id="defer-大幅度提升-相较于上个版本-开销几乎为0"><code>defer</code> 大幅度提升，相较于上个版本，开销几乎为0</h2>
-
+<h2 id="defer-大幅度提升相较于上个版本开销几乎为0"><code>defer</code> 大幅度提升，相较于上个版本，开销几乎为0</h2>
 <h2 id="支持异步抢占">支持异步抢占</h2>
-
-<pre><code class="language-go">package main
-import (
-    &quot;runtime&quot;
-    &quot;time&quot;
-)
-func main() {
-    runtime.GOMAXPROCS(1)
-    go func() {
-        for {
-
-        }
-    }()
-    time.Sleep(time.Millisecond)println(&quot;OK&quot;)}
-</code></pre>
-
-<ul>
-<li><p>在历史版本中,上述代码不会有任何输出</p></li>
-
-<li><p>Go1.14程序启动时，在 runtime.sighandler 函数中注册了 SIGURG 信号的处理函数 runtime.doSigPreempt，在触发垃圾回收的栈扫描时，调用函数挂起goroutine，并向M发送信号，M收到信号后，会让当前goroutine陷入休眠继续执行其他的goroutine。</p></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;runtime&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">GOMAXPROCS</span>(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }()
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>)println(<span style="color:#e6db74">&#34;OK&#34;</span>)}
+</span></span></code></pre></div><ul>
+<li>
+<p>在历史版本中,上述代码不会有任何输出</p>
+</li>
+<li>
+<p>Go1.14程序启动时，在 runtime.sighandler 函数中注册了 SIGURG 信号的处理函数 runtime.doSigPreempt，在触发垃圾回收的栈扫描时，调用函数挂起goroutine，并向M发送信号，M收到信号后，会让当前goroutine陷入休眠继续执行其他的goroutine。</p>
+</li>
 </ul>
-
 <h2 id="ticker-性能提升">ticker 性能提升</h2>
-
 <ul>
-<li><p>提升Go计时器性能的关键是消除唤醒一个 timer 时进行 M/P 频繁切换的开销</p></li>
-
-<li><p>Go1.14 直接在每个P上维护自己的timer堆，像维护自己的一个本地队列runq一样。</p></li>
+<li>
+<p>提升Go计时器性能的关键是消除唤醒一个 timer 时进行 M/P 频繁切换的开销</p>
+</li>
+<li>
+<p>Go1.14 直接在每个P上维护自己的timer堆，像维护自己的一个本地队列runq一样。</p>
+</li>
 </ul>
-
 <h2 id="允许嵌入有相同方法集的接口">允许嵌入有相同方法集的接口</h2>
-
-<h2 id="添加了新包hash-maphash">添加了新包hash/maphash</h2>
-
+<h2 id="添加了新包hashmaphash">添加了新包hash/maphash</h2>
 <h2 id="移除了-sslv3">移除了 SSLv3</h2>
-
-<h2 id="go-test-t-log-不再在结束时输出">go test t.Log 不再在结束时输出</h2>
+<h2 id="go-test-tlog-不再在结束时输出">go test t.Log 不再在结束时输出</h2>
         </div>
 
         
@@ -281,7 +277,7 @@ func main() {
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                <li><a href='/tags/'></a></li>
                 
             </ul>
             
@@ -292,17 +288,46 @@ func main() {
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -366,14 +391,14 @@ func main() {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -389,7 +414,7 @@ func main() {
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -399,10 +424,8 @@ func main() {
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -438,7 +461,7 @@ func main() {
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -468,7 +491,7 @@ func main() {
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -500,39 +523,6 @@ func main() {
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

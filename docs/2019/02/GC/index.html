@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>GC | 薛定谔的BUG</title>
     <meta property="og:title" content="GC - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/02/GC/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,16 +137,12 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#何谓-gc">何谓 <code>GC</code></a></li>
-<li><a href="#常见-gc-算法">常见 <code>GC</code> 算法</a>
-<ul>
-<li><a href="#1-引用计数">1.引用计数</a></li>
-<li><a href="#2-mark-sweep-标记清除法">2.<code>Mark-Sweep</code>(标记清除法)</a></li>
-<li><a href="#三色标记法">三色标记法</a></li>
-<li><a href="#分代回收">分代回收</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#1引用计数">1.引用计数</a></li>
+    <li><a href="#2mark-sweep标记清除法">2.<code>Mark-Sweep</code>(标记清除法)</a></li>
+    <li><a href="#三色标记法">三色标记法</a></li>
+    <li><a href="#分代回收">分代回收</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -152,8 +151,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -172,6 +171,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -185,7 +188,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
@@ -204,57 +207,58 @@
         
         <div class="post-content">
             <h1 id="何谓-gc">何谓 <code>GC</code></h1>
-
 <p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
-曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
-1. 内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
-
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
 <ol>
-<li>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
-为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</li>
+<li>
+<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+</li>
+<li>
+<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
+</li>
 </ol>
-
 <h1 id="常见-gc-算法">常见 <code>GC</code> 算法</h1>
-
-<h2 id="1-引用计数">1.引用计数</h2>
-
+<h2 id="1引用计数">1.引用计数</h2>
 <pre><code>原理是在每个对象内部维护一个整数值，叫做这个对象的引用计数，当对象被引用时引用计数加一，当对象不被引用时引用计数减一。当引用计数为 0 时，自动销毁对象。目前引用计数法主要用在 c++ 标准库的 std::shared_ptr 、微软的 COM 、Objective-C 和 PHP 中。但是引用计数法有个缺陷就是不能解决循环引用的问题。循环引用是指对象 A 和对象 B 互相持有对方的引用。这样两个对象的引用计数都不是 0 ，因此永远不能被收集。另外的缺陷是，每次对象的赋值都要将引用计数加一，增加了消耗。
 </code></pre>
-
-<h2 id="2-mark-sweep-标记清除法">2.<code>Mark-Sweep</code>(标记清除法)</h2>
-
+<h2 id="2mark-sweep标记清除法">2.<code>Mark-Sweep</code>(标记清除法)</h2>
 <pre><code>这个算法分为两步，标记和清除。
 1. 标记：从程序的根节点开始， 递归地 遍历所有对象，将能遍历到的对象打上标记。
 2. 清除：将所有未标记的的对象当作垃圾销毁。
     ![Mark-Sweep](/images/Other/Mark-Sweep算法.gif)
 但是这个算法也有一个缺陷，就是人们常常说的 STW 问题（Stop The World）。因为算法在标记时必须暂停整个程序，否则其他线程的代码可能会改变对象状态，从而可能把不应该回收的对象当做垃圾收集掉。当程序中的对象逐渐增多时，递归遍历整个对象树会消耗很多的时间，在大型程序中这个时间可能会是毫秒级别的。让所有的用户等待几百毫秒的 GC 时间这是不能容忍的。(Go 1.5以前使用的这个算法)
 </code></pre>
-
 <h2 id="三色标记法">三色标记法</h2>
-
 <blockquote>
 <p>三色标记法是传统 <code>Mark-Sweep</code> 的一个改进，它是一个并发的 GC 算法。
-原理如下
-1. 首先创建三个集合：白、灰、黑。
-2. 将所有对象放入白色集合中。
-3. 然后从根节点开始遍历所有对象（注意这里并不递归遍历），把遍历到的对象从白色集合放入灰色集合。
-4. 之后遍历灰色集合，将灰色对象引用的对象从白色集合放入灰色集合，之后将此灰色对象放入黑色集合
-5. 重复 4 直到灰色中无任何对象
-6. 通过write-barrier检测对象有变化，重复以上操作
-7. 收集所有白色对象（垃圾）
-    <img src="/note/images/Other/三色标记算法.gif" alt="三色标记算法" />
-这个算法可以实现 <code>on-the-fly</code>，也就是在程序执行的同时进行收集，并不需要暂停整个程序。但是也会有一个缺陷，可能程序中的垃圾产生的速度会大于垃圾收集的速度，这样会导致程序中的垃圾越来越多无法被收集掉。(使用这种算法的是 Go 1.5、Go 1.6)</p>
+原理如下</p>
+</blockquote>
+<ol>
+<li>首先创建三个集合：白、灰、黑。</li>
+<li>将所有对象放入白色集合中。</li>
+<li>然后从根节点开始遍历所有对象（注意这里并不递归遍历），把遍历到的对象从白色集合放入灰色集合。</li>
+<li>之后遍历灰色集合，将灰色对象引用的对象从白色集合放入灰色集合，之后将此灰色对象放入黑色集合</li>
+<li>重复 4 直到灰色中无任何对象</li>
+<li>通过write-barrier检测对象有变化，重复以上操作</li>
+<li>收集所有白色对象（垃圾）
 
+        <img class="mx-auto" alt="三色标记算法" src="/note/images/Other/%e4%b8%89%e8%89%b2%e6%a0%87%e8%ae%b0%e7%ae%97%e6%b3%95.gif" />   
+    
+这个算法可以实现 <code>on-the-fly</code>，也就是在程序执行的同时进行收集，并不需要暂停整个程序。但是也会有一个缺陷，可能程序中的垃圾产生的速度会大于垃圾收集的速度，这样会导致程序中的垃圾越来越多无法被收集掉。(使用这种算法的是 Go 1.5、Go 1.6)</li>
+</ol>
 <h2 id="分代回收">分代回收</h2>
-
 <p>分代收集也是传统 <code>Mark-Sweep</code> 的一个改进。这个算法是基于一个经验：绝大多数对象的生命周期都很短。所以按照对象的生命周期长短来进行分代。(一般 GC 都会分三代，在 java 中称之为新生代（Young Generation）、年老代（Tenured Generation）和永久代（Permanent Generation）；在 .NET 中称之为第 0 代、第 1 代和第2代)
-原理如下：
-1. 新对象放入第 0 代
-2. 当内存用量超过一个较小的阈值时，触发 0 代收集
-3. 第 0 代幸存的对象（未被收集）放入第 1 代
-5. 只有当内存用量超过一个较高的阈值时，才会触发 1 代收集
-6. 2 代同理
-因为 0 代中的对象十分少，所以每次收集时遍历都会非常快（比 1 代收集快几个数量级）。只有内存消耗过于大的时候才会触发较慢的 1 代和 2 代收集。</p>
+原理如下：</p>
+<ol>
+<li>新对象放入第 0 代</li>
+<li>当内存用量超过一个较小的阈值时，触发 0 代收集</li>
+<li>第 0 代幸存的对象（未被收集）放入第 1 代</li>
+<li>只有当内存用量超过一个较高的阈值时，才会触发 1 代收集</li>
+<li>2 代同理</li>
+</ol>
+<blockquote>
+<p>因为 0 代中的对象十分少，所以每次收集时遍历都会非常快（比 1 代收集快几个数量级）。只有内存消耗过于大的时候才会触发较慢的 1 代和 2 代收集。</p>
 </blockquote>
         </div>
 
@@ -268,7 +272,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                <li><a href='/tags/'></a></li>
                 
             </ul>
             
@@ -279,17 +283,46 @@
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -353,14 +386,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -376,7 +409,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -386,10 +419,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -425,7 +456,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -455,7 +486,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -487,39 +518,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

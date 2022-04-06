@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Unity内存管理 | 薛定谔的BUG</title>
     <meta property="og:title" content="Unity内存管理 - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,21 +137,15 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#unity-托管内存">Unity 托管内存</a></li>
-<li><a href="#官方地址">官方地址</a></li>
-<li><a href="#unity内存优化">Unity内存优化</a>
-<ul>
-<li><a href="#assetbundle">Assetbundle</a></li>
-<li><a href="#resources">Resources</a></li>
-<li><a href="#textrue">Textrue</a></li>
-<li><a href="#audio">Audio</a></li>
-<li><a href="#mesh">Mesh</a></li>
-<li><a href="#coroutine">Coroutine</a></li>
-<li><a href="#code-size">Code Size</a></li>
-</ul></li>
-<li><a href="#cpu访问内存顺序">CPU访问内存顺序</a></li>
-</ul>
+  <ul>
+    <li><a href="#assetbundle">Assetbundle</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#textrue">Textrue</a></li>
+    <li><a href="#audio">Audio</a></li>
+    <li><a href="#mesh">Mesh</a></li>
+    <li><a href="#coroutine">Coroutine</a></li>
+    <li><a href="#code-size">Code Size</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -157,8 +154,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -177,6 +174,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -190,7 +191,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Unity'>Unity</a></span>
+            <span class="meta-category"><a href='/categories/Unity'>Unity</a></span>
             
         </div>
         
@@ -209,99 +210,101 @@
         
         <div class="post-content">
             <h1 id="unity-托管内存">Unity 托管内存</h1>
-
 <ol>
-<li><p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p></li>
-
-<li><p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p></li>
-
-<li><p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p></li>
-
-<li><p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p></li>
-
-<li><p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p></li>
-
-<li><p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p></li>
+<li>
+<p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p>
+</li>
+<li>
+<p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p>
+</li>
+<li>
+<p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p>
+</li>
+<li>
+<p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p>
+</li>
+<li>
+<p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p>
+</li>
+<li>
+<p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p>
+</li>
 </ol>
-
 <h1 id="官方地址">官方地址</h1>
-
 <p><a href="https://www.bilibili.com/video/av79798486">浅谈Unity内存管理</a></p>
-
 <h1 id="unity内存优化">Unity内存优化</h1>
-
 <h2 id="assetbundle">Assetbundle</h2>
-
 <ol>
-<li><p>TypeTree:</p>
-
-<p>本身是为了兼容 <code>Editor</code> 版本和 <code>Assetbundle</code> 版本不同的情况下可以互相使用，这个行为可以手动关闭，但必须保证 <code>Editor</code> 和 <code>Assetbundle</code> 版本相同。</p></li>
-
-<li><p>LZ4:</p>
-
-<p>官方本身建议这种压缩算法，是一种基于 <code>Chunck</code> 的压缩算法，只需要舍弃一点内存，可以提升 <code>30%-%40</code> 左右的解压速率。听说后期带有加密功能。</p></li>
-
-<li><p>Size&amp;Count:</p>
-
-<p>由于每个 <code>Assetbundle</code> 都会有头信息，有时候过小的资源打包会造成比原始资源还大的现象，官方建议是 <code>3-5MB</code> 每个。</p></li>
+<li>
+<p>TypeTree:</p>
+<p>本身是为了兼容 <code>Editor</code> 版本和 <code>Assetbundle</code> 版本不同的情况下可以互相使用，这个行为可以手动关闭，但必须保证 <code>Editor</code> 和 <code>Assetbundle</code> 版本相同。</p>
+</li>
+<li>
+<p>LZ4:</p>
+<p>官方本身建议这种压缩算法，是一种基于 <code>Chunck</code> 的压缩算法，只需要舍弃一点内存，可以提升 <code>30%-%40</code> 左右的解压速率。听说后期带有加密功能。</p>
+</li>
+<li>
+<p>Size&amp;Count:</p>
+<p>由于每个 <code>Assetbundle</code> 都会有头信息，有时候过小的资源打包会造成比原始资源还大的现象，官方建议是 <code>3-5MB</code> 每个。</p>
+</li>
 </ol>
-
 <h2 id="resources">Resources</h2>
-
 <blockquote>
 <p>本身是基于 R-B Tree 建立的索引，官方只建议在测试的时候使用。</p>
 </blockquote>
-
 <h2 id="textrue">Textrue</h2>
-
 <ol>
-<li><p>控制缓冲区大小</p></li>
-
-<li><p>对于确定只读的图片资源的话，关闭 Read/Write</p></li>
-
-<li><p>Mipmaps 通常关闭</p></li>
+<li>
+<p>控制缓冲区大小</p>
+</li>
+<li>
+<p>对于确定只读的图片资源的话，关闭 Read/Write</p>
+</li>
+<li>
+<p>Mipmaps 通常关闭</p>
+</li>
 </ol>
-
 <h2 id="audio">Audio</h2>
-
 <ol>
-<li><p>DSP Buffer: 值过大，声音延时，过小CPU上升</p></li>
-
-<li><p>Format: 音频格式</p></li>
-
-<li><p>Compress Format: 压缩格式</p></li>
-
-<li><p>Face to Mono: 不知道</p></li>
+<li>
+<p>DSP Buffer: 值过大，声音延时，过小CPU上升</p>
+</li>
+<li>
+<p>Format: 音频格式</p>
+</li>
+<li>
+<p>Compress Format: 压缩格式</p>
+</li>
+<li>
+<p>Face to Mono: 不知道</p>
+</li>
 </ol>
-
 <h2 id="mesh">Mesh</h2>
-
 <ol>
-<li><p>Read/Write</p></li>
-
-<li><p>Compress: 有Bug</p></li>
+<li>
+<p>Read/Write</p>
+</li>
+<li>
+<p>Compress: 有Bug</p>
+</li>
 </ol>
-
 <h2 id="coroutine">Coroutine</h2>
-
 <ol>
-<li><p>在协程中，所有局部变量都不是局部变量，最后会被构造成 <code>IEunmator</code> 返回。官方建议即用即销毁。</p></li>
-
-<li><p>对于一个异步操作，<code>Coroutine</code> 本质是轮询。</p></li>
+<li>
+<p>在协程中，所有局部变量都不是局部变量，最后会被构造成 <code>IEunmator</code> 返回。官方建议即用即销毁。</p>
+</li>
+<li>
+<p>对于一个异步操作，<code>Coroutine</code> 本质是轮询。</p>
+</li>
 </ol>
-
 <h2 id="code-size">Code Size</h2>
-
 <ol>
 <li>对于泛型组合</li>
 </ol>
-
 <h1 id="cpu访问内存顺序">CPU访问内存顺序</h1>
-
 <blockquote>
 <p>Core -&gt; L1 -&gt; L2 -&gt; L3 -&gt; Memory -&gt; Disk</p>
 </blockquote>
-
 <p>上述访问由快到慢,提高命中率，就提高了速度</p>
         </div>
 
@@ -326,7 +329,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/Unity'>Unity</a></li>
+                <li><a href='/tags/Unity'>Unity</a></li>
                 
             </ul>
             
@@ -337,17 +340,46 @@
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -411,14 +443,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -434,7 +466,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -444,10 +476,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -483,7 +513,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -513,7 +543,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -545,39 +575,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

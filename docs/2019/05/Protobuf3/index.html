@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Protobuf3 | 薛定谔的BUG</title>
     <meta property="og:title" content="Protobuf3 - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/05/Protobuf3/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,23 +137,15 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#标准类型对照">标准类型对照</a></li>
-<li><a href="#定义消息类型">定义消息类型</a>
-<ul>
-<li><a href="#example">Example</a></li>
-<li><a href="#指定标签">指定标签</a></li>
-<li><a href="#字段规则">字段规则</a></li>
-<li><a href="#消息嵌套">消息嵌套</a></li>
-<li><a href="#保留字段">保留字段</a></li>
-<li><a href="#默认值">默认值</a></li>
-<li><a href="#枚举">枚举</a></li>
-</ul></li>
-<li><a href="#导入其它-protobuf">导入其它 <code>Protobuf</code></a></li>
-<li><a href="#map">Map</a></li>
-<li><a href="#rpc-服务接口类型"><code>RPC</code> 服务接口类型</a></li>
-</ul>
+  <ul>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#指定标签">指定标签</a></li>
+    <li><a href="#字段规则">字段规则</a></li>
+    <li><a href="#消息嵌套">消息嵌套</a></li>
+    <li><a href="#保留字段">保留字段</a></li>
+    <li><a href="#默认值">默认值</a></li>
+    <li><a href="#枚举">枚举</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -159,8 +154,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -179,6 +174,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -192,7 +191,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Protobuf3'>Protobuf3</a></span>
+            <span class="meta-category"><a href='/categories/Protobuf3'>Protobuf3</a></span>
             
         </div>
         
@@ -211,284 +210,251 @@
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <p><code>Protocol Buffers</code>，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 <code>syntax = proto3</code> 的协议语法。</p>
-
 <h1 id="标准类型对照">标准类型对照</h1>
-
 <table>
 <thead>
 <tr>
-<th align="center">.proto</th>
-<th align="center">注释</th>
-<th align="center">C++</th>
-<th align="center">Python</th>
-<th align="center">Go</th>
-<th align="center">C#</th>
+<th style="text-align:center">.proto</th>
+<th style="text-align:center">注释</th>
+<th style="text-align:center">C++</th>
+<th style="text-align:center">Python</th>
+<th style="text-align:center">Go</th>
+<th style="text-align:center">C#</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">double</td>
-<td align="center">定长编码</td>
-<td align="center">double</td>
-<td align="center">float</td>
-<td align="center">float64</td>
-<td align="center">double</td>
+<td style="text-align:center">double</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">double</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float64</td>
+<td style="text-align:center">double</td>
 </tr>
-
 <tr>
-<td align="center">float</td>
-<td align="center">定长编码</td>
-<td align="center">float</td>
-<td align="center">float</td>
-<td align="center">float32</td>
-<td align="center">float</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float32</td>
+<td style="text-align:center">float</td>
 </tr>
-
 <tr>
-<td align="center">int32</td>
-<td align="center">变长编码,负数编码效率低，可使用<code>sint32</code></td>
-<td align="center">int32</td>
-<td align="center">int</td>
-<td align="center">int32</td>
-<td align="center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint32</code></td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
 </tr>
-
 <tr>
-<td align="center">int64</td>
-<td align="center">变长编码,负数编码效率低，可使用<code>sint64</code></td>
-<td align="center">int64</td>
-<td align="center">int/long</td>
-<td align="center">int64</td>
-<td align="center">long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint64</code></td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
 </tr>
-
 <tr>
-<td align="center">uint32</td>
-<td align="center">变长编码</td>
-<td align="center">uint32</td>
-<td align="center">int/long</td>
-<td align="center">uint32</td>
-<td align="center">uint</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">uint</td>
 </tr>
-
 <tr>
-<td align="center">uint64</td>
-<td align="center">变长编码</td>
-<td align="center">uint64</td>
-<td align="center">int/long</td>
-<td align="center">unit64</td>
-<td align="center">ulong</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">unit64</td>
+<td style="text-align:center">ulong</td>
 </tr>
-
 <tr>
-<td align="center">sint32</td>
-<td align="center">变长编码，对负数编码比<code>int32</code>更有效率</td>
-<td align="center">int32</td>
-<td align="center">int</td>
-<td align="center">int32</td>
-<td align="center">int</td>
+<td style="text-align:center">sint32</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int32</code>更有效率</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
 </tr>
-
 <tr>
-<td align="center">sint64</td>
-<td align="center">变长编码，对负数编码比<code>int64</code>更有效率</td>
-<td align="center">int64</td>
-<td align="center">int/long</td>
-<td align="center">int64</td>
-<td align="center">long</td>
+<td style="text-align:center">sint64</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int64</code>更有效率</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
 </tr>
-
 <tr>
-<td align="center">fixed32</td>
-<td align="center">总是<code>4</code>字节，如果值大于<code>2^28</code>比<code>uint32</code>更有效率</td>
-<td align="center">uint32</td>
-<td align="center">int/long</td>
-<td align="center">uint64</td>
-<td align="center">ulong</td>
+<td style="text-align:center">fixed32</td>
+<td style="text-align:center">总是<code>4</code>字节，如果值大于<code>2^28</code>比<code>uint32</code>更有效率</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
 </tr>
-
 <tr>
-<td align="center">fixed64</td>
-<td align="center">总是<code>8</code>字节，如果值大于<code>2^56</code>比<code>uint64</code>更有效率</td>
-<td align="center">uint64</td>
-<td align="center">int/long</td>
-<td align="center">uint64</td>
-<td align="center">ulong</td>
+<td style="text-align:center">fixed64</td>
+<td style="text-align:center">总是<code>8</code>字节，如果值大于<code>2^56</code>比<code>uint64</code>更有效率</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
 </tr>
-
 <tr>
-<td align="center">bool</td>
-<td align="center">1或0的变长编码</td>
-<td align="center">bool</td>
-<td align="center">boolean</td>
-<td align="center">bool</td>
-<td align="center">bool</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">1或0的变长编码</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">bool</td>
 </tr>
-
 <tr>
-<td align="center">string</td>
-<td align="center">必须是<code>UTF-8</code>编码</td>
-<td align="center">string</td>
-<td align="center">str/unicode</td>
-<td align="center">string</td>
-<td align="center">string</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">必须是<code>UTF-8</code>编码</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str/unicode</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">string</td>
 </tr>
-
 <tr>
-<td align="center">bytes</td>
-<td align="center">可包含任意的字节顺序</td>
-<td align="center">string</td>
-<td align="center">str</td>
-<td align="center">[]byte</td>
-<td align="center">ByteString</td>
+<td style="text-align:center">bytes</td>
+<td style="text-align:center">可包含任意的字节顺序</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str</td>
+<td style="text-align:center">[]byte</td>
+<td style="text-align:center">ByteString</td>
 </tr>
 </tbody>
 </table>
-
 <h1 id="定义消息类型">定义消息类型</h1>
-
 <h2 id="example">Example</h2>
-
-<pre><code class="language-protobuf">synatx = &quot;proto3&quot;;
-package Pb;
-
-message Request{
-    string  xxx = 1;
-    int64   yyy = 2;
-    float   zzz = 3;
-    double  ppp = 4;
-}
-</code></pre>
-
-<ul>
-<li><p>第一行指定使用 <code>proto3</code> 语法，如果不指明，则默认使用 <code>proto2</code> 语法，这一行 <code>不允许空白字符和注释</code></p></li>
-
-<li><p>第二行指明隶属于哪个包，在 <code>go</code> 中即为包名，在 <code>csharp</code> 中为命名空间</p></li>
-
-<li><p>使用 <code>//</code> 来注释</p></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>synatx <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#f92672">package</span> Pb;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Request</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">string</span>  xxx <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">int64</span>   yyy <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">float</span>   zzz <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">double</span>  ppp <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><ul>
+<li>
+<p>第一行指定使用 <code>proto3</code> 语法，如果不指明，则默认使用 <code>proto2</code> 语法，这一行 <code>不允许空白字符和注释</code></p>
+</li>
+<li>
+<p>第二行指明隶属于哪个包，在 <code>go</code> 中即为包名，在 <code>csharp</code> 中为命名空间</p>
+</li>
+<li>
+<p>使用 <code>//</code> 来注释</p>
+</li>
 </ul>
-
-<!--more-->
-
+<!-- raw HTML omitted -->
 <h2 id="指定标签">指定标签</h2>
-
 <p>每一个字段都定义了一个唯一的 <code>数值标签</code>，这些唯一的数值标签用来标识 二进制消息 中你所定义的字段，一旦定义了编译后就无法修改。需要特别提醒的是标签 <code>1–15</code> 标识的字段编码仅占用 1 个字节（包括字段类型和标识标签）。 数值标签 <code>16–2047</code> 标识的字段编码占用 2 个字节。因此，你应该将标签 1–15 留给那些在你的消息类型中使用频率高的字段。记得预留一些空间（标签 1–15）给将来可能添加的高频率字段。</p>
-
 <h2 id="字段规则">字段规则</h2>
-
 <ul>
-<li><p>单数：该字段可以出现0或1次</p></li>
-
-<li><p>可重复 <code>repeated</code>：改字段可以重复任意次数，可以通过 <code>[packed=true]</code> 来申明更高效的编码：<code>repeated int32 samples = 1 [packed=true];</code></p></li>
+<li>
+<p>单数：该字段可以出现0或1次</p>
+</li>
+<li>
+<p>可重复 <code>repeated</code>：改字段可以重复任意次数，可以通过 <code>[packed=true]</code> 来申明更高效的编码：<code>repeated int32 samples = 1 [packed=true];</code></p>
+</li>
 </ul>
-
 <h2 id="消息嵌套">消息嵌套</h2>
-
 <p>在一个消息结构内部定义另外一个消息结构</p>
-
-<pre><code class="language-protobuf">message Response{
-    //消息嵌套，可以无限嵌套
-    message Result{
-        string url  = 1; //Field标签必须从1开始
-        string title =2;
-        repeated string snippets = 3;
-    }
-    repeated Result results = 1;
-}
-
-message OtherResponse{
-    //外部使用内嵌消息
-    Response.Result result =1;
-}
-</code></pre>
-
-<h2 id="保留字段">保留字段</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Response</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//消息嵌套，可以无限嵌套
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Result</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        <span style="color:#66d9ef">string</span> url  <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//Field标签必须从1开始
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">string</span> title <span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        <span style="color:#66d9ef">repeated</span> <span style="color:#66d9ef">string</span> snippets <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    }<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">repeated</span> Result results <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">OtherResponse</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//外部使用内嵌消息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response.Result result <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="保留字段">保留字段</h2>
 <blockquote>
 <p>略</p>
 </blockquote>
-
 <h2 id="默认值">默认值</h2>
-
 <ul>
-<li><p><code>string</code>默认值为空字符串。</p></li>
-
-<li><p><code>bytes</code>型默认值是空字节。</p></li>
-
-<li><p><code>bool</code>型默认值为 false。</p></li>
-
-<li><p>数值类型默认值位 0。</p></li>
-
-<li><p><code>enum</code>默认值是第一个枚举元素，它必须为 0。</p></li>
-
-<li><p><code>message</code>类型字段默认值为 null。</p></li>
+<li>
+<p><code>string</code>默认值为空字符串。</p>
+</li>
+<li>
+<p><code>bytes</code>型默认值是空字节。</p>
+</li>
+<li>
+<p><code>bool</code>型默认值为 false。</p>
+</li>
+<li>
+<p>数值类型默认值位 0。</p>
+</li>
+<li>
+<p><code>enum</code>默认值是第一个枚举元素，它必须为 0。</p>
+</li>
+<li>
+<p><code>message</code>类型字段默认值为 null。</p>
+</li>
 </ul>
-
 <blockquote>
 <p>默认值字段是不会被序列化。</p>
 </blockquote>
-
 <h2 id="枚举">枚举</h2>
-
-<pre><code class="language-protobuf">message Request{
-    string url = 1;
-    int number = 2;
-
-    enum Corpus{
-        None = 0; //枚举标签第一个必须为0
-        Image=1;
-        Viedo=2;
-    }
-
-    Corpus corpus = 4;
-}
-</code></pre>
-
-<h1 id="导入其它-protobuf">导入其它 <code>Protobuf</code></h1>
-
-<pre><code class="language-protobuf">import &quot;proj/other.proto&quot; //导入其他proto文件
-
-import public &quot;other.proto&quot; //如果声明为public，那么other.proto导入的其他包也可以被引用
-</code></pre>
-
-<h1 id="map">Map</h1>
-
-<pre><code class="language-protobuf">map&lt;key,val&gt; mapping = 1; //不能使用 repeated 修饰
-
-//等效于
-
-message Entry{
-    key_type key = 1;
-    val_type val = 2;
-}
-repeated Entry entry = 1;
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Request</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">string</span> url <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    int number <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">enum</span> Corpus{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        None <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#75715e">//枚举标签第一个必须为0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Image<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        Viedo<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    }<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    Corpus corpus <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h1 id="导入其它-protobuf">导入其它 <code>Protobuf</code></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#34;proj/other.proto&#34;</span> <span style="color:#75715e">//导入其他proto文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">import</span> public <span style="color:#e6db74">&#34;other.proto&#34;</span> <span style="color:#75715e">//如果声明为public，那么other.proto导入的其他包也可以被引用
+</span></span></span></code></pre></div><h1 id="map">Map</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>map&lt;key,val&gt; mapping <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//不能使用 repeated 修饰
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">//等效于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Entry</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    key_type key <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    val_type val <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">repeated</span> Entry entry <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><blockquote>
 <p><code>key</code> 只能是除 <code>bytes</code> &amp; <code>float、float64</code> 以外的任意类型。<code>key &amp; val</code> 也可以是自定义类型.</p>
 </blockquote>
-
 <h1 id="rpc-服务接口类型"><code>RPC</code> 服务接口类型</h1>
-
-<pre><code class="language-protobuf">syntax=&quot;proto3&quot;;
-
-message SearchRequest{
-
-}
-
-message SearchResponse{
-
-}
-
-service SearchService {
-    //rpc接口函数是Search
-    //参数是SearchRequest，返回SearchResponse 
-    Search (SearchRequest) returns (SearchResponse);
-}
-</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>syntax<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchRequest</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchResponse</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">service</span> SearchService {<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//rpc接口函数是Search
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//参数是SearchRequest，返回SearchResponse 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Search (SearchRequest) <span style="color:#66d9ef">returns</span> (SearchResponse);<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div>
         </div>
 
         
@@ -510,7 +476,7 @@ service SearchService {
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/'></a></li>
+                <li><a href='/tags/'></a></li>
                 
             </ul>
             
@@ -521,17 +487,46 @@ service SearchService {
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -595,14 +590,14 @@ service SearchService {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -618,7 +613,7 @@ service SearchService {
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -628,10 +623,8 @@ service SearchService {
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -667,7 +660,7 @@ service SearchService {
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -697,7 +690,7 @@ service SearchService {
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -729,39 +722,6 @@ service SearchService {
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

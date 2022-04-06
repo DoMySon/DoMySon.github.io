@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>C | 薛定谔的BUG</title>
     <meta property="og:title" content="C - 薛定谔的BUG">
@@ -16,20 +19,20 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/categories/C/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://DoMySon.github.io/categories/C/index.xml" title="薛定谔的BUG" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/categories/C/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -88,150 +91,136 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/C'>C</a>
+            <a href='/categories/C'>C</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="预处理器">预处理器</h1>
-
 <ul>
-<li><p><code>#pragma</code> 用于指示编译器完成一些特定的动作</p>
-
+<li>
+<p><code>#pragma</code> 用于指示编译器完成一些特定的动作</p>
 <ol>
-<li><p>#pragma message usermessage</p>
-
-<pre><code class="language-c">//example:test.c
-#include &lt;stdio.h&gt;
-#define IOS
-#if defined IOS
-    #pragma message &quot;ready complie ios...&quot;
-#endif
-//complie output:
-    note: #pragma message: ready complie ios...
-</code></pre></li>
-
-<li><p>#pragma once 确保头文件仅被编译一次</p>
-
-<pre><code class="language-c">//example:test.h
-#pragma once
-int value = 10;
-//example:test.c
-#include &quot;test.h&quot;
-#include &quot;test.h&quot;
-</code></pre></li>
-
-<li><p>#pragma pack(size_t) 指定内存对齐</p>
-
-<pre><code class="language-c">//example:test.c
-// 2byte 对齐
-#pragma pack(2)
-struct foo{
-    char c1;
-    char c2:
-    short 2;
-    int i;
-};
-
-// 4byte 对齐
-#pragma pack(4)
-struct bar{
-    char c1;
-    shirt s;
-    char c2;
-    int i;
-};
-
-void main(){
-    printf(&quot;%d\n&quot;,sizeof(struct foo)); //8
-    printf(&quot;%d\n&quot;,sizeof(struct bar)); //12
-}
-</code></pre></li>
-
-<li><p>在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令</p></li>
-</ol></li>
+<li>
+<p>#pragma message usermessage</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#if defined IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">#pragma message &#34;ready complie ios...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">//complie output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   note: <span style="color:#960050;background-color:#1e0010">#</span>pragma message: ready complie ios...
+</span></span></code></pre></div></li>
+<li>
+<p>#pragma once 确保头文件仅被编译一次</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> value <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span></code></pre></div></li>
+<li>
+<p>#pragma pack(size_t) 指定内存对齐</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 2byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> foo{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(4)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> bar{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    shirt s;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> foo)); <span style="color:#75715e">//8
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bar)); <span style="color:#75715e">//12
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div></li>
+<li>
+<p>在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令</p>
+</li>
+</ol>
+</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="center">指令</th>
-<th align="center">描述</th>
-<th align="center">示例</th>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">示例</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">#define</td>
-<td align="center">定义宏</td>
-<td align="center"></td>
+<td style="text-align:center">#define</td>
+<td style="text-align:center">定义宏</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#include</td>
-<td align="center">包含一个源代码文件</td>
-<td align="center"></td>
+<td style="text-align:center">#include</td>
+<td style="text-align:center">包含一个源代码文件</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#undef</td>
-<td align="center">取消一个定义的宏</td>
-<td align="center"></td>
+<td style="text-align:center">#undef</td>
+<td style="text-align:center">取消一个定义的宏</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#ifdef</td>
-<td align="center">是否定义了宏</td>
-<td align="center"></td>
+<td style="text-align:center">#ifdef</td>
+<td style="text-align:center">是否定义了宏</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#ifndef</td>
-<td align="center">是否没有定义一个宏</td>
-<td align="center"></td>
+<td style="text-align:center">#ifndef</td>
+<td style="text-align:center">是否没有定义一个宏</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#if</td>
-<td align="center">条件检测</td>
-<td align="center"></td>
+<td style="text-align:center">#if</td>
+<td style="text-align:center">条件检测</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#else</td>
-<td align="center">条件分支</td>
-<td align="center"></td>
+<td style="text-align:center">#else</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#elif</td>
-<td align="center">条件分支</td>
-<td align="center"></td>
+<td style="text-align:center">#elif</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#endif</td>
-<td align="center">结束条件分支</td>
-<td align="center"></td>
+<td style="text-align:center">#endif</td>
+<td style="text-align:center">结束条件分支</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#error</td>
-<td align="center">当遇到标准错误，输出错误消息</td>
-<td align="center"></td>
+<td style="text-align:center">#error</td>
+<td style="text-align:center">当遇到标准错误，输出错误消息</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#pragma</td>
-<td align="center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
-<td align="center"></td>
+<td style="text-align:center">#pragma</td>
+<td style="text-align:center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">#line</td>
-<td align="center">重置下一行行数</td>
-<td align="center">#line 100</td>
+<td style="text-align:center">#line</td>
+<td style="text-align:center">重置下一行行数</td>
+<td style="text-align:center">#line 100</td>
 </tr>
 </tbody>
 </table>……
@@ -252,7 +241,7 @@ void main(){
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/C'>C</a>
+            <a href='/categories/C'>C</a>
             
         </div>
         
@@ -275,9 +264,9 @@ void main(){
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
-            <a href='https://DoMySon.github.io/categories/C'>C</a>
+            <a href='/categories/C'>C</a>
             
         </div>
         
@@ -295,6 +284,34 @@ void main(){
 
 
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -358,14 +375,14 @@ void main(){
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -381,7 +398,7 @@ void main(){
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -391,10 +408,8 @@ void main(){
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -430,7 +445,7 @@ void main(){
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -460,7 +475,7 @@ void main(){
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -492,28 +507,6 @@ void main(){
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

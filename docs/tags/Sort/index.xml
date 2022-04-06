@@ -6,11 +6,7 @@
     <description>Recent content in Sort on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/tags/Sort/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Sort/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TopK</title>
       <link>https://DoMySon.github.io/2019/07/TopK/</link>
@@ -27,27 +23,19 @@
       
       <guid>https://DoMySon.github.io/2019/07/ClassicSort/</guid>
       <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
-
-&lt;h2 id=&#34;稳定排序-非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
-
+&lt;h2 id=&#34;稳定排序非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  &lt;code&gt;非稳定排序&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;h2 id=&#34;原地排序-非原地排序&#34;&gt;原地排序，非原地排序&lt;/h2&gt;
-
+&lt;h2 id=&#34;原地排序非原地排序&#34;&gt;原地排序，非原地排序&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 &lt;code&gt;非原地排序&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h2 id=&#34;时间复杂度&#34;&gt;时间复杂度&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一个算法执行所耗费的时间&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h2 id=&#34;空间复杂度&#34;&gt;空间复杂度&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;完成算法所需的内存空间大小&lt;/p&gt;
 &lt;/blockquote&gt;</description>

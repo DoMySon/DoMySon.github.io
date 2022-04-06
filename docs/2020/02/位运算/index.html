@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>位运算 | 薛定谔的BUG</title>
     <meta property="og:title" content="位运算 - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,29 +137,24 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#位运算符">位运算符</a>
-<ul>
-<li><a href="#优先级">优先级</a></li>
-</ul></li>
-<li><a href="#应用">应用</a>
-<ul>
-<li><a href="#toc_4"><code>&amp;</code></a></li>
-<li><a href="#toc_5"><code>|</code></a></li>
-<li><a href="#toc_6"><code>^</code></a></li>
-<li><a href="#toc_7"><code>~</code></a></li>
-<li><a href="#toc_8"><code>&lt;&lt;,&gt;&gt;</code></a></li>
-</ul></li>
-<li><a href="#四则运算">四则运算</a>
-<ul>
-<li><a href="#加法">加法</a></li>
-<li><a href="#减法">减法</a></li>
-<li><a href="#乘法">乘法</a></li>
-<li><a href="#除法">除法</a></li>
-</ul></li>
-<li><a href="#后缀表达式">后缀表达式</a></li>
-</ul>
+  <ul>
+    <li><a href="#优先级">优先级</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#heading"><code>&amp;</code></a></li>
+    <li><a href="#heading-1"><code>|</code></a></li>
+    <li><a href="#heading-2"><code>^</code></a></li>
+    <li><a href="#heading-3"><code>~</code></a></li>
+    <li><a href="#heading-4"><code>&lt;&lt;,&gt;&gt;</code></a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#加法">加法</a></li>
+    <li><a href="#减法">减法</a></li>
+    <li><a href="#乘法">乘法</a></li>
+    <li><a href="#除法">除法</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -165,8 +163,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -185,6 +183,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -198,7 +200,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
@@ -216,161 +218,132 @@
         </div>
         
         <div class="post-content">
-            
-
-<h1 id="简介">简介</h1>
-
+            <h1 id="简介">简介</h1>
 <p>程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。</p>
-
 <h1 id="位运算符">位运算符</h1>
-
 <ul>
-<li><p><code>&amp;</code> 与运算符</p>
-
-<p>都为1则为1，否则为0</p></li>
-
-<li><p><code>|</code> 或运算符</p>
-
-<p>只要一个为1，则为1</p></li>
-
-<li><p><code>^</code> 异或运算符</p>
-
-<p>不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）</p></li>
-
-<li><p><code>~</code> 取反</p>
-
-<p>1变0，0变1，但是要区分是否是有符号还是无符号的。</p></li>
+<li>
+<p><code>&amp;</code> 与运算符</p>
+<p>都为1则为1，否则为0</p>
+</li>
+<li>
+<p><code>|</code> 或运算符</p>
+<p>只要一个为1，则为1</p>
+</li>
+<li>
+<p><code>^</code> 异或运算符</p>
+<p>不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）</p>
+</li>
+<li>
+<p><code>~</code> 取反</p>
+<p>1变0，0变1，但是要区分是否是有符号还是无符号的。</p>
+</li>
 </ul>
-
-<hr />
-
+<hr>
 <h2 id="优先级">优先级</h2>
-
 <table>
 <thead>
 <tr>
-<th align="center">Seq</th>
-<th align="center">Operation</th>
+<th style="text-align:center">Seq</th>
+<th style="text-align:center">Operation</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">1</td>
-<td align="center"><code>~</code></td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><code>~</code></td>
 </tr>
-
 <tr>
-<td align="center">2</td>
-<td align="center"><code>&lt;&lt;</code>、<code>&gt;&gt;</code></td>
+<td style="text-align:center">2</td>
+<td style="text-align:center"><code>&lt;&lt;</code>、<code>&gt;&gt;</code></td>
 </tr>
-
 <tr>
-<td align="center">3</td>
-<td align="center"><code>&amp;</code></td>
+<td style="text-align:center">3</td>
+<td style="text-align:center"><code>&amp;</code></td>
 </tr>
-
 <tr>
-<td align="center">4</td>
-<td align="center"><code>^</code></td>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><code>^</code></td>
 </tr>
-
 <tr>
-<td align="center">5</td>
-<td align="center">`</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">`</td>
 </tr>
-
 <tr>
-<td align="center">6</td>
-<td align="center"><code>&amp;=</code>、<code>^=</code>、`</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center"><code>&amp;=</code>、<code>^=</code>、`</td>
 </tr>
 </tbody>
 </table>
-
-<hr />
-
+<hr>
 <h1 id="应用">应用</h1>
-
-<h2 id="toc_4"><code>&amp;</code></h2>
-
+<h2 id="heading"><code>&amp;</code></h2>
 <ul>
-<li><p>清零</p>
-
-<p>所有位 <code>&amp;</code> 0：996&amp;0=0</p></li>
-
-<li><p>取指定位</p>
-
-<p>如：1010 1110 &amp; 0000 1111 = 1110</p></li>
-
-<li><p>奇偶判断</p>
-
-<p>x &amp; 1 == 0 为偶数，否则为奇数</p></li>
+<li>
+<p>清零</p>
+<p>所有位 <code>&amp;</code> 0：996&amp;0=0</p>
+</li>
+<li>
+<p>取指定位</p>
+<p>如：1010 1110 &amp; 0000 1111 = 1110</p>
+</li>
+<li>
+<p>奇偶判断</p>
+<p>x &amp; 1 == 0 为偶数，否则为奇数</p>
+</li>
 </ul>
-
-<h2 id="toc_5"><code>|</code></h2>
-
+<h2 id="heading-1"><code>|</code></h2>
 <ul>
-<li><p>指定位设置为1</p>
-
-<p>1010 1110 | 1111 = 1010 1111</p></li>
+<li>
+<p>指定位设置为1</p>
+<p>1010 1110 | 1111 = 1010 1111</p>
+</li>
 </ul>
-
-<h2 id="toc_6"><code>^</code></h2>
-
+<h2 id="heading-2"><code>^</code></h2>
 <blockquote>
 <p>异或的特性：满足交换律（<code>a=a^b b=a^b</code>）,满足结合律（<code>(a^b)^c=a^(b^c)</code>）,对于任何数有：<code>a^a=0,a^0=a</code>,自反：<code>a^1</code>
-s
-+ 交换两个数</p>
+s</p>
 </blockquote>
-
-<pre><code>a = a^b;b = a^b;a = a^b 
-</code></pre>
-
 <ul>
-<li><p>加密</p>
-
-<p>Encode:a = a^b Decode: a=a^b</p></li>
+<li>
+<p>交换两个数</p>
+<p>a = a^b;b = a^b;a = a^b</p>
+</li>
+<li>
+<p>加密</p>
+<p>Encode:a = a^b Decode: a=a^b</p>
+</li>
 </ul>
-
-<h2 id="toc_7"><code>~</code></h2>
-
+<h2 id="heading-3"><code>~</code></h2>
 <blockquote>
 <p>~1 = 0,~0 = 1</p>
 </blockquote>
-
 <ul>
 <li>最低位取反
 1010 0001 &amp; ~1 = 1010 0000</li>
 </ul>
-
-<h2 id="toc_8"><code>&lt;&lt;,&gt;&gt;</code></h2>
-
+<h2 id="heading-4"><code>&lt;&lt;,&gt;&gt;</code></h2>
 <ul>
-<li><p>2的倍数</p>
-
-<p><code>a&gt;&gt;k</code>除以2的k次方（向下取整）、<code>a&lt;&lt;k</code>乘以2的k次方（存在溢出）</p></li>
+<li>
+<p>2的倍数</p>
+<p><code>a&gt;&gt;k</code>除以2的k次方（向下取整）、<code>a&lt;&lt;k</code>乘以2的k次方（存在溢出）</p>
+</li>
 </ul>
-
 <ol>
-<li><p>求平均数</p>
-
-<p><code>(n1&amp;n2)+((n1^n2)&gt;&gt;1)</code> 当遇到非整除，则会向下取整</p></li>
-
-<li><p>取数的第k位</p>
-
-<p><code>a&gt;&gt;k&amp;1</code> 本质是将第k位移到最后。</p></li>
+<li>
+<p>求平均数</p>
+<p><code>(n1&amp;n2)+((n1^n2)&gt;&gt;1)</code> 当遇到非整除，则会向下取整</p>
+</li>
+<li>
+<p>取数的第k位</p>
+<p><code>a&gt;&gt;k&amp;1</code> 本质是将第k位移到最后。</p>
+</li>
 </ol>
-
 <h1 id="四则运算">四则运算</h1>
-
 <h2 id="加法">加法</h2>
-
 <h2 id="减法">减法</h2>
-
 <h2 id="乘法">乘法</h2>
-
 <h2 id="除法">除法</h2>
-
 <h1 id="后缀表达式">后缀表达式</h1>
 
         </div>
@@ -385,7 +358,7 @@ s
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/bit'>bit</a></li>
+                <li><a href='/tags/bit'>bit</a></li>
                 
             </ul>
             
@@ -396,17 +369,46 @@ s
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -470,14 +472,14 @@ s
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -493,7 +495,7 @@ s
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -503,10 +505,8 @@ s
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -542,7 +542,7 @@ s
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -572,7 +572,7 @@ s
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -604,39 +604,6 @@ s
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

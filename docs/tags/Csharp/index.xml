@@ -6,11 +6,7 @@
     <description>Recent content in Csharp on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 25 Jul 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/tags/Csharp/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 25 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Csharp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ILRuntime</title>
       <link>https://DoMySon.github.io/2019/07/ILRuntime/</link>

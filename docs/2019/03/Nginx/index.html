@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Nginx | 薛定谔的BUG</title>
     <meta property="og:title" content="Nginx - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/03/Nginx/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -133,20 +136,7 @@
 <div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-        <nav id="TableOfContents">
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#常用功能">常用功能</a></li>
-<li><a href="#nginx命令">Nginx命令</a></li>
-<li><a href="#nginx正向代理">Nginx正向代理</a></li>
-<li><a href="#nginx文件服务器">Nginx文件服务器</a></li>
-<li><a href="#nginx-conf">nginx.conf</a></li>
-<li><a href="#路径匹配规则">路径匹配规则</a></li>
-<li><a href="#防盗链">防盗链</a></li>
-<li><a href="#高速缓存">高速缓存</a></li>
-<li><a href="#第三方模块编译">第三方模块编译</a></li>
-</ul>
-</nav>
+        <nav id="TableOfContents"></nav>
     </div>
 </div>
 <script type="text/javascript">
@@ -154,8 +144,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -174,6 +164,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -187,7 +181,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Nginx'>Nginx</a></span>
+            <span class="meta-category"><a href='/categories/Nginx'>Nginx</a></span>
             
         </div>
         
@@ -206,355 +200,336 @@
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。</p>
 </blockquote>
-
 <p><a href="http://nginx.org/en/download.html">Nginx下载</a></p>
-
 <h1 id="常用功能">常用功能</h1>
-
 <ul>
-<li><p>负载均衡</p></li>
-
-<li><p>反向代理</p></li>
-
-<li><p>正向代理</p></li>
-
-<li><p>文件服务器</p></li>
+<li>
+<p>负载均衡</p>
+</li>
+<li>
+<p>反向代理</p>
+</li>
+<li>
+<p>正向代理</p>
+</li>
+<li>
+<p>文件服务器</p>
+</li>
 </ul>
-
 <h1 id="nginx命令">Nginx命令</h1>
-
 <ul>
-<li><p><code>nginx -s [reload|start|stop|quit]</code> 向nginx发送一个信号</p></li>
-
-<li><p><code>nginx -c path</code> 指定nginx启动配置，<code>linux</code> 默认在 <code>/etc/nginx/nginx.conf</code> 下</p></li>
-
-<li><p><code>nginx -g &quot;daemon off;&quot;</code>  不以守护进程的方式启动，这点在 <code>docker</code> 中特别重要，默认是以守护进程的方式启动</p></li>
+<li>
+<p><code>nginx -s [reload|start|stop|quit]</code> 向nginx发送一个信号</p>
+</li>
+<li>
+<p><code>nginx -c path</code> 指定nginx启动配置，<code>linux</code> 默认在 <code>/etc/nginx/nginx.conf</code> 下</p>
+</li>
+<li>
+<p><code>nginx -g &quot;daemon off;&quot;</code>  不以守护进程的方式启动，这点在 <code>docker</code> 中特别重要，默认是以守护进程的方式启动</p>
+</li>
 </ul>
-
 <h1 id="nginx正向代理">Nginx正向代理</h1>
-
-<pre><code class="language-nginx">server {
-    # 配置DNS解析IP地址，比如 Google Public DNS，以及超时时间（5秒）
-    resolver 8.8.8.8;    # 必需
-    resolver_timeout 5s;
-
-    # 监听端口
-    listen 8080;
-
-    access_log  /home/reistlin/logs/proxy.access.log;
-    error_log   /home/reistlin/logs/proxy.error.log;
-
-    location / {
-        # 配置正向代理参数
-        proxy_pass $scheme://$host$request_uri;
-        # 解决如果URL中带&quot;.&quot;后Nginx 503错误
-        proxy_set_header Host $http_host;
-
-        # 配置缓存大小
-        proxy_buffers 256 4k;
-        # 关闭磁盘缓存读写减少I/O
-        proxy_max_temp_file_size 0;
-         # 代理连接超时时间
-        proxy_connect_timeout 30;
-
-        # 配置代理服务器HTTP状态缓存时间
-        proxy_cache_valid 200 302 10m;
-        proxy_cache_valid 301 1h;
-        proxy_cache_valid any 1m;
-    }
-}
-</code></pre>
-
-<blockquote>
-<p>添加环境变量  <strong>http_proxy=<a href="http://192.168.1.9:8080">http://192.168.1.9:8080</a></strong>  unix系统需要重新  <code>source /etc/profile</code> 来应用环境变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 配置DNS解析IP地址，比如 Google Public DNS，以及超时时间（5秒）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">resolver</span> <span style="color:#ae81ff">8</span><span style="color:#e6db74">.8.8.8</span>;    <span style="color:#75715e"># 必需
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">resolver_timeout</span> <span style="color:#e6db74">5s</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 监听端口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">8080</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">access_log</span>  <span style="color:#e6db74">/home/reistlin/logs/proxy.access.log</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">error_log</span>   <span style="color:#e6db74">/home/reistlin/logs/proxy.error.log</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 配置正向代理参数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_pass</span> $scheme://$host$request_uri;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 解决如果URL中带&#34;.&#34;后Nginx 503错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $http_host;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 配置缓存大小
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_buffers</span> <span style="color:#ae81ff">256</span> <span style="color:#ae81ff">4k</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 关闭磁盘缓存读写减少I/O
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_max_temp_file_size</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>         <span style="color:#75715e"># 代理连接超时时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_connect_timeout</span> <span style="color:#ae81ff">30</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 配置代理服务器HTTP状态缓存时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">proxy_cache_valid</span> <span style="color:#ae81ff">200</span> <span style="color:#ae81ff">302</span> <span style="color:#ae81ff">10m</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_cache_valid</span> <span style="color:#ae81ff">301</span> <span style="color:#e6db74">1h</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">proxy_cache_valid</span> <span style="color:#e6db74">any</span> <span style="color:#ae81ff">1m</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
+<p>添加环境变量  <strong>http_proxy=http://192.168.1.9:8080</strong>  unix系统需要重新  <code>source /etc/profile</code> 来应用环境变量</p>
 </blockquote>
-
 <h1 id="nginx文件服务器">Nginx文件服务器</h1>
-
-<pre><code class="language-nginx">
-#增加一个 server 模块
-
-server{
-
-    listen       8080;
-    server_name  8.8.8.8;
-    charset utf-8; #设置编码，防止乱码
-    #root         /usr/share/nginx/html;
-    root         /data/;
-    location / {
-        autoindex on;               #显示目录
-
-        autoindex_exact_size on;    #显示文件大小
-
-        autoindex_localtime on;     #显示文件时间
-
-        auth_basic &quot;treasure&quot;;     #密码提示短语
-
-        auth_basic_user_file /blog/nginx/htpasswd; #认证密码访问路径
-    }
-
-    error_page 404 /40x.html;
-    
-    location = /40x.html {
-
-    }
-}
-</code></pre>
-
-<h1 id="nginx-conf">nginx.conf</h1>
-
-<pre><code class="language-nginx">#user  nobody;                          #运行用户，可不设置
-worker_processes  1;                    #工作进程，一般为cpu荷属
-
-#error_log  logs/error.log;             #日志文件路径，后面是日志等级
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-
-#pid        logs/nginx.pid;             #进程pid文件路径
-
-
-events {
-    use epoll;                          #epoll是多路I/O复用，可极大提高性能，select,poll,kqueue
-
-    accept_mutex on;                    # 连接互斥，防止惊群现象
-
-    multi-accept on;                    # 进程接收多个连接
-
-    worker_connections  1024;           #单个worker最大的并发数
-}
-
-
-http {
-    include       mime.types;           #文件拓展名映射表
-
-    default_type  application/octet-stream; #默认文件类型
-
-    log_format  format  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
-                     '$status $body_bytes_sent &quot;$http_referer&quot; '
-                      '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
-
-                                        #日志格式
-
-    #access_log  logs/access.log  format;
-
-    sendfile        on;                     # 允许sendfile方式传输文件，默认为off，可以在http块，server块，location块
-           
-    sendfile_max_chunk 100k;                #每个进程每次调用传输数量不能大于设定的值，默认为0，即不设上限
-
-    #tcp_nopush     on;                     # 默认关闭，关闭 nagle 算法，同 sendfile 一起使用
-
-    #tcp_nodelay    on;                     # 与 tcp_nopush互斥
-
-    keepalive_timeout  65;                  # 连接超时时间，单位s
-
-
-    #----------------- gzip --------------------#
-
-    #gzip  on;                                  #开启 gzip压缩功能
-
-    #gzip_min_length 1k;                        #允许最小压缩字节数，建议大于1k
-
-    #gzip_buffers 4 32k;                        #分配4块大小为32k的缓冲块
-
-    #gzip_http_version 1.0;                     #gzip版本
-
-    #gzip_comp_level 8;                         #压缩等级 0~9
-    
-    #gzip_types         text/plain application/x-javascropt text/css application/xml #使用gzip压缩的类型
-
-    #gzip_vary on;
-
-    error_page 404 http://xxxxx.yyy;             # http全局错误页
-
-    upstream serverName{
-        server 8.8.8.8:80 weight=1 max_fails=2 fail_timeout=30s;
-
-        server 0.0.0.0:81 backup; #热备
-
-        #若只有一个负载服务器，则不能设置权重，最大失败数为2，超过则认为主机不可用，
-        #30s表示两次连接失败的超时时间间隔
-
-        # ll+weight：轮询加权算法，默认
-        
-        # ip_hash: 哈希算法，可能使部分服务器负载变大
-
-        # least_conn: 最少链接，优先分配
-
-        # least_time: 相应最快的权重越大
-    }
-                                                      
-
-    server {
-        listen       80;                                #监听端口
-        server_name  localhost;                         #监听地址或域名
-
-        #root                                           #此server块全局资源路径
-        #index index.html  index.htm                    #此server块全局索引界面,首页排序
-
-        #charset koi8-r;
-
-        #access_log  logs/host.access.log  main;
-
-        #error_page 404 405 /40x.html
-        #error_page 500 502 503 504 /50x.html           #server全局错误页面定向到location
-
-        location / {
-            root   html;
-            index  index.html index.htm;
-            error_page 404 405 /50x.html #错误页面定向到其他 location
-        }
-
-        location /proxy/ {
-           proxy_pass http://1.1.1.1:80/proxy/;        #代理网址
-           proxy_set_header Host $host;                #代理网站域名
-           proxy_set_header X-Real-IP $remote_addr;    #远程地址
-           proxy_set_header X-Forwarded-For $proxy_add-x_forwarder_for;
-        #
-
-        #error_page  404              /404.html;
-
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-
-        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-        #
-        #location ~ \.php$ {
-        #    proxy_pass   http://127.0.0.1;
-        #}
-
-        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        #
-        #location ~ \.php$ {
-        #    root           html;
-        #    fastcgi_pass   127.0.0.1:9000;
-        #    fastcgi_index  index.php;
-        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-        #    include        fastcgi_params;
-        #}
-
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        #location ~ /\.ht {
-        #    deny  all;
-        #}
-
-        #location ~.*\.(js|css)?$ {
-            #expires 30d;                   #客户端缓存js,css 30天
-            #access_log off;                #关闭日志
-        #}
-
-        #location /resources/ {
-            #deny all;              #禁止所有ip访问
-            #allow 4.4.4.4;
-            #aloow 5.5.5.5;         #允许访问的ip
-        #}
-    }
-
-
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    #
-    #server {
-    #    listen       8000;
-    #    listen       somename:8080;
-    #    server_name  somename  alias  another.alias;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-
-    # HTTPS server
-    #
-    #server {
-    #    listen       443 ssl;
-    #    server_name  localhost;
-
-    #    ssl_certificate      cert.pem;
-    #    ssl_certificate_key  cert.key;
-
-    #    ssl_session_cache    shared:SSL:1m;
-    #    ssl_session_timeout  5m;
-
-    #    ssl_ciphers  HIGH:!aNULL:!MD5;
-    #    ssl_prefer_server_ciphers  on;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-}
-</code></pre>
-
-<h1 id="路径匹配规则">路径匹配规则</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#增加一个 server 模块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">server{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">listen</span>       <span style="color:#ae81ff">8080</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">server_name</span>  <span style="color:#ae81ff">8</span><span style="color:#e6db74">.8.8.8</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">charset</span> <span style="color:#e6db74">utf-8</span>; <span style="color:#75715e">#设置编码，防止乱码
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#root         /usr/share/nginx/html;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">root</span>         <span style="color:#e6db74">/data/</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">autoindex</span> <span style="color:#66d9ef">on</span>;               <span style="color:#75715e">#显示目录
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">autoindex_exact_size</span> <span style="color:#66d9ef">on</span>;    <span style="color:#75715e">#显示文件大小
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">autoindex_localtime</span> <span style="color:#66d9ef">on</span>;     <span style="color:#75715e">#显示文件时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">auth_basic</span> <span style="color:#e6db74">&#34;treasure&#34;</span>;     <span style="color:#75715e">#密码提示短语
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">auth_basic_user_file</span> <span style="color:#e6db74">/blog/nginx/htpasswd</span>; <span style="color:#75715e">#认证密码访问路径
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">error_page</span> <span style="color:#ae81ff">404</span> <span style="color:#e6db74">/40x.html</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">location</span> = <span style="color:#e6db74">/40x.html</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">}</span>
+</span></span></code></pre></div><h1 id="nginxconf">nginx.conf</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#75715e">#user  nobody;                          #运行用户，可不设置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">worker_processes</span>  <span style="color:#ae81ff">1</span>;                    <span style="color:#75715e">#工作进程，一般为cpu荷属
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#error_log  logs/error.log;             #日志文件路径，后面是日志等级
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#error_log  logs/error.log  notice;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#error_log  logs/error.log  info;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#pid        logs/nginx.pid;             #进程pid文件路径
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">events</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">use</span> <span style="color:#e6db74">epoll</span>;                          <span style="color:#75715e">#epoll是多路I/O复用，可极大提高性能，select,poll,kqueue
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">accept_mutex</span> <span style="color:#66d9ef">on</span>;                    <span style="color:#75715e"># 连接互斥，防止惊群现象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">multi-accept</span> <span style="color:#66d9ef">on</span>;                    <span style="color:#75715e"># 进程接收多个连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">worker_connections</span>  <span style="color:#ae81ff">1024</span>;           <span style="color:#75715e">#单个worker最大的并发数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">http</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">include</span>       <span style="color:#e6db74">mime.types</span>;           <span style="color:#75715e">#文件拓展名映射表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">default_type</span>  <span style="color:#e6db74">application/octet-stream</span>; <span style="color:#75715e">#默认文件类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">log_format</span>  <span style="color:#e6db74">format</span>  <span style="color:#e6db74">&#39;</span>$remote_addr <span style="color:#e6db74">-</span> $remote_user <span style="color:#e6db74">[</span>$time_local] <span style="color:#e6db74">&#34;</span>$request&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#e6db74">&#39;</span>$status $body_bytes_sent <span style="color:#e6db74">&#34;</span>$http_referer&#34; <span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#39;&#34;</span>$http_user_agent&#34; <span style="color:#e6db74">&#34;</span>$http_x_forwarded_for&#34;&#39;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                                        <span style="color:#75715e">#日志格式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#access_log  logs/access.log  format;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">sendfile</span>        <span style="color:#66d9ef">on</span>;                     <span style="color:#75715e"># 允许sendfile方式传输文件，默认为off，可以在http块，server块，location块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>           
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">sendfile_max_chunk</span> <span style="color:#ae81ff">100k</span>;                <span style="color:#75715e">#每个进程每次调用传输数量不能大于设定的值，默认为0，即不设上限
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#tcp_nopush     on;                     # 默认关闭，关闭 nagle 算法，同 sendfile 一起使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#tcp_nodelay    on;                     # 与 tcp_nopush互斥
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">keepalive_timeout</span>  <span style="color:#ae81ff">65</span>;                  <span style="color:#75715e"># 连接超时时间，单位s
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#----------------- gzip --------------------#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip  on;                                  #开启 gzip压缩功能
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_min_length 1k;                        #允许最小压缩字节数，建议大于1k
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_buffers 4 32k;                        #分配4块大小为32k的缓冲块
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_http_version 1.0;                     #gzip版本
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_comp_level 8;                         #压缩等级 0~9
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_types         text/plain application/x-javascropt text/css application/xml #使用gzip压缩的类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#gzip_vary on;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">error_page</span> <span style="color:#ae81ff">404</span> <span style="color:#e6db74">http://xxxxx.yyy</span>;             <span style="color:#75715e"># http全局错误页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">upstream</span> <span style="color:#e6db74">serverName</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server</span> 8.8.8.8:<span style="color:#ae81ff">80</span> <span style="color:#e6db74">weight=1</span> <span style="color:#e6db74">max_fails=2</span> <span style="color:#e6db74">fail_timeout=30s</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">server</span> 0.0.0.0:<span style="color:#ae81ff">81</span> <span style="color:#e6db74">backup</span>; <span style="color:#75715e">#热备
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#若只有一个负载服务器，则不能设置权重，最大失败数为2，超过则认为主机不可用，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#30s表示两次连接失败的超时时间间隔
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ll+weight：轮询加权算法，默认
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ip_hash: 哈希算法，可能使部分服务器负载变大
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># least_conn: 最少链接，优先分配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># least_time: 相应最快的权重越大
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>                                                      
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">server</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">listen</span>       <span style="color:#ae81ff">80</span>;                                <span style="color:#75715e">#监听端口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">server_name</span>  <span style="color:#e6db74">localhost</span>;                         <span style="color:#75715e">#监听地址或域名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#root                                           #此server块全局资源路径
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#index index.html  index.htm                    #此server块全局索引界面,首页排序
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#charset koi8-r;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#access_log  logs/host.access.log  main;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#error_page 404 405 /40x.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#error_page 500 502 503 504 /50x.html           #server全局错误页面定向到location
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">root</span>   <span style="color:#e6db74">html</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">index</span>  <span style="color:#e6db74">index.html</span> <span style="color:#e6db74">index.htm</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">error_page</span> <span style="color:#ae81ff">404</span> <span style="color:#ae81ff">405</span> <span style="color:#e6db74">/50x.html</span> <span style="color:#75715e">#错误页面定向到其他 location
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">location</span> <span style="color:#e6db74">/proxy/</span> {
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://1.1.1.1:80/proxy/</span>;        <span style="color:#75715e">#代理网址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>           <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">Host</span> $host;                <span style="color:#75715e">#代理网站域名
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>           <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Real-IP</span> $remote_addr;    <span style="color:#75715e">#远程地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>           <span style="color:#f92672">proxy_set_header</span> <span style="color:#e6db74">X-Forwarded-For</span> $proxy_add-x_forwarder_for;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#error_page  404              /404.html;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># redirect server error pages to the static page /50x.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">error_page</span>   <span style="color:#ae81ff">500</span> <span style="color:#ae81ff">502</span> <span style="color:#ae81ff">503</span> <span style="color:#ae81ff">504</span>  <span style="color:#e6db74">/50x.html</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">location</span> = <span style="color:#e6db74">/50x.html</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">root</span>   <span style="color:#e6db74">html</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># proxy the PHP scripts to Apache listening on 127.0.0.1:80
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#location ~ \.php$ {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    proxy_pass   http://127.0.0.1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#location ~ \.php$ {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    root           html;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    fastcgi_pass   127.0.0.1:9000;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    fastcgi_index  index.php;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    include        fastcgi_params;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># deny access to .htaccess files, if Apache&#39;s document root
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e"># concurs with nginx&#39;s one
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#location ~ /\.ht {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#    deny  all;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#location ~.*\.(js|css)?$ {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">#expires 30d;                   #客户端缓存js,css 30天
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">#access_log off;                #关闭日志
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#location /resources/ {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">#deny all;              #禁止所有ip访问
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">#allow 4.4.4.4;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">#aloow 5.5.5.5;         #允许访问的ip
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># another virtual host using mix of IP-, name-, and port-based configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#server {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    listen       8000;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    listen       somename:8080;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    server_name  somename  alias  another.alias;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    location / {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#        root   html;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#        index  index.html index.htm;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># HTTPS server
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#server {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    listen       443 ssl;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    server_name  localhost;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    ssl_certificate      cert.pem;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    ssl_certificate_key  cert.key;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    ssl_session_cache    shared:SSL:1m;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    ssl_session_timeout  5m;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    ssl_ciphers  HIGH:!aNULL:!MD5;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    ssl_prefer_server_ciphers  on;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#    location / {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#        root   html;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#        index  index.html index.htm;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#    }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h1 id="路径匹配规则">路径匹配规则</h1>
 <blockquote>
 <p>访问  <code>http://treasure.com/abc/index.html</code></p>
 </blockquote>
-
-<pre><code class="language-nginx">
-location /abc/ {
-    proxy_pass http://treasure.com/; # 有 / 后缀会被location 截断
-    #将代理成 http://treasure.com/index.html
-}
-
-
-location /abc/ {
-    proxy_pass http://treasure.com; # 无 / 后最会被完整转发
-    #将代理成 http://treasure.com/abc/index.html
-}
-
-location / {
-    #通用匹配 任何请求都会被捕获
-}
-
-location ^~ /res/ {
-    # 匹配任何以 /res/ 开头的URL，并停止向下搜索，任何正则表达式不会被测试
-}
-</code></pre>
-
-<h1 id="防盗链">防盗链</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">location</span> <span style="color:#e6db74">/abc/</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://treasure.com/</span>; <span style="color:#75715e"># 有 / 后缀会被location 截断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#将代理成 http://treasure.com/index.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">location</span> <span style="color:#e6db74">/abc/</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">proxy_pass</span> <span style="color:#e6db74">http://treasure.com</span>; <span style="color:#75715e"># 无 / 后最会被完整转发
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#将代理成 http://treasure.com/abc/index.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">location</span> <span style="color:#e6db74">/</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#通用匹配 任何请求都会被捕获
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">location</span> <span style="color:#e6db74">^~</span> <span style="color:#e6db74">/res/</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 匹配任何以 /res/ 开头的URL，并停止向下搜索，任何正则表达式不会被测试
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h1 id="防盗链">防盗链</h1>
 <blockquote>
 <p>http标准协议中有专门的字段记录 <code>referer</code>，他可以追溯到请求时从哪个网站链接过来的，来对于资源文件，可以跟踪到包含显示他的网页地址是什么。因此所有防盗链方法都是基于这个Referer字段，nginx防盗链是通过分析访问资源的源网站，即referer来自哪里</p>
 </blockquote>
-
-<pre><code class="language-nginx">location ~* \.(gif|jpg|png|bmp)$ {
-
-    valid_referers none blocked a.b.c a1.b1.c1
-    #如果浏览器直接打开img的url，这时候是没有referer的，如果容许这一类，那么配置valid_referers可以包括none
-
-    #如果referer不为空，但是里面的内容被防火墙或者代理服务器删除了，也容许这一类的话，可以通过配置blocked来绕过。
-
-    # 容许来自指定网站的请求
-    if ($invalid_referer) {
-
-        return 403;
-
-        #rewrite ^/ http://www.any.com/403.jpg;
-    }
-}
-</code></pre>
-
-<h1 id="高速缓存">高速缓存</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">location</span> ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">\.(gif|jpg|png|bmp)</span>$ {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">valid_referers</span> <span style="color:#e6db74">none</span> <span style="color:#e6db74">blocked</span> <span style="color:#e6db74">a.b.c</span> <span style="color:#e6db74">a1.b1.c1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#如果浏览器直接打开img的url，这时候是没有referer的，如果容许这一类，那么配置valid_referers可以包括none
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#如果referer不为空，但是里面的内容被防火墙或者代理服务器删除了，也容许这一类的话，可以通过配置blocked来绕过。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 容许来自指定网站的请求
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#e6db74">if</span> <span style="color:#e6db74">(</span>$invalid_referer<span style="color:#e6db74">)</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">return</span> <span style="color:#ae81ff">403</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#rewrite ^/ http://www.any.com/403.jpg;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="高速缓存">高速缓存</h1>
 <blockquote>
 <p>Nginx可以缓存一些文件（一般是静态文件），减少Nginx与后端服务器的IO，提高用户访问速度。而且当后端服务器宕机时，Nginx服务器能给出相应的缓存文件响应相关的用户请求。</p>
 </blockquote>
-
 <h1 id="第三方模块编译">第三方模块编译</h1>
-
 <p>待完善</p>
         </div>
 
@@ -568,9 +543,9 @@ location ^~ /res/ {
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/Web'>Web</a></li>
+                <li><a href='/tags/Web'>Web</a></li>
                 
-                <li><a href='https://DoMySon.github.io/tags/Proxy'>Proxy</a></li>
+                <li><a href='/tags/Proxy'>Proxy</a></li>
                 
             </ul>
             
@@ -581,17 +556,46 @@ location ^~ /res/ {
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -655,14 +659,14 @@ location ^~ /res/ {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -678,7 +682,7 @@ location ^~ /res/ {
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -688,10 +692,8 @@ location ^~ /res/ {
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -727,7 +729,7 @@ location ^~ /res/ {
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -757,7 +759,7 @@ location ^~ /res/ {
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -789,39 +791,6 @@ location ^~ /res/ {
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

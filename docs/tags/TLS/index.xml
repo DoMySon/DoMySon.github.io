@@ -6,11 +6,7 @@
     <description>Recent content in TLS on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/tags/TLS/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/TLS/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TLS</title>
       <link>https://DoMySon.github.io/2020/02/TLS/</link>
@@ -18,7 +14,6 @@
       
       <guid>https://DoMySon.github.io/2020/02/TLS/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;p&gt;传输层安全性协议（Transport Layer Security），及其前身 &lt;code&gt;SSL3.0&lt;/code&gt; 之后安全套接层（Secure Sockets Layer，缩写作SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。SSL包含记录层（Record Layer）和传输层，记录层协议确定传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用&lt;code&gt;RSA&lt;/code&gt; 加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。&lt;/p&gt;</description>
     </item>
     

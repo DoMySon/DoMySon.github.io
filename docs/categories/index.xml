@@ -6,11 +6,7 @@
     <description>Recent content in Categories on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C</title>
       <link>https://DoMySon.github.io/categories/C/</link>
@@ -75,11 +71,11 @@
     </item>
     
     <item>
-      <title>Database</title>
-      <link>https://DoMySon.github.io/categories/Database/</link>
+      <title>database</title>
+      <link>https://DoMySon.github.io/categories/database/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Database/</guid>
+      <guid>https://DoMySon.github.io/categories/database/</guid>
       <description></description>
     </item>
     
@@ -89,15 +85,6 @@
       <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/categories/Protobuf3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>database</title>
-      <link></link>
-      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid></guid>
       <description></description>
     </item>
     

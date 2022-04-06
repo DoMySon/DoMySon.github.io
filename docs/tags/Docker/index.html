@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Docker | 薛定谔的BUG</title>
     <meta property="og:title" content="Docker - 薛定谔的BUG">
@@ -16,20 +19,20 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/tags/Docker/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://DoMySon.github.io/tags/Docker/index.xml" title="薛定谔的BUG" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/tags/Docker/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -88,29 +91,34 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Docker'>Docker</a>
+            <a href='/categories/Docker'>Docker</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="docker-network">Docker Network</h1>
-
 <blockquote>
 <p><code>Docker</code> 在安装时候，默认创建三个网络 <code>bridge（默认）</code>,<code>none</code>,<code>host</code>。</p>
-
+</blockquote>
+<blockquote>
 <p><code>docker network create --driver [bridge|host|none|container] networkname</code></p>
 </blockquote>
-
 <ul>
-<li><p><code>bridge</code>：默认模式，容器使用独立 network Namespace，并连接到<code>docker0</code>虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 <code>docker0</code> 中。</p></li>
-
-<li><p><code>host</code>：与宿主机共享网络，此时容器没有使用网络的namespace，<code>-p</code> 将不会起任何作用。</p></li>
-
-<li><p><code>container</code>：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。</p></li>
-
-<li><p><code>none</code>：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。</p></li>
-
-<li><p><code>container</code>：与指定的容器共享网络，如果有的话。</p></li>
+<li>
+<p><code>bridge</code>：默认模式，容器使用独立 network Namespace，并连接到<code>docker0</code>虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 <code>docker0</code> 中。</p>
+</li>
+<li>
+<p><code>host</code>：与宿主机共享网络，此时容器没有使用网络的namespace，<code>-p</code> 将不会起任何作用。</p>
+</li>
+<li>
+<p><code>container</code>：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。</p>
+</li>
+<li>
+<p><code>none</code>：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。</p>
+</li>
+<li>
+<p><code>container</code>：与指定的容器共享网络，如果有的话。</p>
+</li>
 </ul>……
             <p class="readmore"><a href="https://DoMySon.github.io/2020/01/DockerNetwork/">阅读全文</a></p>
         </div>
@@ -129,17 +137,17 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Docker'>Docker</a>
+            <a href='/categories/Docker'>Docker</a>
             
         </div>
         
         <div class="post-content">
             <blockquote>
 <p><code>Docker-Compose</code> （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p>
-
+</blockquote>
+<blockquote>
 <p><a href="https://docs.docker.com/compose/">官方文档</a></p>
 </blockquote>
-
 <p><code>Docker-Compose</code>将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。</p>……
             <p class="readmore"><a href="https://DoMySon.github.io/2019/11/Docker-Compose/">阅读全文</a></p>
         </div>
@@ -158,19 +166,22 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Docker'>Docker</a>
+            <a href='/categories/Docker'>Docker</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="docker简介">Docker简介</h1>
-
 <ul>
-<li><p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p></li>
-
-<li><p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p></li>
-
-<li><p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p></li>
+<li>
+<p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p>
+</li>
+<li>
+<p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p>
+</li>
+<li>
+<p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p>
+</li>
 </ul>……
             <p class="readmore"><a href="https://DoMySon.github.io/2019/03/Docker/">阅读全文</a></p>
         </div>
@@ -189,13 +200,12 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Docker'>Docker</a>
+            <a href='/categories/Docker'>Docker</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="dockerfile">Dockerfile</h1>
-
 <blockquote>
 <p><code>Dockerfile</code> 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。<code>docker build</code> 命令用于从 <code>Dockerfile</code>构建映像。命令中使用 <code>-f</code> 标志指向文件系统中任何位置的 <code>Dockerfile</code> 文件。</p>
 </blockquote>……
@@ -211,6 +221,34 @@
 
 
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -274,14 +312,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -297,7 +335,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -307,10 +345,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -346,7 +382,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -376,7 +412,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -408,28 +444,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

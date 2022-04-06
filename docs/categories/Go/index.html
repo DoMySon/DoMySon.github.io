@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Go | 薛定谔的BUG</title>
     <meta property="og:title" content="Go - 薛定谔的BUG">
@@ -16,20 +19,20 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/categories/Go/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://DoMySon.github.io/categories/Go/index.xml" title="薛定谔的BUG" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/categories/Go/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -88,7 +91,7 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
@@ -111,22 +114,18 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="如何启用gc跟踪">如何启用GC跟踪</h1>
-
 <blockquote>
 <p>GODEBUG=gctrace=1 go run *.go</p>
 </blockquote>
-
 <p>其中 <code>gctrace=1</code> 表示只针对这个进程进行GC追踪</p>
-
 <h1 id="输出分析">输出分析</h1>
-
-<pre><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
+<pre tabindex="0"><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
 scvg: 0 MB released
 scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
 GC forced
@@ -148,7 +147,7 @@ GC forced
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
@@ -171,7 +170,7 @@ GC forced
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
@@ -194,14 +193,15 @@ GC forced
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
         <div class="post-content">
             <blockquote>
 <p><code>CSP(communicating sequential processes)</code> 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 <code>Actor</code> 模型不同，<code>CSP</code> 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 <code>goroutine，</code> 消息通道对应的就是 <code>channel</code>。<code>CSP</code> 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。</p>
-
+</blockquote>
+<blockquote>
 <p><code>channel</code> 提供了一种通信机制，通过它，一个 <code>goroutine</code> 可以与另一 <code>goroutine</code> 发送消息。<code>channel</code> 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 <code>len()</code> 获取通道当前缓冲数量。 <code>cap()</code> 获取通道最大缓冲。</p>
 </blockquote>……
             <p class="readmore"><a href="https://DoMySon.github.io/2020/01/Channel/">阅读全文</a></p>
@@ -221,13 +221,12 @@ GC forced
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="module">Module</h1>
-
 <p>Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 <code>go.mod</code> 文件来建立依赖管理。</p>……
             <p class="readmore"><a href="https://DoMySon.github.io/2019/12/Go-Module/">阅读全文</a></p>
         </div>
@@ -246,13 +245,12 @@ GC forced
         <div class="post-meta meta-category">
             |
             
-            <a href='https://DoMySon.github.io/categories/Go'>Go</a>
+            <a href='/categories/Go'>Go</a>
             
         </div>
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
 </blockquote>……
@@ -288,6 +286,34 @@ GC forced
 
 
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -351,14 +377,14 @@ GC forced
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -374,7 +400,7 @@ GC forced
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -384,10 +410,8 @@ GC forced
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -423,7 +447,7 @@ GC forced
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -453,7 +477,7 @@ GC forced
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -485,28 +509,6 @@ GC forced
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

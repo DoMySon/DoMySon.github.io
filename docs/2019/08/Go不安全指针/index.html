@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Go不安全指针 | 薛定谔的BUG</title>
     <meta property="og:title" content="Go不安全指针 - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,17 +137,11 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#unsafe-包"><code>unsafe</code> 包</a></li>
-<li><a href="#分析">分析</a></li>
-<li><a href="#注意">注意</a></li>
-<li><a href="#应用">应用</a>
-<ul>
-<li><a href="#获取-slice-的长度和容量">获取 <code>slice</code> 的长度和容量</a></li>
-<li><a href="#string-和-slice-的转换"><code>string</code> 和 <code>slice</code> 的转换</a></li>
-<li><a href="#cgo">Cgo</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#获取-slice-的长度和容量">获取 <code>slice</code> 的长度和容量</a></li>
+    <li><a href="#string-和-slice-的转换"><code>string</code> 和 <code>slice</code> 的转换</a></li>
+    <li><a href="#cgo">Cgo</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -153,8 +150,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -173,6 +170,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -186,7 +187,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
         </div>
         
@@ -207,114 +208,106 @@
             <blockquote>
 <p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
 </blockquote>
-
 <h1 id="unsafe-包"><code>unsafe</code> 包</h1>
-
-<pre><code class="language-go">//定义
-type ArbitraryType int
-
-type Pointer *ArbitraryType 
-
-//函数
-func Sizeof(x AribitraryType) uintptr{}
-
-func Offsetof(x AribitraryType) uintptr{}
-
-func Alignof(x AribitraryType) uintptr{}
-</code></pre>
-
-<h1 id="分析">分析</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//定义
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ArbitraryType</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Pointer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ArbitraryType</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Sizeof</span>(<span style="color:#a6e22e">x</span> <span style="color:#a6e22e">AribitraryType</span>) <span style="color:#66d9ef">uintptr</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Offsetof</span>(<span style="color:#a6e22e">x</span> <span style="color:#a6e22e">AribitraryType</span>) <span style="color:#66d9ef">uintptr</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Alignof</span>(<span style="color:#a6e22e">x</span> <span style="color:#a6e22e">AribitraryType</span>) <span style="color:#66d9ef">uintptr</span>{}
+</span></span></code></pre></div><h1 id="分析">分析</h1>
 <ul>
-<li><p><code>Pointer</code> : 指向任意类型，类似于 C 中的 <code>void*</code>。</p></li>
-
-<li><p><code>Sizeof</code> : 返回所传类型的大小，比如指针，只返回指针的本身（<code>x64 8byte x32 4byte</code>），而不会返回所指向的内存大小。</p></li>
-
-<li><p><code>Offsetof</code> : 返回 <code>struct</code> 成员在内存中的位置，相对于此结构体的头位置，所传参数必须是结构体成员。传入指针，或者结构体本身，会 <code>error</code></p></li>
-
-<li><p><code>Alignof</code> : 返回 M，M 是内存对齐时的倍数。</p></li>
-
-<li><p>任意指针都可以和 <code>unsafe.Pointer</code> 相互转换。</p></li>
-
-<li><p><code>uintptr</code> 可以和 <code>unsafe.Pointer</code> 相互转换。</p></li>
+<li>
+<p><code>Pointer</code> : 指向任意类型，类似于 C 中的 <code>void*</code>。</p>
+</li>
+<li>
+<p><code>Sizeof</code> : 返回所传类型的大小，比如指针，只返回指针的本身（<code>x64 8byte x32 4byte</code>），而不会返回所指向的内存大小。</p>
+</li>
+<li>
+<p><code>Offsetof</code> : 返回 <code>struct</code> 成员在内存中的位置，相对于此结构体的头位置，所传参数必须是结构体成员。传入指针，或者结构体本身，会 <code>error</code></p>
+</li>
+<li>
+<p><code>Alignof</code> : 返回 M，M 是内存对齐时的倍数。</p>
+</li>
+<li>
+<p>任意指针都可以和 <code>unsafe.Pointer</code> 相互转换。</p>
+</li>
+<li>
+<p><code>uintptr</code> 可以和 <code>unsafe.Pointer</code> 相互转换。</p>
+</li>
 </ul>
-
 <blockquote>
 <p>综上，<code>unsafe.Pointer</code> 是不能进行指针运算的，只能先转为 <code>uintptr</code> 计算完再转回 <code>unsafe.Pointer</code> ,还有一点要注意的是，<code>uintptr</code> 并没有指针的语义，意思就是 <code>uintptr</code> 所指向的对象会被 gc。而 <code>unsafe.Pointer</code> 有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。</p>
 </blockquote>
-
 <h1 id="注意">注意</h1>
-
 <ul>
-<li><p><code>uintptr</code>：只代表了一个地址的值，其本身是一个整形变量，那么意味着其表示地址的内存可能会被GC。</p></li>
-
-<li><p><code>unsafe.Poniter</code>：本身指向一个确定内存的地址，相当于其它类型指针的一个抽象，那么其指向的内存将不会被GC。</p></li>
+<li>
+<p><code>uintptr</code>：只代表了一个地址的值，其本身是一个整形变量，那么意味着其表示地址的内存可能会被GC。</p>
+</li>
+<li>
+<p><code>unsafe.Poniter</code>：本身指向一个确定内存的地址，相当于其它类型指针的一个抽象，那么其指向的内存将不会被GC。</p>
+</li>
 </ul>
-
 <h1 id="应用">应用</h1>
-
 <h2 id="获取-slice-的长度和容量">获取 <code>slice</code> 的长度和容量</h2>
-
-<pre><code class="language-go">//runtime/slice.go
-type slice struct{
-    array unsafe.Pointer
-    len int
-    cap int
-}
-
-//而make时创造一个 slice 的结构体
-func makeslice(et *_type,len,cap int) slice
-
-//那么
-s := make([]int,10,20)
-
-//这一步网上教程有一个错误：直接加上8的偏移，这在x32机器上这个偏移将会是4
-l := *(*int(unsafe.Pointer((uintptr(unsafe.Pointer(&amp;s))+unsafe.Alignof(s)))))
-
-c := *(*int(unsafe.Pointer((uintptr(unsafe.Pointer(&amp;s))+unsafe.Alignof(s)*2))))
-</code></pre>
-
-<h2 id="string-和-slice-的转换"><code>string</code> 和 <code>slice</code> 的转换</h2>
-
-<pre><code class="language-go">//高性能的做法是 zero-copy，那么共享底层 []byte 即可
-
-//reflect/value.go
-type StringHeader struct {
-    Data uintptr
-    Len int
-}
-
-type SliceHeader struct {
-    Data uintptr
-    Len int
-    Cap int
-}
-
-//所以
-func String2Bytes(s string) []byte {
-	strH := (*reflect.StringHeader)(unsafe.Pointer(&amp;s))
-	bh := reflect.SliceHeader{
-		Data: strH.Data,
-		Len:  strH.Len,
-		Cap:  strH.Len,
-	}
-	return *(*[]byte)(unsafe.Pointer(&amp;bh))
-}
-
-func Bytes2String(b []byte) string {
-	byteH := (*reflect.SliceHeader)(unsafe.Pointer(&amp;b))
-	sh := reflect.StringHeader{
-		Data: byteH.Data,
-		Len:  byteH.Len,
-	}
-	return *(*string)(unsafe.Pointer(&amp;sh))
-}
-</code></pre>
-
-<h2 id="cgo">Cgo</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//runtime/slice.go
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">slice</span> <span style="color:#66d9ef">struct</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">array</span> <span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">len</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cap</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//而make时创造一个 slice 的结构体
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makeslice</span>(<span style="color:#a6e22e">et</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">_type</span>,<span style="color:#a6e22e">len</span>,<span style="color:#a6e22e">cap</span> <span style="color:#66d9ef">int</span>) <span style="color:#a6e22e">slice</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//那么
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">int</span>,<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">20</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//这一步网上教程有一个错误：直接加上8的偏移，这在x32机器上这个偏移将会是4
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>int(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>((uintptr(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">s</span>))<span style="color:#f92672">+</span><span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Alignof</span>(<span style="color:#a6e22e">s</span>)))))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>int(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>((uintptr(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">s</span>))<span style="color:#f92672">+</span><span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Alignof</span>(<span style="color:#a6e22e">s</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>))))
+</span></span></code></pre></div><h2 id="string-和-slice-的转换"><code>string</code> 和 <code>slice</code> 的转换</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//高性能的做法是 zero-copy，那么共享底层 []byte 即可
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//reflect/value.go
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StringHeader</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Data</span> <span style="color:#66d9ef">uintptr</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Len</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SliceHeader</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Data</span> <span style="color:#66d9ef">uintptr</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Len</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Cap</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//所以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">String2Bytes</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">byte</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">strH</span> <span style="color:#f92672">:=</span> (<span style="color:#f92672">*</span><span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">StringHeader</span>)(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">s</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">bh</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">SliceHeader</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Data</span>: <span style="color:#a6e22e">strH</span>.<span style="color:#a6e22e">Data</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Len</span>:  <span style="color:#a6e22e">strH</span>.<span style="color:#a6e22e">Len</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Cap</span>:  <span style="color:#a6e22e">strH</span>.<span style="color:#a6e22e">Len</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>[]<span style="color:#66d9ef">byte</span>)(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">bh</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Bytes2String</span>(<span style="color:#a6e22e">b</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">byteH</span> <span style="color:#f92672">:=</span> (<span style="color:#f92672">*</span><span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">SliceHeader</span>)(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">b</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">sh</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">StringHeader</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Data</span>: <span style="color:#a6e22e">byteH</span>.<span style="color:#a6e22e">Data</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Len</span>:  <span style="color:#a6e22e">byteH</span>.<span style="color:#a6e22e">Len</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span><span style="color:#66d9ef">string</span>)(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sh</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="cgo">Cgo</h2>
 <p><a href="/post/Cgo">Cgo</a></p>
-
 <blockquote>
 <p>还没写</p>
 </blockquote>
@@ -339,7 +332,7 @@ func Bytes2String(b []byte) string {
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/Pointer'>Pointer</a></li>
+                <li><a href='/tags/Pointer'>Pointer</a></li>
                 
             </ul>
             
@@ -350,17 +343,46 @@ func Bytes2String(b []byte) string {
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -424,14 +446,14 @@ func Bytes2String(b []byte) string {
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -447,7 +469,7 @@ func Bytes2String(b []byte) string {
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -457,10 +479,8 @@ func Bytes2String(b []byte) string {
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -496,7 +516,7 @@ func Bytes2String(b []byte) string {
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -526,7 +546,7 @@ func Bytes2String(b []byte) string {
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -558,39 +578,6 @@ func Bytes2String(b []byte) string {
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

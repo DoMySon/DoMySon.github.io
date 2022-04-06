@@ -2,8 +2,7 @@
 baseURL = "https://DoMySon.github.io/"
 #语言
 languageCode = "zh-CN"
-#默认语言
-defaultContentLanguage = "zh-CN"
+
 # 是否自动检测中文|英文字数
 hasCJKLanguage = true
 # 网站主题
@@ -93,11 +92,11 @@ moreMeta = true
 #title
 #og:title
 #issue-number
-[params.utteranc]
-  enable = true
-  repo = "DoMySon/Treasure"    # 存储评论的Repo，格式为 owner/repo
-  issueTerm = "title"  #表示你选择以那种方式让github issue的评论和你的文章关联。
-  theme = "github-dark" # 样式主题，有github-light和github-dark两种
+# [params.utteranc]
+#   enable = true
+#   repo = "DoMySon/Treasure"    # 存储评论的Repo，格式为 owner/repo
+#   issueTerm = "title"  #表示你选择以那种方式让github issue的评论和你的文章关联。
+#   theme = "github-dark" # 样式主题，有github-light和github-dark两种
 
 
 # 版权声明

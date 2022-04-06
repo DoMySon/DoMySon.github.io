@@ -1,11 +1,14 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-	<meta name="generator" content="Hugo 0.60.0-DEV" />
+	<meta name="generator" content="Hugo 0.96.0" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>薛定谔的BUG | 专注于各种划水</title>
     <meta property="og:title" content="薛定谔的BUG | 专注于各种划水">
@@ -13,20 +16,20 @@
     <meta name="Keywords" content="">
     <meta name="description" content="">
     <meta property="og:url" content="https://DoMySon.github.io/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://DoMySon.github.io/index.xml" title="薛定谔的BUG" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -79,13 +82,12 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
 </blockquote>……
@@ -106,17 +108,17 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Docker'>Docker</a></span>
+            <span class="meta-category"><a href='/categories/Docker'>Docker</a></span>
             
         </div>
         
         <div class="post-content">
             <blockquote>
 <p><code>Docker-Compose</code> （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p>
-
+</blockquote>
+<blockquote>
 <p><a href="https://docs.docker.com/compose/">官方文档</a></p>
 </blockquote>
-
 <p><code>Docker-Compose</code>将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。</p>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/11/Docker-Compose/">阅读全文</a></p>
@@ -135,60 +137,53 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="树-tree">树 <code>Tree</code></h1>
-
 <h2 id="定义">定义</h2>
-
 <blockquote>
 <p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
 </blockquote>
-
-<pre><code>      A
+<pre tabindex="0"><code>      A
      / \
     B   C
    /   / \
   D   E   F
  /|\   \
 G H I   J
-</code></pre>
-
-<ul>
-<li><p>有且仅有一个特定的称为根（Root）的结点；</p></li>
-
-<li><p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p></li>
-
-<li><p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p></li>
-
-<li><p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p></li>
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
 </ul>
-
 <h2 id="节点的度">节点的度</h2>
-
 <blockquote>
 <p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
 </blockquote>
-
-<pre><code>             A -度2
+<pre tabindex="0"><code>             A -度2
             / \
            B   C -度2
           /   / \
    度3 - D   E   F - 度0
         /|\   \
        G H I   J
-</code></pre>
-
-<h2 id="节点的深度">节点的深度</h2>
-
+</code></pre><h2 id="节点的深度">节点的深度</h2>
 <blockquote>
 <p>该节点的深度为 4</p>
 </blockquote>
-
-<pre><code>------------------------------
+<pre tabindex="0"><code>------------------------------
           A         第一层       
 -------- /-\------------------
         B   C       第二层 
@@ -215,27 +210,31 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
-
+</blockquote>
+<blockquote>
 <p>一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。</p>
 </blockquote>
-
 <ol>
-<li><p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p></li>
-
-<li><p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p></li>
-
-<li><p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p></li>
-
-<li><p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p></li>
+<li>
+<p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p>
+</li>
+<li>
+<p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p>
+</li>
+<li>
+<p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p>
+</li>
+<li>
+<p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
+</li>
 </ol>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/08/ConsistentHash/">阅读全文</a></p>
@@ -254,7 +253,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
@@ -262,13 +261,14 @@ G H I   J
             <blockquote>
 <p><code>snowflake</code>（雪花算法）是一种分布式ID算法。</p>
 </blockquote>
-
 <h1 id="对比其他的优缺点">对比其他的优缺点</h1>
-
 <ul>
-<li><p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p></li>
-
-<li><p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p></li>
+<li>
+<p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p>
+</li>
+<li>
+<p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p>
+</li>
 </ul>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Snowflake/">阅读全文</a></p>
@@ -287,7 +287,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
         </div>
         
@@ -312,9 +312,9 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/C'>C</a></span>
+            <span class="meta-category"><a href='/categories/C'>C</a></span>
             
         </div>
         
@@ -371,6 +371,34 @@ G H I   J
 
 
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -434,14 +462,14 @@ G H I   J
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -457,7 +485,7 @@ G H I   J
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -467,10 +495,8 @@ G H I   J
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -506,7 +532,7 @@ G H I   J
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -536,7 +562,7 @@ G H I   J
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -568,28 +594,6 @@ G H I   J
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

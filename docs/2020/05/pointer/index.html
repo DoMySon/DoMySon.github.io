@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>pointer | 薛定谔的BUG</title>
     <meta property="og:title" content="pointer - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2020/05/pointer/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,29 +137,23 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#pointer">Pointer</a>
-<ul>
-<li><a href="#使用指针">使用指针</a></li>
-<li><a href="#null-指针">NULL 指针</a></li>
-<li><a href="#指针运算">指针运算</a></li>
-<li><a href="#指针数组">指针数组</a></li>
-<li><a href="#指向指针的指针">指向指针的指针</a></li>
-<li><a href="#传递指针">传递指针</a></li>
-<li><a href="#函数返回指针">函数返回指针</a></li>
-<li><a href="#函数指针">函数指针</a></li>
-<li><a href="#回调函数">回调函数</a></li>
-</ul></li>
-<li><a href="#枚举">枚举</a></li>
-<li><a href="#结构体">结构体</a></li>
-<li><a href="#预处理器">预处理器</a>
-<ul>
-<li><a href="#预定义宏">预定义宏</a></li>
-<li><a href="#预处理器运算符">预处理器运算符</a></li>
-<li><a href="#参数化宏">参数化宏</a></li>
-</ul></li>
-<li><a href="#储存类">储存类</a></li>
-</ul>
+  <ul>
+    <li><a href="#使用指针">使用指针</a></li>
+    <li><a href="#null-指针">NULL 指针</a></li>
+    <li><a href="#指针运算">指针运算</a></li>
+    <li><a href="#指针数组">指针数组</a></li>
+    <li><a href="#指向指针的指针">指向指针的指针</a></li>
+    <li><a href="#传递指针">传递指针</a></li>
+    <li><a href="#函数返回指针">函数返回指针</a></li>
+    <li><a href="#函数指针">函数指针</a></li>
+    <li><a href="#回调函数">回调函数</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#预定义宏">预定义宏</a></li>
+    <li><a href="#预处理器运算符">预处理器运算符</a></li>
+    <li><a href="#参数化宏">参数化宏</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -165,8 +162,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -185,6 +182,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -198,7 +199,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/C'>C</a></span>
+            <span class="meta-category"><a href='/categories/C'>C</a></span>
             
         </div>
         
@@ -217,357 +218,295 @@
         
         <div class="post-content">
             <h1 id="pointer">Pointer</h1>
-
 <blockquote>
 <p>定义一个指针 <code>type *name;</code>，但 <code>type* name;</code> 也无错误，仅仅是风格问题</p>
 </blockquote>
-
 <h2 id="使用指针">使用指针</h2>
-
-<pre><code class="language-c">{
-    int var = 20;   
-    int *p;         //声明int类型指针
-    ip = &amp;var;      //获取var的地址
-}
-</code></pre>
-
-<h2 id="null-指针">NULL 指针</h2>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-int main(){
-    int *ptr = NULL;
-    printf(&quot;ptr addr %p\n&quot;,ptr);
-    if(ptr){
-        // ptr is NULL?
-    }
-    return 0;
-}
-//将输出 ptr addr 0x0
-</code></pre>
-
-<h2 id="指针运算">指针运算</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> var <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;   
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>p;         <span style="color:#75715e">//声明int类型指针
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ip <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>var;      <span style="color:#75715e">//获取var的地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><h2 id="null-指针">NULL 指针</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>ptr <span style="color:#f92672">=</span> NULL;
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;ptr addr %p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,ptr);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(ptr){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ptr is NULL?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//将输出 ptr addr 0x0
+</span></span></span></code></pre></div><h2 id="指针运算">指针运算</h2>
 <blockquote>
 <p>指针在32位cpu上是一个32位的int，而64上是一个64的int，每递增一次或递减一次将指向下一个或上一个元素的存储单元</p>
 </blockquote>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-int main(){
-    int var[] = {10,100,200};
-    int i,*ptr;
-    ptr = var; //指向数组第一个元素
-    for(i=0;i&lt;3;i++){
-        printf(&quot;val %d\n&quot;,*ptr);
-        ptr++; //移动至下一个数组的位置，如果这个数组的元素不都为int的长度，那么数值未知
-    }
-}
-</code></pre>
-
-<h2 id="指针数组">指针数组</h2>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-int main(){
-    int i,*ptr[3]; //声明一个包含3个 int* 指针的数组
-    int var[] = {10,100,100};
-    //赋值
-    for(i=0;i&lt;3;i++){
-        ptr[i] = &amp;var[i];
-    }
-
-    const char *names[] ={
-        &quot;ABC&quot;,
-        &quot;BCD&quot;,
-        &quot;CDE&quot;,
-        &quot;DEF&quot;,
-    };
-</code></pre>
-
-<h2 id="指向指针的指针">指向指针的指针</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> var[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">100</span>,<span style="color:#ae81ff">200</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i,<span style="color:#f92672">*</span>ptr;
+</span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> var; <span style="color:#75715e">//指向数组第一个元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span>(i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">3</span>;i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        printf(<span style="color:#e6db74">&#34;val %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#f92672">*</span>ptr);
+</span></span><span style="display:flex;"><span>        ptr<span style="color:#f92672">++</span>; <span style="color:#75715e">//移动至下一个数组的位置，如果这个数组的元素不都为int的长度，那么数值未知
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="指针数组">指针数组</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i,<span style="color:#f92672">*</span>ptr[<span style="color:#ae81ff">3</span>]; <span style="color:#75715e">//声明一个包含3个 int* 指针的数组
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> var[] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">100</span>,<span style="color:#ae81ff">100</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//赋值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span>(i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">3</span>;i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        ptr[i] <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>var[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>names[] <span style="color:#f92672">=</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ABC&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;BCD&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;CDE&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;DEF&#34;</span>,
+</span></span><span style="display:flex;"><span>    };
+</span></span></code></pre></div><h2 id="指向指针的指针">指向指针的指针</h2>
 <blockquote>
 <p>声明一个指向指针的指针 <code>type **var;</code></p>
 </blockquote>
-
 <p>向指针的指针是一种多级间接寻址的形式，或者说是一个指针链。通常，一个指针包含一个变量的地址。当我们定义一个指向指针的指针时，第一个指针包含了第二个指针的地址，第二个指针指向包含实际值的位置。</p>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-int main(){
-    int var,*ptr,**pptr;
-    var = 1000;
-    ptr = &amp;var;
-    pptr = &amp;ptr;
-    printf(&quot;value is %d,%d,%d\n&quot;,var,*ptr,**pptr);
-}
-</code></pre>
-
-<h2 id="传递指针">传递指针</h2>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-#include &lt;time.h&gt;
-int main(){
-    unsigned long sec;
-    Second(&amp;sec);
-    printf(&quot;number is %d\n&quot;,sec);
-    return 0;
-}
-
-//传递指针原始数值会被修改
-void Second(unsigned long *ptr){
-    *ptr = time(NULL);
-    return;
-}
-</code></pre>
-
-<h2 id="函数返回指针">函数返回指针</h2>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-#include &lt;time.h&gt;
-#include &lt;stdlib.h&gt; 
-int *random(){
-    /*
-        C 不支持在调用函数时返回局部变量的地址，除非定义局部变量为 static 变量。
-
-        或者通过 calloc 或 malloc 来分配内存来返回
-    */
-    static int r[10];
-    int i;
-    srand((unsigned)time(NULL));
-    for(i=0;i&lt;10;++i){
-        r[i] = rand();
-    }
-    return r;
-}
-</code></pre>
-
-<h2 id="函数指针">函数指针</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> var,<span style="color:#f92672">*</span>ptr,<span style="color:#f92672">**</span>pptr;
+</span></span><span style="display:flex;"><span>    var <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>;
+</span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>var;
+</span></span><span style="display:flex;"><span>    pptr <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>ptr;
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;value is %d,%d,%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,var,<span style="color:#f92672">*</span>ptr,<span style="color:#f92672">**</span>pptr);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="传递指针">传递指针</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;time.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> sec;
+</span></span><span style="display:flex;"><span>    Second(<span style="color:#f92672">&amp;</span>sec);
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;number is %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,sec);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//传递指针原始数值会被修改
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Second</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>ptr){
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>ptr <span style="color:#f92672">=</span> time(NULL);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="函数返回指针">函数返回指针</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;time.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt; </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">random</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        C 不支持在调用函数时返回局部变量的地址，除非定义局部变量为 static 变量。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        或者通过 calloc 或 malloc 来分配内存来返回
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> r[<span style="color:#ae81ff">10</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>    srand((<span style="color:#66d9ef">unsigned</span>)time(NULL));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">10</span>;<span style="color:#f92672">++</span>i){
+</span></span><span style="display:flex;"><span>        r[i] <span style="color:#f92672">=</span> rand();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> r;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="函数指针">函数指针</h2>
 <blockquote>
 <p>函数指针是指向函数的指针变量</p>
-
+</blockquote>
+<blockquote>
 <p><code>typedef int(*func_ptr)(int,int);</code></p>
 </blockquote>
-
-<pre><code class="language-c">int max(int x,int y){
-    return x&gt;y?x:y;
-}
-
-int main(){
-    int (*p)(int,int) = &amp;max;
-    int d;
-    //等价于：d = max(10,20); 
-    d = p(10,20);
-    return 0;
-}
-</code></pre>
-
-<h2 id="回调函数">回调函数</h2>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">max</span>(<span style="color:#66d9ef">int</span> x,<span style="color:#66d9ef">int</span> y){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x<span style="color:#f92672">&gt;</span>y<span style="color:#f92672">?</span>x:y;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>p)(<span style="color:#66d9ef">int</span>,<span style="color:#66d9ef">int</span>) <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>max;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> d;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//等价于：d = max(10,20); 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    d <span style="color:#f92672">=</span> p(<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">20</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="回调函数">回调函数</h2>
 <blockquote>
 <p>函数指针作为某个函数的参数</p>
 </blockquote>
-
-<pre><code class="language-c">#include &lt;stdlib.h&gt;  
-#include &lt;stdio.h&gt;
-
-void callback(int *array,size_t arraySize,int (*getValue)(void)){
-    for(size_t i=0;i&lt;arraySize;i++){
-        array[i] = getValue();
-    }
-}
-
-int randomValue(void){
-    return rand();
-}
-
-int main(void){
-    int arr[10];
-    callback(arr,10,randomValue);
-    for(int i = 0; i &lt; 10; i++) {
-        printf(&quot;%d &quot;, arr[i]);
-    }
-    return 0
-}
-</code></pre>
-
-<h1 id="枚举">枚举</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;  </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callback</span>(<span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>array,size_t arraySize,<span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>getValue)(<span style="color:#66d9ef">void</span>)){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(size_t i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>arraySize;i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        array[i] <span style="color:#f92672">=</span> getValue();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">randomValue</span>(<span style="color:#66d9ef">void</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> rand();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>];
+</span></span><span style="display:flex;"><span>    callback(arr,<span style="color:#ae81ff">10</span>,randomValue);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        printf(<span style="color:#e6db74">&#34;%d &#34;</span>, arr[i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="枚举">枚举</h1>
 <blockquote>
 <p>enum name{elem1,elem2,&hellip;};</p>
 </blockquote>
-
-<pre><code class="language-c">enum DAY{
-    //这个类似Csharp,默认从0开始
-    MON=1, TUE, WED, THU, FRI, SAT, SUN
-};
-
-enum DAY day1,day2;
-
-int a;
-a = int(day1.Mon);
-</code></pre>
-
-<h1 id="结构体">结构体</h1>
-
-<pre><code class="language-c">struct People{
-    char *name;
-    age  int;
-} p1,p2; //可以不需要
-
-//也可以直接设置初始值
-
-struct People{
-    char *name;
-    age  int;
-} p1 = {&quot;Treasure&quot;,10};
-
-{
-    People p1,*p2;
-    // 对于普通struct的访问
-    p1.name; p1.age;
-    // 对于指针struct的访问
-    p2-&gt;name; p2-&gt;age;
-}
-
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> DAY{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//这个类似Csharp,默认从0开始
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    MON<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, TUE, WED, THU, FRI, SAT, SUN
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> DAY day1,day2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a;
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> <span style="color:#66d9ef">int</span>(day1.Mon);
+</span></span></code></pre></div><h1 id="结构体">结构体</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> People{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name;
+</span></span><span style="display:flex;"><span>    age  <span style="color:#66d9ef">int</span>;
+</span></span><span style="display:flex;"><span>} p1,p2; <span style="color:#75715e">//可以不需要
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//也可以直接设置初始值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> People{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name;
+</span></span><span style="display:flex;"><span>    age  <span style="color:#66d9ef">int</span>;
+</span></span><span style="display:flex;"><span>} p1 <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Treasure&#34;</span>,<span style="color:#ae81ff">10</span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    People p1,<span style="color:#f92672">*</span>p2;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 对于普通struct的访问
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    p1.name; p1.age;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 对于指针struct的访问
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    p2<span style="color:#f92672">-&gt;</span>name; p2<span style="color:#f92672">-&gt;</span>age;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
 <p>这里有一个注意点，struct的成员如果嵌入其他struct类型必须在最后面。</p>
 </blockquote>
-
 <h1 id="预处理器">预处理器</h1>
-
 <table>
 <thead>
 <tr>
-<th align="center">指令</th>
-<th align="center">描述</th>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">#define</td>
-<td align="center">定义宏</td>
+<td style="text-align:center">#define</td>
+<td style="text-align:center">定义宏</td>
 </tr>
-
 <tr>
-<td align="center">#include</td>
-<td align="center">包含一个源代码文件</td>
+<td style="text-align:center">#include</td>
+<td style="text-align:center">包含一个源代码文件</td>
 </tr>
-
 <tr>
-<td align="center">#undef</td>
-<td align="center">取消已定义的宏</td>
+<td style="text-align:center">#undef</td>
+<td style="text-align:center">取消已定义的宏</td>
 </tr>
-
 <tr>
-<td align="center">#ifdef</td>
-<td align="center">如果宏已经定义，则返回真</td>
+<td style="text-align:center">#ifdef</td>
+<td style="text-align:center">如果宏已经定义，则返回真</td>
 </tr>
-
 <tr>
-<td align="center">#ifndef</td>
-<td align="center">如果宏没有定义，则返回真</td>
+<td style="text-align:center">#ifndef</td>
+<td style="text-align:center">如果宏没有定义，则返回真</td>
 </tr>
-
 <tr>
-<td align="center">#if</td>
-<td align="center">如果给定条件为真，则编译下面代码</td>
+<td style="text-align:center">#if</td>
+<td style="text-align:center">如果给定条件为真，则编译下面代码</td>
 </tr>
-
 <tr>
-<td align="center">#else</td>
-<td align="center">#if 的替代方案</td>
+<td style="text-align:center">#else</td>
+<td style="text-align:center">#if 的替代方案</td>
 </tr>
-
 <tr>
-<td align="center">#elif</td>
-<td align="center">如果前面的 #if 给定条件不为真，当前条件为真，则编译下面代码</td>
+<td style="text-align:center">#elif</td>
+<td style="text-align:center">如果前面的 #if 给定条件不为真，当前条件为真，则编译下面代码</td>
 </tr>
-
 <tr>
-<td align="center">#endif</td>
-<td align="center">结束一个 #if……#else 条件编译块</td>
+<td style="text-align:center">#endif</td>
+<td style="text-align:center">结束一个 #if……#else 条件编译块</td>
 </tr>
-
 <tr>
-<td align="center">#error</td>
-<td align="center">当遇到标准错误时，输出错误消息</td>
+<td style="text-align:center">#error</td>
+<td style="text-align:center">当遇到标准错误时，输出错误消息</td>
 </tr>
-
 <tr>
-<td align="center">#pragma</td>
-<td align="center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
+<td style="text-align:center">#pragma</td>
+<td style="text-align:center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="预定义宏">预定义宏</h2>
-
 <p>宏|描述
 <strong>DATE</strong>|当前日期，一个以 &ldquo;MMM DD YYYY&rdquo; 格式表示的字符常量。
 <strong>TIME</strong>|当前时间，一个以 &ldquo;HH:MM:SS&rdquo; 格式表示的字符常量。
 <strong>FILE</strong>|这会包含当前文件名，一个字符串常量。
 <strong>LINE</strong>|这会包含当前行号，一个十进制常量。
 <strong>STDC</strong>|当编译器以 ANSI 标准编译时，则定义为 1。</p>
-
 <p>示例</p>
-
-<pre><code class="language-c">#include &lt;stdio.h&gt;
-
-void mian(){
-    printf(&quot;File :%s\n&quot;, __FILE__ );
-    printf(&quot;Date :%s\n&quot;, __DATE__ );
-    printf(&quot;Time :%s\n&quot;, __TIME__ );
-    printf(&quot;Line :%d\n&quot;, __LINE__ );
-    printf(&quot;ANSI :%d\n&quot;, __STDC__ );
-}
-</code></pre>
-
-<h2 id="预处理器运算符">预处理器运算符</h2>
-
-<pre><code class="language-c">#define message(a,b) \
-    printf(#a &quot; ---- &quot; #b &quot;:define message function&quot;)
-/*
-    宏延续运算符 \ 但是如果宏太长，一个单行容纳不下，则使用宏延续运算符（\）
-
-    字符串常量化运算符（#） 在宏定义中，当需要把一个宏的参数转换为字符串常量时，则使用字符串常量化运算符（#）。
-
-    标记粘贴运算符（##），宏定义内的标记粘贴运算符（##）会合并两个参数。它允许在宏定义中两个独立的标记被合并为一个标记。
-*/
-
-#include &lt;stdio.h&gt;
-
-#define tokenpaster(n) printf (&quot;token&quot; #n &quot; = %d&quot;, token##n)
-
-int main(void)
-{
-   int token34 = 40;
-   tokenpaster(34);
-   return 0;
-}
-//output: token34 = 40
-</code></pre>
-
-<h2 id="参数化宏">参数化宏</h2>
-
-<pre><code class="language-c">int square(int x){
-    return x*x;
-}
-//类似于
-#define square(x) ((x)*(x))
-</code></pre>
-
-<h1 id="储存类">储存类</h1>
-
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mian</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;File :%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __FILE__ );
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;Date :%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __DATE__ );
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;Time :%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __TIME__ );
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;Line :%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __LINE__ );
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;ANSI :%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __STDC__ );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="预处理器运算符">预处理器运算符</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define message(a,b) \
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    printf(#a &#34; ---- &#34; #b &#34;:define message function&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    宏延续运算符 \ 但是如果宏太长，一个单行容纳不下，则使用宏延续运算符（\）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    字符串常量化运算符（#） 在宏定义中，当需要把一个宏的参数转换为字符串常量时，则使用字符串常量化运算符（#）。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    标记粘贴运算符（##），宏定义内的标记粘贴运算符（##）会合并两个参数。它允许在宏定义中两个独立的标记被合并为一个标记。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define tokenpaster(n) printf (&#34;token&#34; #n &#34; = %d&#34;, token##n)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">int</span> token34 <span style="color:#f92672">=</span> <span style="color:#ae81ff">40</span>;
+</span></span><span style="display:flex;"><span>   tokenpaster(<span style="color:#ae81ff">34</span>);
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//output: token34 = 40
+</span></span></span></code></pre></div><h2 id="参数化宏">参数化宏</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">square</span>(<span style="color:#66d9ef">int</span> x){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x<span style="color:#f92672">*</span>x;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//类似于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define square(x) ((x)*(x))
+</span></span></span></code></pre></div><h1 id="储存类">储存类</h1>
 <ul>
-<li><p>auto：局部变量的默认存储类, 限定变量只能在函数内部使用；</p></li>
-
-<li><p>register：代表了寄存器变量，不在内存（RAM）中使用；</p></li>
-
-<li><p>static：全局变量的默认存储类,表示变量在程序生命周期内可见；</p></li>
-
-<li><p>extern：表示全局变量，即对程序内所有文件可见，类似于Csharp中的public关键字；</p></li>
+<li>
+<p>auto：局部变量的默认存储类, 限定变量只能在函数内部使用；</p>
+</li>
+<li>
+<p>register：代表了寄存器变量，不在内存（RAM）中使用；</p>
+</li>
+<li>
+<p>static：全局变量的默认存储类,表示变量在程序生命周期内可见；</p>
+</li>
+<li>
+<p>extern：表示全局变量，即对程序内所有文件可见，类似于Csharp中的public关键字；</p>
+</li>
 </ul>
         </div>
 
@@ -581,7 +520,7 @@ int main(void)
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/pointer'>pointer</a></li>
+                <li><a href='/tags/pointer'>pointer</a></li>
                 
             </ul>
             
@@ -592,17 +531,46 @@ int main(void)
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -666,14 +634,14 @@ int main(void)
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -689,7 +657,7 @@ int main(void)
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -699,10 +667,8 @@ int main(void)
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -738,7 +704,7 @@ int main(void)
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -768,7 +734,7 @@ int main(void)
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -800,39 +766,6 @@ int main(void)
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

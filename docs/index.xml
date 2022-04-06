@@ -6,11 +6,7 @@
     <description>Recent content on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Preprocessor</title>
       <link>https://DoMySon.github.io/2020/07/Preprocessor/</link>
@@ -18,144 +14,130 @@
       
       <guid>https://DoMySon.github.io/2020/07/Preprocessor/</guid>
       <description>&lt;h1 id=&#34;预处理器&#34;&gt;预处理器&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;#pragma&lt;/code&gt; 用于指示编译器完成一些特定的动作&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;#pragma&lt;/code&gt; 用于指示编译器完成一些特定的动作&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;#pragma message usermessage&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.c
-#include &amp;lt;stdio.h&amp;gt;
-#define IOS
-#if defined IOS
-    #pragma message &amp;quot;ready complie ios...&amp;quot;
-#endif
-//complie output:
-    note: #pragma message: ready complie ios...
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;#pragma once 确保头文件仅被编译一次&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.h
-#pragma once
-int value = 10;
-//example:test.c
-#include &amp;quot;test.h&amp;quot;
-#include &amp;quot;test.h&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;#pragma pack(size_t) 指定内存对齐&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;//example:test.c
-// 2byte 对齐
-#pragma pack(2)
-struct foo{
-    char c1;
-    char c2:
-    short 2;
-    int i;
-};
-
-// 4byte 对齐
-#pragma pack(4)
-struct bar{
-    char c1;
-    shirt s;
-    char c2;
-    int i;
-};
-
-void main(){
-    printf(&amp;quot;%d\n&amp;quot;,sizeof(struct foo)); //8
-    printf(&amp;quot;%d\n&amp;quot;,sizeof(struct bar)); //12
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;#pragma message usermessage&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//example:test.c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#define IOS
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#if defined IOS
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;   &lt;span style=&#34;color:#75715e&#34;&gt;#pragma message &amp;#34;ready complie ios...&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#endif
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//complie output:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;   note: &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;#&lt;/span&gt;pragma message: ready complie ios...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;#pragma once 确保头文件仅被编译一次&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//example:test.h
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#pragma once
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//example:test.c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;#34;test.h&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;#34;test.h&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;#pragma pack(size_t) 指定内存对齐&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//example:test.c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 2byte 对齐
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#pragma pack(2)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; foo{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; c1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; c2:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;short&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 4byte 对齐
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#pragma pack(4)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; bar{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; c1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    shirt s;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; c2;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#66d9ef&#34;&gt;sizeof&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; foo)); &lt;span style=&#34;color:#75715e&#34;&gt;//8
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#66d9ef&#34;&gt;sizeof&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; bar)); &lt;span style=&#34;color:#75715e&#34;&gt;//12
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;指令&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;描述&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;示例&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;指令&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;描述&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;示例&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#define&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;定义宏&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#define&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;定义宏&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#include&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;包含一个源代码文件&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#include&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;包含一个源代码文件&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#undef&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;取消一个定义的宏&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#undef&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;取消一个定义的宏&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#ifdef&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;是否定义了宏&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#ifdef&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;是否定义了宏&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#ifndef&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;是否没有定义一个宏&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#ifndef&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;是否没有定义一个宏&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#if&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;条件检测&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#if&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;条件检测&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#else&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;条件分支&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#else&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;条件分支&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#elif&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;条件分支&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#elif&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;条件分支&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#endif&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;结束条件分支&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#endif&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;结束条件分支&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#error&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;当遇到标准错误，输出错误消息&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#error&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;当遇到标准错误，输出错误消息&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#pragma&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;使用标准化方法，向编译器发布特殊的命令到编译器中&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#pragma&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;使用标准化方法，向编译器发布特殊的命令到编译器中&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;#line&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;重置下一行行数&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;#line 100&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#line&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;重置下一行行数&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;#line 100&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</description>
@@ -186,15 +168,17 @@ void main(){
       
       <guid>https://DoMySon.github.io/2020/03/Msys2/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;msys2的包管理器是使用的是 &lt;code&gt;pacman&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;msys2的包管理器是使用的是 &lt;code&gt;pacman&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;&lt;a href=&#34;https://www.msys2.org/&#34;&gt;下载地址&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
@@ -205,16 +189,12 @@ void main(){
       
       <guid>https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/</guid>
       <description>&lt;h1 id=&#34;如何启用gc跟踪&#34;&gt;如何启用GC跟踪&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;GODEBUG=gctrace=1 go run *.go&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;其中 &lt;code&gt;gctrace=1&lt;/code&gt; 表示只针对这个进程进行GC追踪&lt;/p&gt;
-
 &lt;h1 id=&#34;输出分析&#34;&gt;输出分析&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
 scvg: 0 MB released
 scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
 GC forced
@@ -237,84 +217,79 @@ GC forced
       
       <guid>https://DoMySon.github.io/2020/02/Http/</guid>
       <description>&lt;h1 id=&#34;http-请求构成&#34;&gt;Http 请求构成&lt;/h1&gt;
-
 &lt;h2 id=&#34;请求行&#34;&gt;请求行&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;请求行以一个方法符号开头，以空格分开，后面跟着请求的URI和协议的版本，格式如下：Method Request-URI HTTP-Version CRLF  其中 Method表示请求方法；Request-URI是一个统一资源标识符；HTTP-Version表示请求的HTTP协议版本；CRLF表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;Method&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;Desc&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Method&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Desc&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;GET&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求获取Request-URI所标识的资源&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;GET&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求获取Request-URI所标识的资源&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;POST&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;在Request-URI所标识的资源后附加新的数据&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;POST&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;在Request-URI所标识的资源后附加新的数据&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;HEAD&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求获取由Request-URI所标识的资源的响应消息报头&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;HEAD&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求获取由Request-URI所标识的资源的响应消息报头&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;PUT&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求服务器存储一个资源，并用Request-URI作为其标识&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;PUT&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求服务器存储一个资源，并用Request-URI作为其标识&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;DELETE&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求服务器删除Request-URI所标识的资源&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;DELETE&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求服务器删除Request-URI所标识的资源&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;TRACE&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求服务器回送收到的请求信息，主要用于测试或诊断&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;TRACE&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求服务器回送收到的请求信息，主要用于测试或诊断&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;CONNECT&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;保留将来使用&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;CONNECT&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;保留将来使用&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;OPTIONS&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;请求查询服务器的性能，或者查询与资源相关的选项和需求&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;OPTIONS&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;请求查询服务器的性能，或者查询与资源相关的选项和需求&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;POST&lt;/code&gt; 和 &lt;code&gt;GET&lt;/code&gt; 的区别:&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;POST&lt;/code&gt; 和 &lt;code&gt;GET&lt;/code&gt; 的区别:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;副作用：服务器上的资源做改变，如搜索是无副作用的，注册是副作用的。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;幂等：幂等指发送 M 和 N 次请求（两者不相同且都大于 1），服务器上资源的状态一致。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;副作用：服务器上的资源做改变，如搜索是无副作用的，注册是副作用的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;幂等：幂等指发送 M 和 N 次请求（两者不相同且都大于 1），服务器上资源的状态一致。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;在规范的应用场景上说，Get 多用于无副作用，幂等的场景，例如搜索关键字。Post 多用于副作用，不幂等的场景，例如注册。&lt;/p&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Get 请求能缓存，Post 不能&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里（当然你想写到 body 里也是可以的），且会被浏览器保存历史纪录。Post 不会，但是在抓包的情况下都是一样。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Post 支持更多的编码类型且不对数据类型限制&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get 请求能缓存，Post 不能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里（当然你想写到 body 里也是可以的），且会被浏览器保存历史纪录。Post 不会，但是在抓包的情况下都是一样。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Post 支持更多的编码类型且不对数据类型限制&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -325,7 +300,6 @@ GC forced
       
       <guid>https://DoMySon.github.io/2020/02/TLS/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;p&gt;传输层安全性协议（Transport Layer Security），及其前身 &lt;code&gt;SSL3.0&lt;/code&gt; 之后安全套接层（Secure Sockets Layer，缩写作SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。SSL包含记录层（Record Layer）和传输层，记录层协议确定传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用&lt;code&gt;RSA&lt;/code&gt; 加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。&lt;/p&gt;</description>
     </item>
     
@@ -355,7 +329,8 @@ GC forced
       <guid>https://DoMySon.github.io/2020/01/Channel/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;channel&lt;/code&gt; 提供了一种通信机制，通过它，一个 &lt;code&gt;goroutine&lt;/code&gt; 可以与另一 &lt;code&gt;goroutine&lt;/code&gt; 发送消息。&lt;code&gt;channel&lt;/code&gt; 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 &lt;code&gt;len()&lt;/code&gt; 获取通道当前缓冲数量。 &lt;code&gt;cap()&lt;/code&gt; 获取通道最大缓冲。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -367,23 +342,28 @@ GC forced
       
       <guid>https://DoMySon.github.io/2020/01/DockerNetwork/</guid>
       <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;docker network create --driver [bridge|host|none|container] networkname&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;bridge&lt;/code&gt;：默认模式，容器使用独立 network Namespace，并连接到&lt;code&gt;docker0&lt;/code&gt;虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 &lt;code&gt;docker0&lt;/code&gt; 中。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;host&lt;/code&gt;：与宿主机共享网络，此时容器没有使用网络的namespace，&lt;code&gt;-p&lt;/code&gt; 将不会起任何作用。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;none&lt;/code&gt;：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：与指定的容器共享网络，如果有的话。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;bridge&lt;/code&gt;：默认模式，容器使用独立 network Namespace，并连接到&lt;code&gt;docker0&lt;/code&gt;虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 &lt;code&gt;docker0&lt;/code&gt; 中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;host&lt;/code&gt;：与宿主机共享网络，此时容器没有使用网络的namespace，&lt;code&gt;-p&lt;/code&gt; 将不会起任何作用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;none&lt;/code&gt;：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：与指定的容器共享网络，如果有的话。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -394,7 +374,6 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/12/Go-Module/</guid>
       <description>&lt;h1 id=&#34;module&#34;&gt;Module&lt;/h1&gt;
-
 &lt;p&gt;Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 &lt;code&gt;go.mod&lt;/code&gt; 文件来建立依赖管理。&lt;/p&gt;</description>
     </item>
     
@@ -405,19 +384,25 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description>&lt;h1 id=&#34;unity-托管内存&#34;&gt;Unity 托管内存&lt;/h1&gt;
-
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;用户代码分配的内存本质上在 &lt;code&gt;IL2CPP&lt;/code&gt; 构建的 &lt;code&gt;VM&lt;/code&gt; 的托管内存(&lt;code&gt;Managed Memory&lt;/code&gt;)上，所以用户代码分配遵从于这个 &lt;code&gt;VM&lt;/code&gt; 的分配方式。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;IL2CPP&lt;/code&gt; 采用的是 &lt;code&gt;Boehm&lt;/code&gt; 回收算法,这算法的缺陷是 &lt;code&gt;不分代&lt;/code&gt;，&lt;code&gt;不压缩&lt;/code&gt;，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;内存以 &lt;code&gt;Block&lt;/code&gt; 来管理，当一个 &lt;code&gt;Block&lt;/code&gt; 6次GC没有被访问，才会返回给 OS。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;Zombie Memory&lt;/code&gt;,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;对于一个物体，应该是 &lt;code&gt;Destory&lt;/code&gt; 而不是置为 &lt;code&gt;Null&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;下一代采用 &lt;code&gt;渐进式GC&lt;/code&gt;（分帧GC，使CPU峰值更平滑），可以手动开关。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;用户代码分配的内存本质上在 &lt;code&gt;IL2CPP&lt;/code&gt; 构建的 &lt;code&gt;VM&lt;/code&gt; 的托管内存(&lt;code&gt;Managed Memory&lt;/code&gt;)上，所以用户代码分配遵从于这个 &lt;code&gt;VM&lt;/code&gt; 的分配方式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;IL2CPP&lt;/code&gt; 采用的是 &lt;code&gt;Boehm&lt;/code&gt; 回收算法,这算法的缺陷是 &lt;code&gt;不分代&lt;/code&gt;，&lt;code&gt;不压缩&lt;/code&gt;，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;内存以 &lt;code&gt;Block&lt;/code&gt; 来管理，当一个 &lt;code&gt;Block&lt;/code&gt; 6次GC没有被访问，才会返回给 OS。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Zombie Memory&lt;/code&gt;,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对于一个物体，应该是 &lt;code&gt;Destory&lt;/code&gt; 而不是置为 &lt;code&gt;Null&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下一代采用 &lt;code&gt;渐进式GC&lt;/code&gt;（分帧GC，使CPU峰值更平滑），可以手动开关。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;</description>
     </item>
     
@@ -428,7 +413,6 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/12/Go%E9%94%81/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -442,10 +426,10 @@ GC forced
       <guid>https://DoMySon.github.io/2019/11/Docker-Compose/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt; （docker编排）是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。可以通过 docker-compose.yml 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&#34;https://docs.docker.com/compose/&#34;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;&lt;code&gt;Docker-Compose&lt;/code&gt;将所管理的容器分为三层，分别是工程（project），服务（service）以及容器（container）。Docker-Compose运行目录下的所有文件（docker-compose.yml，extends文件或环境变量文件等）组成一个工程，若无特殊指定工程名即为当前目录名。一个工程当中可包含多个服务，每个服务中定义了容器运行的镜像，参数，依赖。一个服务当中可包括多个容器实例，Docker-Compose并没有解决负载均衡的问题，因此需要借助其它工具实现服务发现及负载均衡。&lt;/p&gt;</description>
     </item>
     
@@ -456,54 +440,47 @@ GC forced
       
       <guid>https://DoMySon.github.io/2019/09/Tree/</guid>
       <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
-
 &lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;树（Tree）是n（n&amp;gt;=0)个结点的有限集。&lt;code&gt;n=0&lt;/code&gt; 时称为空树。在任意一颗非空树中：&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;      A
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      A
      / \
     B   C
    /   / \
   D   E   F
  /|\   \
 G H I   J
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;有且仅有一个特定的称为根（Root）的结点；&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互不相交的有限集T1、T2、&amp;hellip;&amp;hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;n&amp;gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;m&amp;gt;0时，子树的个数没有限制，但它们一定是互不相交的。&lt;/p&gt;&lt;/li&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;有且仅有一个特定的称为根（Root）的结点；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互不相交的有限集T1、T2、&amp;hellip;&amp;hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;n&amp;gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;m&amp;gt;0时，子树的个数没有限制，但它们一定是互不相交的。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h2 id=&#34;节点的度&#34;&gt;节点的度&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;节点又有子树数目成为节点的 &lt;code&gt;度&lt;/code&gt;，如上图&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;             A -度2
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;             A -度2
             / \
            B   C -度2
           /   / \
    度3 - D   E   F - 度0
         /|\   \
        G H I   J
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;节点的深度&#34;&gt;节点的深度&lt;/h2&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;节点的深度&#34;&gt;节点的深度&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;该节点的深度为 4&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code&gt;------------------------------
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------
           A         第一层       
 -------- /-\------------------
         B   C       第二层 
@@ -522,21 +499,25 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/08/ConsistentHash/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 &lt;code&gt;Key&lt;/code&gt; 从多个节点（也就是服务器）中找到缓存数据所在的节点。&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;</description>
     </item>
     
@@ -549,13 +530,14 @@ G H I   J
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;snowflake&lt;/code&gt;（雪花算法）是一种分布式ID算法。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h1 id=&#34;对比其他的优缺点&#34;&gt;对比其他的优缺点&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;UUID&lt;/code&gt; : 对于数据敏感场景不宜使用，且不适合于分布式场景。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;GUID&lt;/code&gt; : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;UUID&lt;/code&gt; : 对于数据敏感场景不宜使用，且不适合于分布式场景。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;GUID&lt;/code&gt; : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -615,27 +597,19 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/07/ClassicSort/</guid>
       <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
-
-&lt;h2 id=&#34;稳定排序-非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
-
+&lt;h2 id=&#34;稳定排序非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  &lt;code&gt;非稳定排序&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
-&lt;h2 id=&#34;原地排序-非原地排序&#34;&gt;原地排序，非原地排序&lt;/h2&gt;
-
+&lt;h2 id=&#34;原地排序非原地排序&#34;&gt;原地排序，非原地排序&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 &lt;code&gt;非原地排序&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h2 id=&#34;时间复杂度&#34;&gt;时间复杂度&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一个算法执行所耗费的时间&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h2 id=&#34;空间复杂度&#34;&gt;空间复杂度&lt;/h2&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;完成算法所需的内存空间大小&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -657,53 +631,45 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/07/Redis/</guid>
       <description>&lt;h1 id=&#34;liunx安装&#34;&gt;Liunx安装&lt;/h1&gt;
-
 &lt;h1 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h1&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;类型&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;介绍&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;类型&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;介绍&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;键值对&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;键值对&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;has&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;hash表&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;has&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;hash表&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;list&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;字符串列表&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;list&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;字符串列表&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;set&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;无重复列表&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;set&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;无重复列表&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;sorted set&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;有序无重复列表&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;sorted set&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;有序无重复列表&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;subscribe/publish&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;发布订阅模式&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;subscribe/publish&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;发布订阅模式&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&#34;http://doc.redisfans.com/index.html&#34;&gt;Redis命令&lt;/a&gt;&lt;/p&gt;
-
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&#34;https://redis.io/download&#34;&gt;Redis下载&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -715,139 +681,123 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/05/Protobuf3/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;p&gt;&lt;code&gt;Protocol Buffers&lt;/code&gt;，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 &lt;code&gt;syntax = proto3&lt;/code&gt; 的协议语法。&lt;/p&gt;
-
 &lt;h1 id=&#34;标准类型对照&#34;&gt;标准类型对照&lt;/h1&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;.proto&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;注释&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;C++&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;Python&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;Go&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;C#&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;.proto&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;注释&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;C++&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Python&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Go&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;C#&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;定长编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;double&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;double&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;定长编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;double&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;double&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;定长编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;定长编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;float&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint32&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint32&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint64&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码,负数编码效率低，可使用&lt;code&gt;sint64&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;long&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;unit64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;unit64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;ulong&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;sint32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int32&lt;/code&gt;更有效率&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;sint32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int32&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;sint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int64&lt;/code&gt;更有效率&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;sint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;变长编码，对负数编码比&lt;code&gt;int64&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;long&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;fixed32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;总是&lt;code&gt;4&lt;/code&gt;字节，如果值大于&lt;code&gt;2^28&lt;/code&gt;比&lt;code&gt;uint32&lt;/code&gt;更有效率&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint32&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;fixed32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;总是&lt;code&gt;4&lt;/code&gt;字节，如果值大于&lt;code&gt;2^28&lt;/code&gt;比&lt;code&gt;uint32&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint32&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;ulong&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;fixed64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;总是&lt;code&gt;8&lt;/code&gt;字节，如果值大于&lt;code&gt;2^56&lt;/code&gt;比&lt;code&gt;uint64&lt;/code&gt;更有效率&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;int/long&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;uint64&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;ulong&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;fixed64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;总是&lt;code&gt;8&lt;/code&gt;字节，如果值大于&lt;code&gt;2^56&lt;/code&gt;比&lt;code&gt;uint64&lt;/code&gt;更有效率&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;int/long&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;uint64&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;ulong&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1或0的变长编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;boolean&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;bool&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;bool&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;1或0的变长编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;bool&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;boolean&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;bool&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;bool&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;必须是&lt;code&gt;UTF-8&lt;/code&gt;编码&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;str/unicode&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;string&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;必须是&lt;code&gt;UTF-8&lt;/code&gt;编码&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;string&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;str/unicode&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;string&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;string&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;bytes&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;可包含任意的字节顺序&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;string&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;str&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;[]byte&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;ByteString&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;bytes&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;可包含任意的字节顺序&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;string&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;str&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;[]byte&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;ByteString&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</description>
@@ -860,13 +810,10 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/05/Go-Scheduler/</guid>
       <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h1 id=&#34;调度方式&#34;&gt;调度方式&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，&lt;code&gt;Goroutine&lt;/code&gt; 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -882,121 +829,101 @@ G H I   J
     </item>
     
     <item>
-      <title>MySQL</title>
-      <link>https://DoMySon.github.io/2019/03/MySQL/</link>
+      <title>mysql</title>
+      <link>https://DoMySon.github.io/2019/03/mysql/</link>
       <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2019/03/MySQL/</guid>
+      <guid>https://DoMySon.github.io/2019/03/mysql/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;h1 id=&#34;下载地址&#34;&gt;下载地址&lt;/h1&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://dev.mysql.com/downloads/mysql/&#34;&gt;MySQL下载地址&lt;/a&gt;&lt;/p&gt;
-
 &lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;名称&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;大小&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;范围&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;名称&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;大小&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;范围&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;tinyint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;-2^7~2^7-1&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;tinyint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;1字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;-2^7~2^7-1&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;smallint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;2字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;-2^15~2^15-1&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;smallint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;2字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;-2^15~2^15-1&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;mediumint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;3字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;-2^23~2^23-1&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;mediumint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;3字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;-2^23~2^23-1&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;int(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;4字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;-2^31~2^31-1&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;int(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;4字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;-2^31~2^31-1&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;bigint(m)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;8字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;-2^63~2^63-1&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;bigint(m)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;8字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;-2^63~2^63-1&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;char(n)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;1字节&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多255个字符&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;char(n)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;1字节&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多255个字符&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;varchar(n)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多65535个字符&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;varchar(n)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多65535个字符&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;tinytext&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多255个字符&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;tinytext&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多255个字符&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;text&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多65535个字符&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;text&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多65535个字符&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;mediumtext&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多2的24次方-1个字符&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;mediumtext&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多2的24次方-1个字符&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;longtext&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;最多2的32次方-1个字符&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;longtext&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;最多2的32次方-1个字符&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;日期 &amp;lsquo;2008-12-2&amp;rsquo;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;日期 &amp;lsquo;2008-12-2&amp;rsquo;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;时间 &amp;lsquo;12:25:36&amp;rsquo;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;time&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;时间 &amp;lsquo;12:25:36&amp;rsquo;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;datetime&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;日期时间 &amp;lsquo;2008-12-2 22:06:44&amp;rsquo;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;datetime&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;日期时间 &amp;lsquo;2008-12-2 22:06:44&amp;rsquo;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;自动存储记录修改时间&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;自动存储记录修改时间&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;</description>
@@ -1009,13 +936,16 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/03/Docker/</guid>
       <description>&lt;h1 id=&#34;docker简介&#34;&gt;Docker简介&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1026,7 +956,6 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/03/Dockerfile/</guid>
       <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -1039,23 +968,24 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/03/Nginx/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://nginx.org/en/download.html&#34;&gt;Nginx下载&lt;/a&gt;&lt;/p&gt;
-
 &lt;h1 id=&#34;常用功能&#34;&gt;常用功能&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;负载均衡&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;反向代理&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;正向代理&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;文件服务器&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;负载均衡&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;反向代理&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;正向代理&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文件服务器&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1066,13 +996,16 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/03/xLua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1083,27 +1016,31 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/02/Lock/</guid>
       <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;优点:&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;优点:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;缺点:&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缺点:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;即乐观锁的优点&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
     </item>
     
@@ -1114,41 +1051,42 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/02/I/O/</guid>
       <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
-
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;数据的读取分为:&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;数据的读取分为:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;等待数据准备&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;等待内核拷贝至用户空间&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;基本模型矩阵&lt;/p&gt;
-
+&lt;li&gt;
+&lt;p&gt;等待数据准备&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;等待内核拷贝至用户空间&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;基本模型矩阵&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;阻塞&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;非阻塞&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;阻塞&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;非阻塞&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;同步&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read/Write&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Read\Write(O_NONBLOCK)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;同步&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;Read/Write&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;Read\Write(O_NONBLOCK)&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;异步&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;I/O multiplexing(select/poll)&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;AIO&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;I/O multiplexing(select/poll)&lt;/code&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;&lt;code&gt;AIO&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;&lt;/li&gt;
+&lt;/table&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
@@ -1159,14 +1097,16 @@ G H I   J
       
       <guid>https://DoMySon.github.io/2019/02/GC/</guid>
       <description>&lt;h1 id=&#34;何谓-gc&#34;&gt;何谓 &lt;code&gt;GC&lt;/code&gt;&lt;/h1&gt;
-
 &lt;p&gt;GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
-曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
-1. 内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。&lt;/p&gt;
-
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
-为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(&lt;code&gt;Garbage-Collect&lt;/code&gt;)。&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(&lt;code&gt;Garbage-Collect&lt;/code&gt;)。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;</description>
     </item>
     
@@ -1185,10 +1125,16 @@ G H I   J
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/1/01/</guid>
-      <description>Liunx 文件系统  对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook
- 文件类型    符号 描述     d 目录   l 符号链接   s 套接字文件   b 块设备文件   c 字符设备文件   p 命名管道文件   - 普通文件，不属于上述任意一种    权限更换  chmod [who] operator [permission] filename
-  who
-   符号 描述     u 文件属主权限   g 同组用户权限   o 其他用户权限   a 所有用户    operator</description>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description>Liunx 文件系统 对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook 文件类型 符号 描述 d 目录 l 符号链接 s 套接字文件 b 块设备文件 c 字符设备文件 p 命名管道文件 - 普通文件，不属于上述任</description>
     </item>
     
     <item>

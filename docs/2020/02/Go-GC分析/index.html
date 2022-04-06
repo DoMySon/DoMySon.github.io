@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Go GC分析 | 薛定谔的BUG</title>
     <meta property="og:title" content="Go GC分析 - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2020/02/Go-GC%E5%88%86%E6%9E%90/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,15 +137,10 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#如何启用gc跟踪">如何启用GC跟踪</a></li>
-<li><a href="#输出分析">输出分析</a>
-<ul>
-<li><a href="#gc-信息">GC 信息</a></li>
-<li><a href="#系统内存回收信息">系统内存回收信息</a></li>
-</ul></li>
-<li><a href="#如何定位">如何定位</a></li>
-</ul>
+  <ul>
+    <li><a href="#gc-信息">GC 信息</a></li>
+    <li><a href="#系统内存回收信息">系统内存回收信息</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -151,8 +149,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -171,6 +169,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -184,7 +186,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
             
         </div>
         
@@ -203,62 +205,66 @@
         
         <div class="post-content">
             <h1 id="如何启用gc跟踪">如何启用GC跟踪</h1>
-
 <blockquote>
 <p>GODEBUG=gctrace=1 go run *.go</p>
 </blockquote>
-
 <p>其中 <code>gctrace=1</code> 表示只针对这个进程进行GC追踪</p>
-
 <h1 id="输出分析">输出分析</h1>
-
-<pre><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
+<pre tabindex="0"><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
 scvg: 0 MB released
 scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
 GC forced
-</code></pre>
-
-<h2 id="gc-信息">GC 信息</h2>
-
+</code></pre><h2 id="gc-信息">GC 信息</h2>
 <ul>
-<li><p><code>gc 1</code>：代表第几次执行GC，这是第一次</p></li>
-
-<li><p><code>@0.035s</code>：程序执行总时间。</p></li>
-
-<li><p><code>%0</code>：gc所占进程cpu时间的百分比。</p></li>
-
-<li><p><code>0+0.99+0 ms clock</code>：垃圾回收时间，分别为 STW(stop-the world)清扫时间,并发标记和扫描时间，STW标记时间。</p></li>
-
-<li><p><code>0+0/0/0+0 ms cpu</code>：本次gc占用时间。</p></li>
-
-<li><p><code>4-&gt;5-&gt;1 MB</code>：堆大小，gc后堆大小，存货堆大小。</p></li>
-
-<li><p><code>5 MB goal</code>：整体堆大小。</p></li>
-
-<li><p><code>12 P</code>：使用的逻辑核数量。</p></li>
-
-<li><p><code>GC forced</code>：强制使用了 <code>runtime.GC()</code> 方法。</p></li>
+<li>
+<p><code>gc 1</code>：代表第几次执行GC，这是第一次</p>
+</li>
+<li>
+<p><code>@0.035s</code>：程序执行总时间。</p>
+</li>
+<li>
+<p><code>%0</code>：gc所占进程cpu时间的百分比。</p>
+</li>
+<li>
+<p><code>0+0.99+0 ms clock</code>：垃圾回收时间，分别为 STW(stop-the world)清扫时间,并发标记和扫描时间，STW标记时间。</p>
+</li>
+<li>
+<p><code>0+0/0/0+0 ms cpu</code>：本次gc占用时间。</p>
+</li>
+<li>
+<p><code>4-&gt;5-&gt;1 MB</code>：堆大小，gc后堆大小，存货堆大小。</p>
+</li>
+<li>
+<p><code>5 MB goal</code>：整体堆大小。</p>
+</li>
+<li>
+<p><code>12 P</code>：使用的逻辑核数量。</p>
+</li>
+<li>
+<p><code>GC forced</code>：强制使用了 <code>runtime.GC()</code> 方法。</p>
+</li>
 </ul>
-
 <h2 id="系统内存回收信息">系统内存回收信息</h2>
-
 <ul>
-<li><p><code>inuse:5</code>：使用了多少M 内存。</p></li>
-
-<li><p><code>idle:2</code>：剩下要清除的内存。</p></li>
-
-<li><p><code>sys:7</code>：系统映射内存。</p></li>
-
-<li><p><code>released:2</code>：释放的系统内存。</p></li>
-
-<li><p><code>consumed:5</code>：申请的系统内存。</p></li>
+<li>
+<p><code>inuse:5</code>：使用了多少M 内存。</p>
+</li>
+<li>
+<p><code>idle:2</code>：剩下要清除的内存。</p>
+</li>
+<li>
+<p><code>sys:7</code>：系统映射内存。</p>
+</li>
+<li>
+<p><code>released:2</code>：释放的系统内存。</p>
+</li>
+<li>
+<p><code>consumed:5</code>：申请的系统内存。</p>
+</li>
 </ul>
-
-<!--more-->
-
+<!-- raw HTML omitted -->
 <h1 id="如何定位">如何定位</h1>
-
-<p><a href="/2019/08/Go单元测试/">参考Pprof</a></p>
+<p><a href="/2019/08/Go%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">参考Pprof</a></p>
         </div>
 
         
@@ -271,7 +277,7 @@ GC forced
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/GC'>GC</a></li>
+                <li><a href='/tags/GC'>GC</a></li>
                 
             </ul>
             
@@ -282,17 +288,46 @@ GC forced
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -356,14 +391,14 @@ GC forced
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -379,7 +414,7 @@ GC forced
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -389,10 +424,8 @@ GC forced
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -428,7 +461,7 @@ GC forced
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -458,7 +491,7 @@ GC forced
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -490,39 +523,6 @@ GC forced
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

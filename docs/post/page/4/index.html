@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Posts | 薛定谔的BUG</title>
     <meta property="og:title" content="Posts - 薛定谔的BUG">
@@ -16,20 +19,20 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/post/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://DoMySon.github.io/post/index.xml" title="薛定谔的BUG" />
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/post/index.xml" title="薛定谔的BUG" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -81,13 +84,12 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Docker'>Docker</a></span>
+            <span class="meta-category"><a href='/categories/Docker'>Docker</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="dockerfile">Dockerfile</h1>
-
 <blockquote>
 <p><code>Dockerfile</code> 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。<code>docker build</code> 命令用于从 <code>Dockerfile</code>构建映像。命令中使用 <code>-f</code> 标志指向文件系统中任何位置的 <code>Dockerfile</code> 文件。</p>
 </blockquote>……
@@ -110,19 +112,22 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Docker'>Docker</a></span>
+            <span class="meta-category"><a href='/categories/Docker'>Docker</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="docker简介">Docker简介</h1>
-
 <ul>
-<li><p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p></li>
-
-<li><p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p></li>
-
-<li><p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p></li>
+<li>
+<p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p>
+</li>
+<li>
+<p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p>
+</li>
+<li>
+<p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p>
+</li>
 </ul>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/03/Docker/">阅读全文</a></p>
@@ -143,29 +148,30 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Nginx'>Nginx</a></span>
+            <span class="meta-category"><a href='/categories/Nginx'>Nginx</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。</p>
 </blockquote>
-
 <p><a href="http://nginx.org/en/download.html">Nginx下载</a></p>
-
 <h1 id="常用功能">常用功能</h1>
-
 <ul>
-<li><p>负载均衡</p></li>
-
-<li><p>反向代理</p></li>
-
-<li><p>正向代理</p></li>
-
-<li><p>文件服务器</p></li>
+<li>
+<p>负载均衡</p>
+</li>
+<li>
+<p>反向代理</p>
+</li>
+<li>
+<p>正向代理</p>
+</li>
+<li>
+<p>文件服务器</p>
+</li>
 </ul>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/03/Nginx/">阅读全文</a></p>
@@ -186,19 +192,22 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Unity'>Unity</a></span>
+            <span class="meta-category"><a href='/categories/Unity'>Unity</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="xlua">XLua</h1>
-
 <ul>
-<li><p><a href="https://github.com/Tencent/xLua/releases">XLua下载</a></p></li>
-
-<li><p><a href="https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md">配置文档</a></p></li>
-
-<li><p><a href="https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md">FAQ</a></p></li>
+<li>
+<p><a href="https://github.com/Tencent/xLua/releases">XLua下载</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md">配置文档</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md">FAQ</a></p>
+</li>
 </ul>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/03/xLua/">阅读全文</a></p>
@@ -219,33 +228,37 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Linux'>Linux</a></span>
+            <span class="meta-category"><a href='/categories/Linux'>Linux</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="悲观锁">悲观锁</h1>
-
 <ul>
-<li><p>假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。</p></li>
-
-<li><p>若锁住时间长，则会严重影响性能。</p></li>
-
-<li><p>优点:</p>
-
+<li>
+<p>假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。</p>
+</li>
+<li>
+<p>若锁住时间长，则会严重影响性能。</p>
+</li>
+<li>
+<p>优点:</p>
 <ol>
-<li><p>在竞争激烈条件下更有优势</p></li>
-
-<li><p>当锁住的不止有一个变量的情况下</p></li>
-</ol></li>
-
-<li><p>缺点:</p>
-
+<li>
+<p>在竞争激烈条件下更有优势</p>
+</li>
+<li>
+<p>当锁住的不止有一个变量的情况下</p>
+</li>
+</ol>
+</li>
+<li>
+<p>缺点:</p>
 <ol>
 <li>即乐观锁的优点</li>
-</ol></li>
+</ol>
+</li>
 </ul>
-
 <h1 id="乐观锁">乐观锁</h1>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/02/Lock/">阅读全文</a></p>
@@ -266,47 +279,48 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Linux'>Linux</a></span>
+            <span class="meta-category"><a href='/categories/Linux'>Linux</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="前言">前言</h1>
-
 <ul>
-<li><p>数据的读取分为:</p>
-
+<li>
+<p>数据的读取分为:</p>
 <ol>
-<li><p>等待数据准备</p></li>
-
-<li><p>等待内核拷贝至用户空间</p></li>
-</ol></li>
-
-<li><p>基本模型矩阵</p>
-
+<li>
+<p>等待数据准备</p>
+</li>
+<li>
+<p>等待内核拷贝至用户空间</p>
+</li>
+</ol>
+</li>
+<li>
+<p>基本模型矩阵</p>
 <table>
 <thead>
 <tr>
-<th align="center"></th>
-<th align="center">阻塞</th>
-<th align="center">非阻塞</th>
+<th style="text-align:center"></th>
+<th style="text-align:center">阻塞</th>
+<th style="text-align:center">非阻塞</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">同步</td>
-<td align="center"><code>Read/Write</code></td>
-<td align="center"><code>Read\Write(O_NONBLOCK)</code></td>
+<td style="text-align:center">同步</td>
+<td style="text-align:center"><code>Read/Write</code></td>
+<td style="text-align:center"><code>Read\Write(O_NONBLOCK)</code></td>
 </tr>
-
 <tr>
-<td align="center">异步</td>
-<td align="center"><code>I/O multiplexing(select/poll)</code></td>
-<td align="center"><code>AIO</code></td>
+<td style="text-align:center">异步</td>
+<td style="text-align:center"><code>I/O multiplexing(select/poll)</code></td>
+<td style="text-align:center"><code>AIO</code></td>
 </tr>
 </tbody>
-</table></li>
+</table>
+</li>
 </ul>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/02/I/O/">阅读全文</a></p>
@@ -327,20 +341,22 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
         <div class="post-content">
             <h1 id="何谓-gc">何谓 <code>GC</code></h1>
-
 <p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
-曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
-1. 内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
-
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
 <ol>
-<li>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
-为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</li>
+<li>
+<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+</li>
+<li>
+<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
+</li>
 </ol>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/02/GC/">阅读全文</a></p>
@@ -445,6 +461,34 @@
 
 </div>
 
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
                 </div>
 
                 <div id="secondary">
@@ -507,14 +551,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -530,7 +574,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -540,10 +584,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -579,7 +621,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -609,7 +651,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -641,28 +683,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>

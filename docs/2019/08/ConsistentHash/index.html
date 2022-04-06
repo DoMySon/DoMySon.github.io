@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>ConsistentHash | 薛定谔的BUG</title>
     <meta property="og:title" content="ConsistentHash - 薛定谔的BUG">
@@ -20,19 +23,19 @@
         
     <meta name="author" content="">
     <meta property="og:url" content="https://DoMySon.github.io/2019/08/ConsistentHash/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
-
-
+    
+    
+    
     
     
 </head>
-
 
 <body>
     <header id="header" class="clearfix">
@@ -134,17 +137,13 @@
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#场景">场景</a>
-<ul>
-<li><a href="#原理">原理</a></li>
-<li><a href="#特点">特点</a></li>
-<li><a href="#容错性">容错性</a></li>
-<li><a href="#拓展性">拓展性</a></li>
-<li><a href="#虚拟节点">虚拟节点</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#原理">原理</a></li>
+    <li><a href="#特点">特点</a></li>
+    <li><a href="#容错性">容错性</a></li>
+    <li><a href="#拓展性">拓展性</a></li>
+    <li><a href="#虚拟节点">虚拟节点</a></li>
+  </ul>
 </nav>
     </div>
 </div>
@@ -153,8 +152,8 @@
         var postToc = $(".post-toc");
         if (postToc.length) {
             var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -173,6 +172,10 @@
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
         }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
     })
 </script>
     <article class="post">
@@ -186,7 +189,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
@@ -205,249 +208,238 @@
         
         <div class="post-content">
             <h1 id="简介">简介</h1>
-
 <blockquote>
 <p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
-
+</blockquote>
+<blockquote>
 <p>一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。</p>
 </blockquote>
-
 <ol>
-<li><p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p></li>
-
-<li><p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p></li>
-
-<li><p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p></li>
-
-<li><p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p></li>
+<li>
+<p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p>
+</li>
+<li>
+<p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p>
+</li>
+<li>
+<p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p>
+</li>
+<li>
+<p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
+</li>
 </ol>
-
 <h1 id="场景">场景</h1>
-
 <ul>
-<li><p>传统哈希算法在分布式缓存场景</p>
-
+<li>
+<p>传统哈希算法在分布式缓存场景</p>
 <p>当前环境存在3（A，B，C）个节点，依次过来10个数据，为了简单，我们忽略哈希值的计算，假设这10个数据的哈希值分别是1-10。则数据的路由情况如下：</p>
-
 <table>
 <thead>
 <tr>
-<th align="center">哈希值</th>
-<th align="center">1%3</th>
-<th align="center">2%3</th>
-<th align="center">3%3</th>
-<th align="center">4%3</th>
-<th align="center">5%3</th>
-<th align="center">6%3</th>
-<th align="center">7%3</th>
-<th align="center">8%3</th>
-<th align="center">9%3</th>
-<th align="center">10%3</th>
+<th style="text-align:center">哈希值</th>
+<th style="text-align:center">1%3</th>
+<th style="text-align:center">2%3</th>
+<th style="text-align:center">3%3</th>
+<th style="text-align:center">4%3</th>
+<th style="text-align:center">5%3</th>
+<th style="text-align:center">6%3</th>
+<th style="text-align:center">7%3</th>
+<th style="text-align:center">8%3</th>
+<th style="text-align:center">9%3</th>
+<th style="text-align:center">10%3</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">节点</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">A</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">A</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">A</td>
-<td align="center">B</td>
+<td style="text-align:center">节点</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
 </tr>
 </tbody>
 </table>
-
 <p>若此时新增一个节点，命中情况：</p>
-
 <table>
 <thead>
 <tr>
-<th align="center">哈希值</th>
-<th align="center">1%4</th>
-<th align="center">2%4</th>
-<th align="center">3%4</th>
-<th align="center">4%4</th>
-<th align="center">5%4</th>
-<th align="center">6%4</th>
-<th align="center">7%4</th>
-<th align="center">8%4</th>
-<th align="center">9%4</th>
-<th align="center">10%4</th>
+<th style="text-align:center">哈希值</th>
+<th style="text-align:center">1%4</th>
+<th style="text-align:center">2%4</th>
+<th style="text-align:center">3%4</th>
+<th style="text-align:center">4%4</th>
+<th style="text-align:center">5%4</th>
+<th style="text-align:center">6%4</th>
+<th style="text-align:center">7%4</th>
+<th style="text-align:center">8%4</th>
+<th style="text-align:center">9%4</th>
+<th style="text-align:center">10%4</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">节点</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">D</td>
-<td align="center">A</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">D</td>
-<td align="center">A</td>
-<td align="center">B</td>
-<td align="center">C</td>
+<td style="text-align:center">节点</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
 </tr>
 </tbody>
-</table></li>
+</table>
+</li>
 </ul>
-
 <blockquote>
 <p>此时会有8个数据需要进行移动。对这8个数据的访问都是无法命中的，导致缓存失效。如果此系统非常依赖缓存，那么大量没有命中的数据需要从数据库中重新获取，导致数据库负载增高，甚至系统崩溃。</p>
 </blockquote>
-
-<hr />
-
+<hr>
 <ul>
-<li><p>一致性哈希算法</p>
-
+<li>
+<p>一致性哈希算法</p>
 <blockquote>
 <p>一致性哈希算法也是取模。但是不是对节点数取模，而是对2^32取模。不管环境中存在多少节点都是对2^32取模。</p>
 </blockquote>
-
 <p>有一个圆环，而0到2^32-1这些数字均匀的分布在这个环上面。假设有3个节点，这3个节点肯定都有自己的IP。我们根据节点的IP地址计算哈希值，并将结果对2^32取模。所得的结果介于0-2^32-1之间，那么在圆环上肯定有一个点与之对应</p>
-
-<p>当收到一个数据的时候，计算其哈希值并对2^32取模，从节点哈希值中查找，比此哈希值大且最节点此哈希值的节点即为数据缓存的节点。此处为了能够快速的找对这个节点，可以按照节点的哈希值进行排序，再使用二分法查找。</p></li>
+<p>当收到一个数据的时候，计算其哈希值并对2^32取模，从节点哈希值中查找，比此哈希值大且最节点此哈希值的节点即为数据缓存的节点。此处为了能够快速的找对这个节点，可以按照节点的哈希值进行排序，再使用二分法查找。</p>
+</li>
 </ul>
-
-<hr />
-
+<hr>
 <ul>
-<li><p>对于上述同一个问题</p>
-
+<li>
+<p>对于上述同一个问题</p>
 <p>假设当前有3个节点，为了简化问题，我们不构造2^32这么大的圆，我们构造一个10个节点的圆环。说明：为什么在一致性哈希算法中会构造数据量非常大的圆环呢？增大哈希值的域，避免冲突。另外假设，3个节点的哈希值分别为0，3，6。那么此时10个数据的路由情况是：</p>
-
 <table>
 <thead>
 <tr>
-<th align="center">哈希值</th>
-<th align="center">1%10</th>
-<th align="center">2%10</th>
-<th align="center">3%10</th>
-<th align="center">4%10</th>
-<th align="center">5%10</th>
-<th align="center">6%10</th>
-<th align="center">7%10</th>
-<th align="center">8%10</th>
-<th align="center">9%10</th>
-<th align="center">10%10</th>
+<th style="text-align:center">哈希值</th>
+<th style="text-align:center">1%10</th>
+<th style="text-align:center">2%10</th>
+<th style="text-align:center">3%10</th>
+<th style="text-align:center">4%10</th>
+<th style="text-align:center">5%10</th>
+<th style="text-align:center">6%10</th>
+<th style="text-align:center">7%10</th>
+<th style="text-align:center">8%10</th>
+<th style="text-align:center">9%10</th>
+<th style="text-align:center">10%10</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">节点</td>
-<td align="center">B</td>
-<td align="center">B</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">C</td>
-<td align="center">C</td>
-<td align="center">A</td>
-<td align="center">A</td>
-<td align="center">A</td>
-<td align="center">A</td>
+<td style="text-align:center">节点</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">A</td>
 </tr>
 </tbody>
 </table>
-
 <p>当再增加一个节点时，假设节点的哈希值是8，此时的路由情况是：</p>
-
 <table>
 <thead>
 <tr>
-<th align="center">哈希值</th>
-<th align="center">1%10</th>
-<th align="center">2%10</th>
-<th align="center">3%10</th>
-<th align="center">4%10</th>
-<th align="center">5%10</th>
-<th align="center">6%10</th>
-<th align="center">7%10</th>
-<th align="center">8%10</th>
-<th align="center">9%10</th>
-<th align="center">10%10</th>
+<th style="text-align:center">哈希值</th>
+<th style="text-align:center">1%10</th>
+<th style="text-align:center">2%10</th>
+<th style="text-align:center">3%10</th>
+<th style="text-align:center">4%10</th>
+<th style="text-align:center">5%10</th>
+<th style="text-align:center">6%10</th>
+<th style="text-align:center">7%10</th>
+<th style="text-align:center">8%10</th>
+<th style="text-align:center">9%10</th>
+<th style="text-align:center">10%10</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">节点</td>
-<td align="center">B</td>
-<td align="center">B</td>
-<td align="center">B</td>
-<td align="center">C</td>
-<td align="center">C</td>
-<td align="center">C</td>
-<td align="center">D</td>
-<td align="center">D</td>
-<td align="center">A</td>
-<td align="center">A</td>
+<td style="text-align:center">节点</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">A</td>
 </tr>
 </tbody>
 </table>
-
 <blockquote>
 <p>此时只有2个数据未命中，过渡平滑得多。</p>
-</blockquote></li>
+</blockquote>
+</li>
 </ul>
-
 <h2 id="原理">原理</h2>
-
 <blockquote>
 <p>简单来说，一致性哈希将整个哈希值空间组织成一个虚拟的圆环，如假设某哈希函数H的值空间为0-2^32-1（即哈希值是一个32位无符号整形）。整个空间按顺时针方向组织。0和2^32-1在零点中方向重合。</p>
 </blockquote>
-
 <ul>
-<li><p>将各个服务器使用Hash进行一个哈希，具体可以选择服务器的ip或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置
-<img src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172523808-1567363338.png" alt="哈希环" /></p></li>
+<li>
+<p>将各个服务器使用Hash进行一个哈希，具体可以选择服务器的ip或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置
 
-<li><p>将数据key使用相同的函数Hash计算出哈希值，并确定此数据在环上的位置，从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器。根据一致性哈希算法，数据A会被定为到Node A上，B被定为到Node B上，C被定为到Node C上，D被定为到Node D上。
-<img src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172807745-742859090.png" alt="哈希寻址" /></p></li>
+        <img class="mx-auto" alt="哈希环" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172523808-1567363338.png" />   
+    </p>
+</li>
+<li>
+<p>将数据key使用相同的函数Hash计算出哈希值，并确定此数据在环上的位置，从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器。根据一致性哈希算法，数据A会被定为到Node A上，B被定为到Node B上，C被定为到Node C上，D被定为到Node D上。
+
+        <img class="mx-auto" alt="哈希寻址" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172807745-742859090.png" />   
+    </p>
+</li>
 </ul>
-
 <h2 id="特点">特点</h2>
-
 <ul>
-<li><p>单调性(Monotonicity)，单调性是指如果已经有一些请求通过哈希分派到了相应的服务器进行处理，又有新的服务器加入到系统中时候，应保证原有的请求可以被映射到原有的或者新的服务器中去，而不会被映射到原来的其它服务器上去。  这个通过上面新增服务器ip5可以证明，新增ip5后，原来被ip1处理的user6现在还是被ip1处理，原来被ip1处理的user5现在被新增的ip5处理。</p></li>
-
-<li><p>分散性(Spread)：分布式环境中，客户端请求时候可能不知道所有服务器的存在，可能只知道其中一部分服务器，在客户端看来他看到的部分服务器会形成一个完整的hash环。如果多个客户端都把部分服务器作为一个完整hash环，那么可能会导致，同一个用户的请求被路由到不同的服务器进行处理。这种情况显然是应该避免的，因为它不能保证同一个用户的请求落到同一个服务器。所谓分散性是指上述情况发生的严重程度。好的哈希算法应尽量避免尽量降低分散性。 一致性hash具有很低的分散性</p></li>
-
-<li><p>平衡性(Balance)：平衡性也就是说负载均衡，是指客户端hash后的请求应该能够分散到不同的服务器上去。一致性hash可以做到每个服务器都进行处理请求，但是不能保证每个服务器处理的请求的数量大致相同</p></li>
+<li>
+<p>单调性(Monotonicity)，单调性是指如果已经有一些请求通过哈希分派到了相应的服务器进行处理，又有新的服务器加入到系统中时候，应保证原有的请求可以被映射到原有的或者新的服务器中去，而不会被映射到原来的其它服务器上去。  这个通过上面新增服务器ip5可以证明，新增ip5后，原来被ip1处理的user6现在还是被ip1处理，原来被ip1处理的user5现在被新增的ip5处理。</p>
+</li>
+<li>
+<p>分散性(Spread)：分布式环境中，客户端请求时候可能不知道所有服务器的存在，可能只知道其中一部分服务器，在客户端看来他看到的部分服务器会形成一个完整的hash环。如果多个客户端都把部分服务器作为一个完整hash环，那么可能会导致，同一个用户的请求被路由到不同的服务器进行处理。这种情况显然是应该避免的，因为它不能保证同一个用户的请求落到同一个服务器。所谓分散性是指上述情况发生的严重程度。好的哈希算法应尽量避免尽量降低分散性。 一致性hash具有很低的分散性</p>
+</li>
+<li>
+<p>平衡性(Balance)：平衡性也就是说负载均衡，是指客户端hash后的请求应该能够分散到不同的服务器上去。一致性hash可以做到每个服务器都进行处理请求，但是不能保证每个服务器处理的请求的数量大致相同</p>
+</li>
 </ul>
-
 <h2 id="容错性">容错性</h2>
-
 <p>假设Node C不幸宕机，可以看到此时对象A、B、D不会受到影响，只有C对象被重定位到Node D。一般的，在一致性哈希算法中，如果一台服务器不可用，则受影响的数据仅仅是此服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它不会受到影响。</p>
-
 <h2 id="拓展性">拓展性</h2>
-
 <p>如果在系统中增加一台服务器Node X，此时对象Object A、B、D不受影响，只有对象C需要重定位到新的Node X 。一般的，在一致性哈希算法中，如果增加一台服务器，则受影响的数据仅仅是新服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它数据也不会受到影响。</p>
-
 <p>综上所述，一致性哈希算法对于节点的增减都只需重定位环空间中的一小部分数据，具有较好的容错性和可扩展性。
-<img src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172901526-169091807.png" alt="拓展节点" /></p>
 
+        <img class="mx-auto" alt="拓展节点" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172901526-169091807.png" />   
+    </p>
 <h2 id="虚拟节点">虚拟节点</h2>
-
 <blockquote>
 <p>假设一个服务器系统中只存在两个节点，此时必然造成大量数据集中到Node A上，而只有极少量会定位到Node B上。为了解决这种数据倾斜问题，一致性哈希算法引入了虚拟节点机制，即对每一个服务节点计算多个哈希，每个计算结果位置都放置一个此服务节点，称为虚拟节点。具体做法可以在服务器ip或主机名的后面增加编号来实现。</p>
 </blockquote>
-
-<p><img src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172922917-1331181630.png" alt="数据倾斜" /></p>
-
+<p>
+        <img class="mx-auto" alt="数据倾斜" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172922917-1331181630.png" />   
+    </p>
 <blockquote>
 <p>可以为每台服务器计算三个虚拟节点，于是可以分别计算 “Node A#1”、“Node A#2”、“Node A#3”、“Node B#1”、“Node B#2”、“Node B#3”的哈希值，于是形成六个虚拟节点：,同时数据定位算法不变，只是多了一步虚拟节点到实际节点的映射，例如定位到“Node A#1”、“Node A#2”、“Node A#3”三个虚拟节点的数据均定位到Node A上。这样就解决了服务节点少时数据倾斜的问题。在实际应用中，通常将虚拟节点数设置为32甚至更大，因此即使很少的服务节点也能做到相对均匀的数据分布。</p>
 </blockquote>
-
-<p><img src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172943917-133540408.png" alt="虚拟节点" /></p>
+<p>
+        <img class="mx-auto" alt="虚拟节点" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172943917-133540408.png" />   
+    </p>
         </div>
 
         
@@ -460,7 +452,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='https://DoMySon.github.io/tags/Hash'>Hash</a></li>
+                <li><a href='/tags/Hash'>Hash</a></li>
                 
             </ul>
             
@@ -471,17 +463,46 @@
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "DoMySon/Treasure"
-            issue-term="title"
-            theme="github-dark"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
 </div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
 
                 </div>
 
@@ -545,14 +566,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
     <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
@@ -568,7 +589,7 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
-    <li><a href="">database (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
@@ -578,10 +599,8 @@
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
-    
-    <a href="https://DoMySon.github.io/tags/">Tags</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -617,7 +636,7 @@
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/Preprocessor/">Preprocessor</a>
     
@@ -647,7 +666,7 @@
     
     <a href="https://DoMySon.github.io/tags/mysql/">mysql</a>
     
-    <a href="">pointer</a>
+    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
     
     <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
     
@@ -679,39 +698,6 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-    <div class="container">
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>.
-        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
-        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/flysnow-org/maupassant-hugo" target="_blank">maupassant</a>.
-        <a rel="nofollow noreferer noopener" href="http://www.beian.miit.gov.cn/" target="_blank">湘ICP备19023249号</a>.
-        
-    </div>
-</footer>
-
-
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
 </body>
 
 </html>
