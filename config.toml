@@ -51,8 +51,6 @@ enableRobotsTXT = true
   identifier = "tools"
   url = "/tools/"
 
-[author]
-  name = '<a href="https://DoMySon.github.com" class="theme-link">DoMySon</a>'
 
 [params]
   #卜算子页面计数
@@ -99,7 +97,7 @@ moreMeta = true
   enable = true
   repo = "DoMySon/Treasure"    # 存储评论的Repo，格式为 owner/repo
   issueTerm = "title"  #表示你选择以那种方式让github issue的评论和你的文章关联。
-  theme = "github-light" # 样式主题，有github-light和github-dark两种
+  theme = "github-dark" # 样式主题，有github-light和github-dark两种
 
 
 # 版权声明

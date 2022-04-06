@@ -138,12 +138,12 @@
   </url>
   
   <url>
-    <loc>https://DoMySon.github.io/tags/Docker/</loc>
+    <loc>https://DoMySon.github.io/categories/Docker/</loc>
     <lastmod>2020-01-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://DoMySon.github.io/categories/Docker/</loc>
+    <loc>https://DoMySon.github.io/tags/Docker/</loc>
     <lastmod>2020-01-02T00:00:00+00:00</lastmod>
   </url>
   
@@ -303,6 +303,11 @@
   </url>
   
   <url>
+    <loc>https://DoMySon.github.io/categories/Database/</loc>
+    <lastmod>2019-07-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://DoMySon.github.io/tags/Redis/</loc>
     <lastmod>2019-07-24T00:00:00+00:00</lastmod>
   </url>
@@ -340,11 +345,6 @@
   <url>
     <loc>https://DoMySon.github.io/2019/05/Bitmap/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/categories/database/</loc>
-    <lastmod>2019-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
