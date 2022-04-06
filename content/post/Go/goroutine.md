@@ -2,7 +2,7 @@
 title: Goroutine
 date: 2019-05-12
 tags: ["goroutine"]
-categories: ["Go"]
+categories: ["go"]
 description: Go 并发原理
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

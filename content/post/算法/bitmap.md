@@ -2,7 +2,7 @@
 title: Bitmap
 date: 2019-05-01
 tags: ["Bitmap"]
-categories: ["Algorithm"]
+categories: ["算法"]
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 description: Bitmap（基于位的映射）

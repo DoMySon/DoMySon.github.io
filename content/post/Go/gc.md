@@ -2,7 +2,7 @@
 title: Go GC分析
 date: 2020-02-26
 tags: ["GC"]
-categories: ["Go"]
+categories: ["go"]
 description: go 内置命令
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

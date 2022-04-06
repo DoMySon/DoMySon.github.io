@@ -1,8 +1,7 @@
 ---
 title: Go Module
 date: 2019-12-29
-tags: ["Module"]
-categories: ["Go"]
+categories: ["go"]
 description: Go Mutex
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

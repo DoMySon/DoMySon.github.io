@@ -6,7 +6,16 @@
     <description>Recent content in go on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cgo</title>
+      <link>https://DoMySon.github.io/2022/04/Cgo/</link>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2022/04/Cgo/</guid>
+      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
+    </item>
+    
     <item>
       <title>unsafe包</title>
       <link>https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/</link>
@@ -16,15 +25,6 @@
       <description>&lt;blockquote&gt;
 &lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Cgo</title>
-      <link>https://DoMySon.github.io/2019/08/Cgo/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/08/Cgo/</guid>
-      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
     </item>
     
   </channel>

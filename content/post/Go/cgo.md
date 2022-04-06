@@ -1,6 +1,6 @@
 ---
 title: Cgo
-date: 2019-08-23
+date: 2022-04-06
 tags: ["go","c"]
 categories: ["go"]
 description: 

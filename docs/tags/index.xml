@@ -6,13 +6,22 @@
     <description>Recent content in Tags on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>c</title>
       <link>https://DoMySon.github.io/tags/c/</link>
-      <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://DoMySon.github.io/tags/go/</link>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/tags/go/</guid>
       <description></description>
     </item>
     
@@ -98,15 +107,6 @@
     </item>
     
     <item>
-      <title>Module</title>
-      <link>https://DoMySon.github.io/tags/Module/</link>
-      <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/tags/Module/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Unity</title>
       <link>https://DoMySon.github.io/tags/Unity/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
@@ -139,15 +139,6 @@
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/tags/Hash/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://DoMySon.github.io/tags/go/</link>
-      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/tags/go/</guid>
       <description></description>
     </item>
     

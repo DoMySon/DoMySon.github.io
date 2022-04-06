@@ -2,7 +2,7 @@
 title: unsafe包
 date: 2019-08-25
 tags: ["go"]
-categories: ["Go"]
+categories: ["go"]
 description: 
 toc: true
 draft: false

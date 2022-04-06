@@ -2,7 +2,7 @@
 title: Rsa
 date: 2020-02-10
 tags: ["Secret"]
-categories: ["Algorithm"]
+categories: ["算法"]
 description: Hash算法
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

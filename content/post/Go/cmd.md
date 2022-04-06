@@ -2,7 +2,7 @@
 title: Go标准命令
 date: 2020-01-28
 tags: [""]
-categories: ["Go"]
+categories: ["go"]
 description: go 内置命令
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

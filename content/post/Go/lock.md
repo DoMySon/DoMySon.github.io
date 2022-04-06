@@ -2,7 +2,7 @@
 title: Go锁
 date: 2019-12-11
 tags: ["Locker"]
-categories: ["Go"]
+categories: ["go"]
 description: Go Mutex
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

@@ -1,8 +1,8 @@
 ---
-title: Channel
+title: channel
 date: 2020-01-20
 tags: []
-categories: ["Go"]
+categories: ["go"]
 description: 
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

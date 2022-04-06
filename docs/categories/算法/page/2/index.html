@@ -9,21 +9,21 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>I/O | 薛定谔的BUG</title>
-    <meta property="og:title" content="I/O - 薛定谔的BUG">
+    <title>算法 | 薛定谔的BUG</title>
+    <meta property="og:title" content="算法 - 薛定谔的BUG">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="I/O">
+    <meta name="description" content="算法">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://DoMySon.github.io/tags/I/O/">
+    <meta property="og:url" content="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/tags/I/O/index.xml" title="薛定谔的BUG" />
+    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/index.xml" title="薛定谔的BUG" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -71,9 +71,9 @@
 <div class="res-cons">
     
     <h3 class="archive-title">
-        包含标签
-        <span class="keyword">I/O</span>
-        的文章
+        分类
+        <span class="keyword">算法</span>
+        中的文章
     </h3>
     
 
@@ -81,60 +81,34 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/02/I/O/">I/O</a>
+                <a href="https://DoMySon.github.io/2019/02/GC/">GC</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2019年2月25日
+            2019年2月22日
         </date>
         
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/Linux'>Linux</a>
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
             
         </div>
         
         <div class="post-content">
-            <h1 id="前言">前言</h1>
-<ul>
-<li>
-<p>数据的读取分为:</p>
+            <h1 id="何谓-gc">何谓 <code>GC</code></h1>
+<p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
 <ol>
 <li>
-<p>等待数据准备</p>
+<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
 </li>
 <li>
-<p>等待内核拷贝至用户空间</p>
+<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
 </li>
-</ol>
-</li>
-<li>
-<p>基本模型矩阵</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"></th>
-<th style="text-align:center">阻塞</th>
-<th style="text-align:center">非阻塞</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">同步</td>
-<td style="text-align:center"><code>Read/Write</code></td>
-<td style="text-align:center"><code>Read\Write(O_NONBLOCK)</code></td>
-</tr>
-<tr>
-<td style="text-align:center">异步</td>
-<td style="text-align:center"><code>I/O multiplexing(select/poll)</code></td>
-<td style="text-align:center"><code>AIO</code></td>
-</tr>
-</tbody>
-</table>
-</li>
-</ul>……
-            <p class="readmore"><a href="https://DoMySon.github.io/2019/02/I/O/">阅读全文</a></p>
+</ol>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/02/GC/">阅读全文</a></p>
         </div>
     </article>
     
@@ -142,6 +116,26 @@
     
 
 
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">1</a>
+    </li>
+    
+    <li  class="current">
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/page/2/">2</a>
+    </li>
+    
+
+    
+</ol>
 
 
 

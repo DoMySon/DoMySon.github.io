@@ -6,7 +6,16 @@
     <description>Recent content on 薛定谔的BUG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cgo</title>
+      <link>https://DoMySon.github.io/2022/04/Cgo/</link>
+      <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/2022/04/Cgo/</guid>
+      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
+    </item>
+    
     <item>
       <title>预处理器</title>
       <link>https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</link>
@@ -322,11 +331,11 @@ GC forced
     </item>
     
     <item>
-      <title>Channel</title>
-      <link>https://DoMySon.github.io/2020/01/Channel/</link>
+      <title>channel</title>
+      <link>https://DoMySon.github.io/2020/01/channel/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/2020/01/Channel/</guid>
+      <guid>https://DoMySon.github.io/2020/01/channel/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -535,15 +544,6 @@ G H I   J
       <description>&lt;blockquote&gt;
 &lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Cgo</title>
-      <link>https://DoMySon.github.io/2019/08/Cgo/</link>
-      <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/08/Cgo/</guid>
-      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
     </item>
     
     <item>
@@ -1138,6 +1138,15 @@ G H I   J
       
       <guid>https://DoMySon.github.io/1/01/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true 假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转</description>
     </item>
     
     <item>

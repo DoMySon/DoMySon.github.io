@@ -85,7 +85,45 @@
         
         
         <div class="post-content">
-            
+            <p>title: 链表反转
+date: 2022-04-06
+tags: []
+categories: [&ldquo;算法&rdquo;]
+description:
+toc: true
+draft: true</p>
+<h1 id="假定链表元素为-1---2---3---4需要变为-4---3---2---1">假定链表元素为 1 -&gt; 2 -&gt; 3 -&gt; 4,需要变为 4 -&gt; 3 -&gt; 2 -&gt; 1</h1>
+<h1 id="stack方式">stack方式</h1>
+<h1 id="原地反转">原地反转</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">next</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">val</span> <span style="color:#66d9ef">interface</span>{}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>   <span style="color:#75715e">// 1 -&gt; 2 -&gt; 3 -&gt; 4
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Reverse</span>(<span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prev</span>,<span style="color:#a6e22e">next</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">n</span>,<span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">next</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prve</span>.<span style="color:#a6e22e">next</span> = <span style="color:#66d9ef">nil</span>         <span style="color:#75715e">// 清除第一个节点的指向
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">prev</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">prev</span> = <span style="color:#a6e22e">next</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">next</span> = 
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h1 id="头插">头插</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>  <span style="color:#75715e">// 1 -&gt; 2 -&gt; 3 -&gt; 4
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">headReverse</span>(<span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tmp</span> = new(<span style="color:#a6e22e">Node</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">change</span> = new(<span style="color:#a6e22e">Node</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">tmp</span>.<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">n</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">n</span> = <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">next</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
         </div>
 
         
@@ -163,6 +201,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://DoMySon.github.io/2022/04/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
         <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -198,10 +240,6 @@
         <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
-    <li>
-        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -211,15 +249,11 @@
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
-    
     <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -235,11 +269,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -271,8 +305,6 @@
     <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
     
     <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
-    
-    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     

@@ -72,6 +72,49 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="Unity内存管理">Unity内存管理</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月27日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Unity'>Unity</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="unity-托管内存">Unity 托管内存</h1>
+<ol>
+<li>
+<p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p>
+</li>
+<li>
+<p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p>
+</li>
+<li>
+<p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p>
+</li>
+<li>
+<p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p>
+</li>
+<li>
+<p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p>
+</li>
+<li>
+<p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p>
+</li>
+</ol>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/12/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/12/Go%E9%94%81/" title="Go锁">Go锁</a>
             </h1>
         </header>
@@ -82,7 +125,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
             
         </div>
         
@@ -108,7 +151,7 @@
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
@@ -181,7 +224,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
@@ -224,7 +267,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
@@ -258,7 +301,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
             
         </div>
         
@@ -268,29 +311,6 @@ G H I   J
 </blockquote>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/08/Cgo/" title="Cgo">Cgo</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月23日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Cgo/">阅读全文</a></p>
     </article>
     
     <article class="post">
@@ -306,7 +326,7 @@ G H I   J
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
             
         </div>
         
@@ -411,6 +431,10 @@ G H I   J
 <ul class="widget-list">
     
     <li>
+        <a href="https://DoMySon.github.io/2022/04/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
         <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -446,10 +470,6 @@ G H I   J
         <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
-    <li>
-        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -459,15 +479,11 @@ G H I   J
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
-    
     <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -483,11 +499,11 @@ G H I   J
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -519,8 +535,6 @@ G H I   J
     <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
     
     <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
-    
-    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     

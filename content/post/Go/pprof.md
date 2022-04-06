@@ -2,7 +2,7 @@
 title: Go性能分析
 date: 2019-08-23
 tags: ["pprof"]
-categories: ["Go"]
+categories: ["go"]
 description: Go单元测试&基准测试
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

@@ -81,11 +81,11 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/02/GC/">GC</a>
+                <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2019年2月22日
+            2020年2月9日
         </date>
         
         <div class="post-meta meta-category">
@@ -96,19 +96,243 @@
         </div>
         
         <div class="post-content">
-            <h1 id="何谓-gc">何谓 <code>GC</code></h1>
-<p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
-曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
+            简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp; 与运算符 都为1则为1，否……
+            <p class="readmore"><a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/09/Tree/">Tree</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年9月2日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="树-tree">树 <code>Tree</code></h1>
+<h2 id="定义">定义</h2>
+<blockquote>
+<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
+</blockquote>
+<pre tabindex="0"><code>      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
+</ul>
+<h2 id="节点的度">节点的度</h2>
+<blockquote>
+<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
+</blockquote>
+<pre tabindex="0"><code>             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+</code></pre><h2 id="节点的深度">节点的深度</h2>
+<blockquote>
+<p>该节点的深度为 4</p>
+</blockquote>
+<pre tabindex="0"><code>------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+</code></pre>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/09/Tree/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/08/ConsistentHash/">ConsistentHash</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<blockquote>
+<p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
+</blockquote>
+<blockquote>
+<p>一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。</p>
+</blockquote>
 <ol>
 <li>
-<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+<p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p>
 </li>
 <li>
-<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
-为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
+<p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p>
+</li>
+<li>
+<p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p>
+</li>
+<li>
+<p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
 </li>
 </ol>……
-            <p class="readmore"><a href="https://DoMySon.github.io/2019/02/GC/">阅读全文</a></p>
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/08/ConsistentHash/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/08/Snowflake/">Snowflake</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p><code>snowflake</code>（雪花算法）是一种分布式ID算法。</p>
+</blockquote>
+<h1 id="对比其他的优缺点">对比其他的优缺点</h1>
+<ul>
+<li>
+<p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p>
+</li>
+<li>
+<p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p>
+</li>
+</ul>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Snowflake/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/07/TopK/">TopK</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月31日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/07/TopK/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/07/ClassicSort/">ClassicSort</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="概念">概念</h1>
+<h2 id="稳定排序非稳定排序">稳定排序，非稳定排序</h2>
+<blockquote>
+<p>如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  <code>非稳定排序</code></p>
+</blockquote>
+<h2 id="原地排序非原地排序">原地排序，非原地排序</h2>
+<blockquote>
+<p>原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 <code>非原地排序</code></p>
+</blockquote>
+<h2 id="时间复杂度">时间复杂度</h2>
+<blockquote>
+<p>一个算法执行所耗费的时间</p>
+</blockquote>
+<h2 id="空间复杂度">空间复杂度</h2>
+<blockquote>
+<p>完成算法所需的内存空间大小</p>
+</blockquote>……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/07/ClassicSort/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/05/Bitmap/">Bitmap</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月1日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
+            <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Bitmap/">阅读全文</a></p>
         </div>
     </article>
     
@@ -116,6 +340,26 @@
     
 
 
+
+<ol class="page-navigator">
+    
+
+    
+    <li  class="current">
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">1</a>
+    </li>
+    
+    <li >
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/page/2/">2</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/page/2/">下一页</a>
+    </li>
+    
+</ol>
 
 
 
@@ -166,6 +410,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://DoMySon.github.io/2022/04/Cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
         <a href="https://DoMySon.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
@@ -201,10 +449,6 @@
         <a href="https://DoMySon.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
-    <li>
-        <a href="https://DoMySon.github.io/2020/01/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/" title="Go标准命令">Go标准命令</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -214,15 +458,11 @@
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
-    
     <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/go/">go (8)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -238,11 +478,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/database/">database (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (3)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -274,8 +514,6 @@
     <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
     
     <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
-    
-    <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
     
