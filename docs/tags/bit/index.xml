@@ -13,16 +13,7 @@
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
-      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。
-位运算符   &amp;amp; 与运算符
-都为1则为1，否则为0
-  | 或运算符
-只要一个为1，则为1
-  ^ 异或运算符
-不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）
-  ~ 取反
-1变0，0变1，但是要区分是否是有符号还是无符号的。
-   优先级    Seq Operation     1 ~   2 &amp;lt;&amp;lt;、&amp;gt;&amp;gt;   3 &amp;amp;   4 ^   5 `   6 &amp;amp;=、^=、`     应用 &amp;amp;   清零</description>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
     </item>
     
   </channel>

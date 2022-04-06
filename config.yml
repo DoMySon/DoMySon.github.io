@@ -12,12 +12,13 @@ enableEmoji: true
 
 #语言
 languageCode: "zh-CN"
+hasCJKLanguage: true
 
 #创建robots.txt，建议设置为true
 enableRobotsTXT: true
 
 
-meun:
+menu:
   -
     name: "文章"
     weight: 20

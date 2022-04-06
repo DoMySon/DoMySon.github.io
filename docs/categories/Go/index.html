@@ -88,8 +88,7 @@
         </div>
         
         <div class="post-content">
-            cgo 一种go与c交互的技术 开启cgo  要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环境变量CGO_ENAVBLE=on,最后源码需要导入 import &quot;C&quot;
- cgo类型映射    C type Cgo type Go type     char C.char byte   signed char C.schar int8   unsigned char C.uchar uint8   short C.short int16   unsigned short C.ushort uint16   int C.int int32   unsigned int C.uint uint32   long C.long int32   unsigned long C.ulong uint32   long long int C.……
+            cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环……
             <p class="readmore"><a href="https://domyson.github.io/2022/04/cgo/">阅读全文</a></p>
         </div>
     </article>
@@ -112,14 +111,7 @@
         </div>
         
         <div class="post-content">
-            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。
-Go中的编译指示 //go:noinline func Echo(){} 指示详解 //go:noinline  使函数不内联，内联是在编译期间发生的，将函数调用处替换为被调用函数主体的一种编译器优化手段。
-   减少函数调用的开销，提高执行速度。
-  复制后的更大函数体为其他编译优化带来可能性，如 过程间优化
-  消除分支，并改善空间局部性和指令顺序性，同样可以提高性能。
-  代码复制带来的空间增长。
-  如果有大量重复代码，反而会降低缓存命中率，尤其对 CPU 缓存是致命的。
-  内联 func Max(a, b int) int {  if a &gt; b {  return a  }  return b }  func F() {  const a, b = 100, 20  if Max(a, b) == b {  panic(b)  } } 内联级别：默认常规内联，-gcflags=-l 禁用内联，-gcflags='-l -l' 二级内联，-gcflags='-l -l -l' 三级内联，-gcflags='-l -l -l -l' 四级内联，级数越大，也许更快，但bug更多……
+            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。……
             <p class="readmore"><a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">阅读全文</a></p>
         </div>
     </article>

@@ -13,16 +13,7 @@
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
-      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。
-位运算符   &amp;amp; 与运算符
-都为1则为1，否则为0
-  | 或运算符
-只要一个为1，则为1
-  ^ 异或运算符
-不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）
-  ~ 取反
-1变0，0变1，但是要区分是否是有符号还是无符号的。
-   优先级    Seq Operation     1 ~   2 &amp;lt;&amp;lt;、&amp;gt;&amp;gt;   3 &amp;amp;   4 ^   5 `   6 &amp;amp;=、^=、`     应用 &amp;amp;   清零</description>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
     </item>
     
     <item>
@@ -139,12 +130,7 @@ G H I   J
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/07/topk/</guid>
-      <description>问题  在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对
- 全局排序  使用 QuickSort、HeapSort、BubbleSort 进行全局排序，然后取前 K 个或后 K 个。时间复杂度随排序算法而定
- 局部排序  基于上一个问题，对于前 K 个数来说，后面的排序与否其实不重要，只需要排序前 K 个，那么首先算法必须是稳定排序，BubbleSort 是稳定排序算法，通过冒泡 K 次即可得到结果。时间复杂度 O(n*K)
- 堆  那么对于前 K 个数它们的排序与否也不重要，只要大于后面的数即可，那么只需要前 K 个元素构成一个小顶堆，然后遍历剩下 n-K 个元素，再调整堆，保证这个堆所有元素均大于等于剩下的 n-K 个元素即可。时间复杂度为 O((n-K)logK)
- 减治算法  与分治算法不同的是：减治算法是将问题分为若干个子问题，只要其中一个子问题得解，那么这个问题整体得解，比如二分查找法 BinarySearch。时间复杂度为 O(K*log(n))
- /* 二分查找法的缺陷是要么数组是有序的，要么得知道具体目标值 */ func BinarySearch(arr []int,low,high,target int) int{  if low &amp;gt; high {  return -1  }  mid := (low+high)/2  if arr[mid] == target {  return mid  }  if arr[mid] &amp;gt; target {  return BinarySearch(arr,low,mid-1,target)  }else{  return BianrySearch(arr,mid+1,target)  } } </description>
+      <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
     </item>
     
     <item>
@@ -178,17 +164,7 @@ G H I   J
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/05/bitmap/</guid>
-      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间
-作用 查询对应的一个元素是否存在，比如一个网页请求（BoolmFilter）， 经过多次 hash 之后会得到一个数值 然后在 bitmap 中查找 value ?= 1，比 map 这种数据结构省了大量的内存。其本质还是将 key 计算的值存储，而非存储 key 本身，所以牺牲了时间而换取了空间
-缺陷   不支持非运算
-取非之后的结果，并不一定包含真实的信息，比如 []int{0,1,2,3,5} ,只不包含 4 个这个数,但是如果这个 bitmap 有10个空间，那么会认为也不包括 []int{6,7,8} ，但其本身不包含。全量 bitmap: [1,1,1,1,1,1,0,0,0,0] 与其 XOR 运算可得缺少的数正好是第四位上的数。
-  统计
-仅仅能判断存在，而不能判断存在几个
-  碰撞
-不同的数据也能有相同的 hash，所以会存在碰撞问题
-  稀疏
-对于数据过少的，也需要一定量的空间，也许比原始数据空间更大。可以通过 RoaringBitmap 解决 或 Google(EWAH)
-  实现 type bitmap struct { 	bytes []byte  	cap int }  func NewBitMap(cap int) *bitmap { 	return &amp;amp;bitmap{  //左移三位的作用是，1个byte可以存储8bit 	make([]byte, (cap&amp;gt;&amp;gt;3)+1), 	cap, 	} }  func (this *bitmap) Add(val int) { 	idx := val &amp;gt;&amp;gt; 3 	pos := val % 8 	this.</description>
+      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
     </item>
     
     <item>

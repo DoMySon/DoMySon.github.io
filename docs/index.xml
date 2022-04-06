@@ -13,8 +13,7 @@
       <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2022/04/cgo/</guid>
-      <description>cgo 一种go与c交互的技术 开启cgo  要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环境变量CGO_ENAVBLE=on,最后源码需要导入 import &amp;quot;C&amp;quot;
- cgo类型映射    C type Cgo type Go type     char C.char byte   signed char C.schar int8   unsigned char C.uchar uint8   short C.short int16   unsigned short C.ushort uint16   int C.int int32   unsigned int C.uint uint32   long C.long int32   unsigned long C.ulong uint32   long long int C.</description>
+      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
     </item>
     
     <item>
@@ -168,14 +167,7 @@
       <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
-      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。
-Go中的编译指示 //go:noinline func Echo(){} 指示详解 //go:noinline  使函数不内联，内联是在编译期间发生的，将函数调用处替换为被调用函数主体的一种编译器优化手段。
-   减少函数调用的开销，提高执行速度。
-  复制后的更大函数体为其他编译优化带来可能性，如 过程间优化
-  消除分支，并改善空间局部性和指令顺序性，同样可以提高性能。
-  代码复制带来的空间增长。
-  如果有大量重复代码，反而会降低缓存命中率，尤其对 CPU 缓存是致命的。
-  内联 func Max(a, b int) int {  if a &amp;gt; b {  return a  }  return b }  func F() {  const a, b = 100, 20  if Max(a, b) == b {  panic(b)  } } 内联级别：默认常规内联，-gcflags=-l 禁用内联，-gcflags=&#39;-l -l&#39; 二级内联，-gcflags=&#39;-l -l -l&#39; 三级内联，-gcflags=&#39;-l -l -l -l&#39; 四级内联，级数越大，也许更快，但bug更多</description>
+      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</description>
     </item>
     
     <item>
@@ -326,16 +318,7 @@ GC forced
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
-      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。
-位运算符   &amp;amp; 与运算符
-都为1则为1，否则为0
-  | 或运算符
-只要一个为1，则为1
-  ^ 异或运算符
-不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）
-  ~ 取反
-1变0，0变1，但是要区分是否是有符号还是无符号的。
-   优先级    Seq Operation     1 ~   2 &amp;lt;&amp;lt;、&amp;gt;&amp;gt;   3 &amp;amp;   4 ^   5 `   6 &amp;amp;=、^=、`     应用 &amp;amp;   清零</description>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
     </item>
     
     <item>
@@ -580,12 +563,7 @@ G H I   J
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/tools/</guid>
-      <description>常用表 Http状态码、Header、方法
-ASCII对照
-16进制RGB颜色
-正则表达式
-Markdown文档
-私人资源</description>
+      <description>常用表 Http状态码、Header、方法 ASCII对照 16进制RGB颜色 正则表达式 Markdown文档 私人资源</description>
     </item>
     
     <item>
@@ -594,12 +572,7 @@ Markdown文档
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/07/topk/</guid>
-      <description>问题  在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对
- 全局排序  使用 QuickSort、HeapSort、BubbleSort 进行全局排序，然后取前 K 个或后 K 个。时间复杂度随排序算法而定
- 局部排序  基于上一个问题，对于前 K 个数来说，后面的排序与否其实不重要，只需要排序前 K 个，那么首先算法必须是稳定排序，BubbleSort 是稳定排序算法，通过冒泡 K 次即可得到结果。时间复杂度 O(n*K)
- 堆  那么对于前 K 个数它们的排序与否也不重要，只要大于后面的数即可，那么只需要前 K 个元素构成一个小顶堆，然后遍历剩下 n-K 个元素，再调整堆，保证这个堆所有元素均大于等于剩下的 n-K 个元素即可。时间复杂度为 O((n-K)logK)
- 减治算法  与分治算法不同的是：减治算法是将问题分为若干个子问题，只要其中一个子问题得解，那么这个问题整体得解，比如二分查找法 BinarySearch。时间复杂度为 O(K*log(n))
- /* 二分查找法的缺陷是要么数组是有序的，要么得知道具体目标值 */ func BinarySearch(arr []int,low,high,target int) int{  if low &amp;gt; high {  return -1  }  mid := (low+high)/2  if arr[mid] == target {  return mid  }  if arr[mid] &amp;gt; target {  return BinarySearch(arr,low,mid-1,target)  }else{  return BianrySearch(arr,mid+1,target)  } } </description>
+      <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
     </item>
     
     <item>
@@ -633,8 +606,7 @@ Markdown文档
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/07/ilruntime/</guid>
-      <description> 这是一个介绍
- </description>
+      <description>这是一个介绍</description>
     </item>
     
     <item>
@@ -838,17 +810,7 @@ Markdown文档
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/05/bitmap/</guid>
-      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间
-作用 查询对应的一个元素是否存在，比如一个网页请求（BoolmFilter）， 经过多次 hash 之后会得到一个数值 然后在 bitmap 中查找 value ?= 1，比 map 这种数据结构省了大量的内存。其本质还是将 key 计算的值存储，而非存储 key 本身，所以牺牲了时间而换取了空间
-缺陷   不支持非运算
-取非之后的结果，并不一定包含真实的信息，比如 []int{0,1,2,3,5} ,只不包含 4 个这个数,但是如果这个 bitmap 有10个空间，那么会认为也不包括 []int{6,7,8} ，但其本身不包含。全量 bitmap: [1,1,1,1,1,1,0,0,0,0] 与其 XOR 运算可得缺少的数正好是第四位上的数。
-  统计
-仅仅能判断存在，而不能判断存在几个
-  碰撞
-不同的数据也能有相同的 hash，所以会存在碰撞问题
-  稀疏
-对于数据过少的，也需要一定量的空间，也许比原始数据空间更大。可以通过 RoaringBitmap 解决 或 Google(EWAH)
-  实现 type bitmap struct { 	bytes []byte  	cap int }  func NewBitMap(cap int) *bitmap { 	return &amp;amp;bitmap{  //左移三位的作用是，1个byte可以存储8bit 	make([]byte, (cap&amp;gt;&amp;gt;3)+1), 	cap, 	} }  func (this *bitmap) Add(val int) { 	idx := val &amp;gt;&amp;gt; 3 	pos := val % 8 	this.</description>
+      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
     </item>
     
     <item>
@@ -1139,9 +1101,7 @@ Markdown文档
       <pubDate>Wed, 13 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/about/</guid>
-      <description>专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 C、Golang、CSharp、Lua 等单词
- 技术栈 Docker、Nginx、Golang、Git、Centos、Markdown、WebHook、hugo
-Github Pages、hugo</description>
+      <description>专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 C、Golang、CSharp、Lua 等单词 技术栈 Docker、Nginx、G</description>
     </item>
     
     <item>
@@ -1150,19 +1110,7 @@ Github Pages、hugo</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/1/01/</guid>
-      <description>Liunx 文件系统  对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook
- 文件类型    符号 描述     d 目录   l 符号链接   s 套接字文件   b 块设备文件   c 字符设备文件   p 命名管道文件   - 普通文件，不属于上述任意一种    权限更换  chmod [who] operator [permission] filename
-   who
-   符号 描述     u 文件属主权限   g 同组用户权限   o 其他用户权限   a 所有用户      operator</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://domyson.github.io/1/01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/1/01/</guid>
-      <description></description>
+      <description>Liunx 文件系统 对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook 文件类型 符号 描述 d 目录 l 符号链接 s 套接字文件 b 块设备文件 c 字符设备文件 p 命名管道文件 - 普通文件，不属于上述任</description>
     </item>
     
     <item>
@@ -1180,8 +1128,16 @@ Github Pages、hugo</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/1/01/</guid>
-      <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true
-假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转 type Node struct {  next *Node   val interface{} }  var n *Node // 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4  func Reverse(n *Node){  prev,next := n,n.next  prve.next = nil // 清除第一个节点的指向  for n !</description>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://domyson.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/1/01/</guid>
+      <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true 假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转</description>
     </item>
     
     <item>
