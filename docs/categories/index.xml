@@ -1,117 +1,117 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/categories/</link>
-    <description>Recent content in Categories on 薛定谔的BUG</description>
+    <title>Categories on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/</link>
+    <description>Recent content in Categories on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>go</title>
-      <link>https://DoMySon.github.io/categories/go/</link>
+      <link>https://domyson.github.io/categories/go/</link>
       <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/go/</guid>
+      <guid>https://domyson.github.io/categories/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>C</title>
-      <link>https://DoMySon.github.io/categories/C/</link>
+      <link>https://domyson.github.io/categories/c/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/C/</guid>
+      <guid>https://domyson.github.io/categories/c/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tools</title>
-      <link>https://DoMySon.github.io/categories/tools/</link>
+      <link>https://domyson.github.io/categories/tools/</link>
       <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/tools/</guid>
+      <guid>https://domyson.github.io/categories/tools/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Network</title>
-      <link>https://DoMySon.github.io/categories/Network/</link>
+      <link>https://domyson.github.io/categories/network/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Network/</guid>
+      <guid>https://domyson.github.io/categories/network/</guid>
       <description></description>
     </item>
     
     <item>
       <title>算法</title>
-      <link>https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/</link>
+      <link>https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/</guid>
+      <guid>https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>https://DoMySon.github.io/categories/Docker/</link>
+      <link>https://domyson.github.io/categories/docker/</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Docker/</guid>
+      <guid>https://domyson.github.io/categories/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Unity</title>
-      <link>https://DoMySon.github.io/categories/Unity/</link>
+      <link>https://domyson.github.io/categories/unity/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Unity/</guid>
+      <guid>https://domyson.github.io/categories/unity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>redis</title>
-      <link>https://DoMySon.github.io/categories/redis/</link>
+      <link>https://domyson.github.io/categories/redis/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/redis/</guid>
+      <guid>https://domyson.github.io/categories/redis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Protobuf3</title>
-      <link>https://DoMySon.github.io/categories/Protobuf3/</link>
+      <link>https://domyson.github.io/categories/protobuf3/</link>
       <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Protobuf3/</guid>
+      <guid>https://domyson.github.io/categories/protobuf3/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mysql</title>
-      <link>https://DoMySon.github.io/categories/mysql/</link>
+      <link>https://domyson.github.io/categories/mysql/</link>
       <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/mysql/</guid>
+      <guid>https://domyson.github.io/categories/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Nginx</title>
-      <link>https://DoMySon.github.io/categories/Nginx/</link>
+      <link>https://domyson.github.io/categories/nginx/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Nginx/</guid>
+      <guid>https://domyson.github.io/categories/nginx/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://DoMySon.github.io/categories/Linux/</link>
+      <link>https://domyson.github.io/categories/linux/</link>
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Linux/</guid>
+      <guid>https://domyson.github.io/categories/linux/</guid>
       <description></description>
     </item>
     

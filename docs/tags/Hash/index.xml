@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hash on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Hash/</link>
-    <description>Recent content in Hash on 薛定谔的BUG</description>
+    <title>Hash on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/hash/</link>
+    <description>Recent content in Hash on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 27 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Hash/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/hash/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ConsistentHash</title>
-      <link>https://DoMySon.github.io/post/ConsistentHash/</link>
+      <link>https://domyson.github.io/2019/08/consistenthash/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/ConsistentHash/</guid>
+      <guid>https://domyson.github.io/2019/08/consistenthash/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 &lt;code&gt;Key&lt;/code&gt; 从多个节点（也就是服务器）中找到缓存数据所在的节点。&lt;/p&gt;

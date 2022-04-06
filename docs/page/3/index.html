@@ -7,20 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
 
-    <title>薛定谔的BUG | 专注于各种划水</title>
-    <meta property="og:title" content="薛定谔的BUG | 专注于各种划水">
+    <title>薛定谔的Bug | 划水码农</title>
+    <meta property="og:title" content="薛定谔的Bug | 划水码农">
     <meta property="og:type" content="website">
     <meta name="Keywords" content="">
     <meta name="description" content="">
-    <meta property="og:url" content="https://DoMySon.github.io/">
+    <meta property="og:url" content="https://domyson.github.io/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/index.xml" title="薛定谔的BUG" />
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/index.xml" title="薛定谔的Bug" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -38,22 +36,16 @@
             <div class="site-name ">
                 
                     <h1>
-                        <a id="logo" href="https://DoMySon.github.io/">
-                            薛定谔的BUG
+                        <a id="logo" href="https://domyson.github.io/">
+                            薛定谔的Bug
                         </a>
                     </h1>
                 
-                <p class="description">专注于各种划水</p>
+                <p class="description">划水码农</p>
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://DoMySon.github.io/">首页</a>
-                    
-                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
-                    
-                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    <a class="current" href="https://domyson.github.io/">首页</a>
                     
                 </nav>
             </div>
@@ -72,251 +64,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="Unity内存管理">Unity内存管理</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/Unity'>Unity</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="unity-托管内存">Unity 托管内存</h1>
-<ol>
-<li>
-<p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p>
-</li>
-<li>
-<p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p>
-</li>
-<li>
-<p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p>
-</li>
-<li>
-<p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p>
-</li>
-<li>
-<p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p>
-</li>
-<li>
-<p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p>
-</li>
-</ol>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go%E9%94%81/" title="Go锁">Go锁</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月11日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<blockquote>
-<p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/Go%E9%94%81/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Tree/" title="Tree">Tree</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年9月2日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="树-tree">树 <code>Tree</code></h1>
-<h2 id="定义">定义</h2>
-<blockquote>
-<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
-</blockquote>
-<pre tabindex="0"><code>      A
-     / \
-    B   C
-   /   / \
-  D   E   F
- /|\   \
-G H I   J
-</code></pre><ul>
-<li>
-<p>有且仅有一个特定的称为根（Root）的结点；</p>
-</li>
-<li>
-<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
-</li>
-<li>
-<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
-</li>
-<li>
-<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
-</li>
-</ul>
-<h2 id="节点的度">节点的度</h2>
-<blockquote>
-<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
-</blockquote>
-<pre tabindex="0"><code>             A -度2
-            / \
-           B   C -度2
-          /   / \
-   度3 - D   E   F - 度0
-        /|\   \
-       G H I   J
-</code></pre><h2 id="节点的深度">节点的深度</h2>
-<blockquote>
-<p>该节点的深度为 4</p>
-</blockquote>
-<pre tabindex="0"><code>------------------------------
-          A         第一层       
--------- /-\------------------
-        B   C       第二层 
--------/---/-\----------------        
-      D   E   F     第三层
------/|\---\------------------            
-    G H I   J       第四层
-------------------------------
-</code></pre>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/Tree/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/ConsistentHash/" title="ConsistentHash">ConsistentHash</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<blockquote>
-<p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
-</blockquote>
-<blockquote>
-<p>一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。</p>
-</blockquote>
-<ol>
-<li>
-<p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p>
-</li>
-<li>
-<p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p>
-</li>
-<li>
-<p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p>
-</li>
-<li>
-<p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
-</li>
-</ol>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/ConsistentHash/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Snowflake/" title="Snowflake">Snowflake</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p><code>snowflake</code>（雪花算法）是一种分布式ID算法。</p>
-</blockquote>
-<h1 id="对比其他的优缺点">对比其他的优缺点</h1>
-<ul>
-<li>
-<p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p>
-</li>
-<li>
-<p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p>
-</li>
-</ul>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/Snowflake/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/unsafe%E5%8C%85/" title="unsafe包">unsafe包</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/unsafe%E5%8C%85/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
+                <a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -335,7 +83,517 @@ G H I   J
 <p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
 </blockquote>……
         </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/post/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
+        <p class="readmore"><a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/topk/" title="TopK">TopK</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月31日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            问题  在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对
+ 全局排序  使用 QuickSort、HeapSort、BubbleSort 进行全局排序，然后取前 K 个或后 K 个。时间复杂度随排序算法而定
+ 局部排序  基于上一个问题，对于前 K 个数来说，后面的排序与否其实不重要，只需要排序前 K 个，那么首先算法必须是稳定排序，BubbleSort 是稳定排序算法，通过冒泡 K 次即可得到结果。时间复杂度 O(n*K)
+ 堆  那么对于前 K 个数它们的排序与否也不重要，只要大于后面的数即可，那么只需要前 K 个元素构成一个小顶堆，然后遍历剩下 n-K 个元素，再调整堆，保证这个堆所有元素均大于等于剩下的 n-K 个元素即可。时间复杂度为 O((n-K)logK)
+ 减治算法  与分治算法不同的是：减治算法是将问题分为若干个子问题，只要其中一个子问题得解，那么这个问题整体得解，比如二分查找法 BinarySearch。时间复杂度为 O(K*log(n))
+ /* 二分查找法的缺陷是要么数组是有序的，要么得知道具体目标值 */ func BinarySearch(arr []int,low,high,target int) int{  if low &gt; high {  return -1  }  mid := (low+high)/2  if arr[mid] == target {  return mid  }  if arr[mid] &gt; target {  return BinarySearch(arr,low,mid-1,target)  }else{  return BianrySearch(arr,mid+1,target)  } } ……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/07/topk/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/classicsort/" title="ClassicSort">ClassicSort</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月27日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="概念">概念</h1>
+<h2 id="稳定排序非稳定排序">稳定排序，非稳定排序</h2>
+<blockquote>
+<p>如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  <code>非稳定排序</code></p>
+</blockquote>
+<h2 id="原地排序非原地排序">原地排序，非原地排序</h2>
+<blockquote>
+<p>原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 <code>非原地排序</code></p>
+</blockquote>
+<h2 id="时间复杂度">时间复杂度</h2>
+<blockquote>
+<p>一个算法执行所耗费的时间</p>
+</blockquote>
+<h2 id="空间复杂度">空间复杂度</h2>
+<blockquote>
+<p>完成算法所需的内存空间大小</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/07/classicsort/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/ilruntime/" title="ILRuntime">ILRuntime</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/unity'>Unity</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+             这是一个介绍
+ ……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/07/ilruntime/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/redis/" title="Redis">Redis</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月24日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/redis'>redis</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="liunx安装">Liunx安装</h1>
+<h1 id="基本数据结构">基本数据结构</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>string</code></td>
+<td style="text-align:center">键值对</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>has</code></td>
+<td style="text-align:center">hash表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>list</code></td>
+<td style="text-align:center">字符串列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>set</code></td>
+<td style="text-align:center">无重复列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>sorted set</code></td>
+<td style="text-align:center">有序无重复列表</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>subscribe/publish</code></td>
+<td style="text-align:center">发布订阅模式</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><a href="http://doc.redisfans.com/index.html">Redis命令</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://redis.io/download">Redis下载</a></p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/07/redis/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/05/protobuf3/" title="Protobuf3">Protobuf3</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月13日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/protobuf3'>Protobuf3</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<p><code>Protocol Buffers</code>，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 <code>syntax = proto3</code> 的协议语法。</p>
+<h1 id="标准类型对照">标准类型对照</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">.proto</th>
+<th style="text-align:center">注释</th>
+<th style="text-align:center">C++</th>
+<th style="text-align:center">Python</th>
+<th style="text-align:center">Go</th>
+<th style="text-align:center">C#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">double</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float64</td>
+<td style="text-align:center">double</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float32</td>
+<td style="text-align:center">float</td>
+</tr>
+<tr>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint32</code></td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+</tr>
+<tr>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint64</code></td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">uint</td>
+</tr>
+<tr>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">unit64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">sint32</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int32</code>更有效率</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+</tr>
+<tr>
+<td style="text-align:center">sint64</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int64</code>更有效率</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">fixed32</td>
+<td style="text-align:center">总是<code>4</code>字节，如果值大于<code>2^28</code>比<code>uint32</code>更有效率</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">fixed64</td>
+<td style="text-align:center">总是<code>8</code>字节，如果值大于<code>2^56</code>比<code>uint64</code>更有效率</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">1或0的变长编码</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">bool</td>
+</tr>
+<tr>
+<td style="text-align:center">string</td>
+<td style="text-align:center">必须是<code>UTF-8</code>编码</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str/unicode</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">string</td>
+</tr>
+<tr>
+<td style="text-align:center">bytes</td>
+<td style="text-align:center">可包含任意的字节顺序</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str</td>
+<td style="text-align:center">[]byte</td>
+<td style="text-align:center">ByteString</td>
+</tr>
+</tbody>
+</table>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/05/protobuf3/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/05/goroutine/" title="Goroutine">Goroutine</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="栈">栈</h1>
+<blockquote>
+<p>一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）</p>
+</blockquote>
+<h1 id="调度方式">调度方式</h1>
+<blockquote>
+<p>os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，<code>Goroutine</code> 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/05/goroutine/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/05/bitmap/" title="Bitmap">Bitmap</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月1日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间
+作用 查询对应的一个元素是否存在，比如一个网页请求（BoolmFilter）， 经过多次 hash 之后会得到一个数值 然后在 bitmap 中查找 value ?= 1，比 map 这种数据结构省了大量的内存。其本质还是将 key 计算的值存储，而非存储 key 本身，所以牺牲了时间而换取了空间
+缺陷   不支持非运算
+取非之后的结果，并不一定包含真实的信息，比如 []int{0,1,2,3,5} ,只不包含 4 个这个数,但是如果这个 bitmap 有10个空间，那么会认为也不包括 []int{6,7,8} ，但其本身不包含。全量 bitmap: [1,1,1,1,1,1,0,0,0,0] 与其 XOR 运算可得缺少的数正好是第四位上的数。
+  统计
+仅仅能判断存在，而不能判断存在几个
+  碰撞
+不同的数据也能有相同的 hash，所以会存在碰撞问题
+  稀疏
+对于数据过少的，也需要一定量的空间，也许比原始数据空间更大。可以通过 RoaringBitmap 解决 或 Google(EWAH)
+  实现 type bitmap struct { 	bytes []byte  	cap int }  func NewBitMap(cap int) *bitmap { 	return &amp;bitmap{  //左移三位的作用是，1个byte可以存储8bit 	make([]byte, (cap&gt;&gt;3)+1), 	cap, 	} }  func (this *bitmap) Add(val int) { 	idx := val &gt;&gt; 3 	pos := val % 8 	this.……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/05/bitmap/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/03/mysql/" title="mysql">mysql</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月16日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/mysql'>mysql</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<blockquote>
+<p>MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。</p>
+</blockquote>
+<h1 id="下载地址">下载地址</h1>
+<p><a href="http://dev.mysql.com/downloads/mysql/">MySQL下载地址</a></p>
+<h1 id="基本类型">基本类型</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">大小</th>
+<th style="text-align:center">范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>tinyint(m)</code></td>
+<td style="text-align:center">1字节</td>
+<td style="text-align:center">-2^7~2^7-1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>smallint(m)</code></td>
+<td style="text-align:center">2字节</td>
+<td style="text-align:center">-2^15~2^15-1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mediumint(m)</code></td>
+<td style="text-align:center">3字节</td>
+<td style="text-align:center">-2^23~2^23-1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>int(m)</code></td>
+<td style="text-align:center">4字节</td>
+<td style="text-align:center">-2^31~2^31-1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>bigint(m)</code></td>
+<td style="text-align:center">8字节</td>
+<td style="text-align:center">-2^63~2^63-1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>char(n)</code></td>
+<td style="text-align:center">1字节</td>
+<td style="text-align:center">最多255个字符</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>varchar(n)</code></td>
+<td style="text-align:center">最多65535个字符</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>tinytext</code></td>
+<td style="text-align:center">最多255个字符</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>text</code></td>
+<td style="text-align:center">最多65535个字符</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mediumtext</code></td>
+<td style="text-align:center">最多2的24次方-1个字符</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>longtext</code></td>
+<td style="text-align:center">最多2的32次方-1个字符</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>date</code></td>
+<td style="text-align:center">日期 &lsquo;2008-12-2&rsquo;</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>time</code></td>
+<td style="text-align:center">时间 &lsquo;12:25:36&rsquo;</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>datetime</code></td>
+<td style="text-align:center">日期时间 &lsquo;2008-12-2 22:06:44&rsquo;</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>timestamp</code></td>
+<td style="text-align:center">自动存储记录修改时间</td>
+<td></td>
+</tr>
+</tbody>
+</table>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/03/mysql/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/03/docker/" title="Docker">Docker</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="docker简介">Docker简介</h1>
+<ul>
+<li>
+<p>轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。</p>
+</li>
+<li>
+<p>标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。</p>
+</li>
+<li>
+<p>安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。</p>
+</li>
+</ul>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/03/docker/">阅读全文</a></p>
     </article>
     
     
@@ -345,39 +603,31 @@ G H I   J
 <ol class="page-navigator">
     
     <li class="prev">
-        <a href="https://DoMySon.github.io/page/2/">上一页</a>
+        <a href="https://domyson.github.io/page/2/">上一页</a>
     </li>
     
 
     
     <li >
-        <a href="https://DoMySon.github.io/">1</a>
+        <a href="https://domyson.github.io/">1</a>
     </li>
     
     <li >
-        <a href="https://DoMySon.github.io/page/2/">2</a>
+        <a href="https://domyson.github.io/page/2/">2</a>
     </li>
     
     <li  class="current">
-        <a href="https://DoMySon.github.io/page/3/">3</a>
+        <a href="https://domyson.github.io/page/3/">3</a>
     </li>
     
     <li >
-        <a href="https://DoMySon.github.io/page/4/">4</a>
-    </li>
-    
-    <li >
-        <a href="https://DoMySon.github.io/page/5/">5</a>
-    </li>
-    
-    <li >
-        <a href="https://DoMySon.github.io/page/6/">6</a>
+        <a href="https://domyson.github.io/page/4/">4</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://DoMySon.github.io/page/4/">下一页</a>
+        <a href="https://domyson.github.io/page/4/">下一页</a>
     </li>
     
 </ol>
@@ -388,7 +638,7 @@ G H I   J
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
         
     </div>
     <br />
@@ -409,8 +659,6 @@ G H I   J
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
 
 
 
@@ -421,7 +669,7 @@ G H I   J
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -431,43 +679,43 @@ G H I   J
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
 </ul>
@@ -479,31 +727,29 @@ G H I   J
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -512,86 +758,75 @@ G H I   J
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
-    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
     
-    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    <a href="https://domyson.github.io/tags/c/">c</a>
     
-    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
     
-    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
     
-    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    <a href="https://domyson.github.io/tags/database/">database</a>
     
-    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
     
-    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
     
-    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
     
-    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    <a href="https://domyson.github.io/tags/go/">go</a>
     
-    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
     
-    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
     
-    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
     
-    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    <a href="https://domyson.github.io/tags/http/">http</a>
     
-    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
     
-    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
     
-    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
-    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
     
-    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    <a href="https://domyson.github.io/tags/network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
     
-    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
     
-    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
     
-    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
     
-    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
     
-    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
     
-    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
     
-    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
-    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    <a href="https://domyson.github.io/tags/web/">Web</a>
     
 </div>
     </section>
 
     
-<section class="widget">
-    <h3 class="widget-title">友情链接</h3>
-    <ul class="widget-list">
-        
-        <li>
-            <a target="_blank" href="" title=""></a>
-        </li>
-        
-    </ul>
-</section>
-
 
     <section class="widget">
         <h3 class="widget-title">其它</h3>
         <ul class="widget-list">
-            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
         </ul>
     </section>
 </div>

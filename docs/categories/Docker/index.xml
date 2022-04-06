@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Docker on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/categories/Docker/</link>
-    <description>Recent content in Docker on 薛定谔的BUG</description>
+    <title>Docker on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/docker/</link>
+    <description>Recent content in Docker on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DockerNetwork</title>
-      <link>https://DoMySon.github.io/post/DockerNetwork/</link>
+      <link>https://domyson.github.io/2020/01/dockernetwork/</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/DockerNetwork/</guid>
+      <guid>https://domyson.github.io/2020/01/dockernetwork/</guid>
       <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;
@@ -41,10 +41,10 @@
     
     <item>
       <title>Docker</title>
-      <link>https://DoMySon.github.io/post/Docker/</link>
+      <link>https://domyson.github.io/2019/03/docker/</link>
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Docker/</guid>
+      <guid>https://domyson.github.io/2019/03/docker/</guid>
       <description>&lt;h1 id=&#34;docker简介&#34;&gt;Docker简介&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -61,10 +61,10 @@
     
     <item>
       <title>Dockerfile</title>
-      <link>https://DoMySon.github.io/post/Dockerfile/</link>
+      <link>https://domyson.github.io/2019/03/dockerfile/</link>
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Dockerfile/</guid>
+      <guid>https://domyson.github.io/2019/03/dockerfile/</guid>
       <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;

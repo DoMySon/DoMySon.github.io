@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>database on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/database/</link>
-    <description>Recent content in database on 薛定谔的BUG</description>
+    <title>database on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/database/</link>
+    <description>Recent content in database on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 24 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redis</title>
-      <link>https://DoMySon.github.io/post/Redis/</link>
+      <link>https://domyson.github.io/2019/07/redis/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Redis/</guid>
+      <guid>https://domyson.github.io/2019/07/redis/</guid>
       <description>&lt;h1 id=&#34;liunx安装&#34;&gt;Liunx安装&lt;/h1&gt;
 &lt;h1 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h1&gt;
 &lt;table&gt;
@@ -59,10 +59,10 @@
     
     <item>
       <title>mysql</title>
-      <link>https://DoMySon.github.io/post/mysql/</link>
+      <link>https://domyson.github.io/2019/03/mysql/</link>
       <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/mysql/</guid>
+      <guid>https://domyson.github.io/2019/03/mysql/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;

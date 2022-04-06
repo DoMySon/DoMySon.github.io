@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/categories/Linux/</link>
-    <description>Recent content in Linux on 薛定谔的BUG</description>
+    <title>Linux on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/linux/</link>
+    <description>Recent content in Linux on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 26 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lock</title>
-      <link>https://DoMySon.github.io/post/Lock/</link>
+      <link>https://domyson.github.io/2019/02/lock/</link>
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Lock/</guid>
+      <guid>https://domyson.github.io/2019/02/lock/</guid>
       <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -44,10 +44,10 @@
     
     <item>
       <title>I/O</title>
-      <link>https://DoMySon.github.io/post/I/O/</link>
+      <link>https://domyson.github.io/2019/02/i/o/</link>
       <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/I/O/</guid>
+      <guid>https://domyson.github.io/2019/02/i/o/</guid>
       <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;

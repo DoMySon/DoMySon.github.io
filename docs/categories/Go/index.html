@@ -6,11 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
 
-    <title>go | 薛定谔的BUG</title>
-    <meta property="og:title" content="go - 薛定谔的BUG">
+    <title>go | 薛定谔的Bug</title>
+    <meta property="og:title" content="go - 薛定谔的Bug">
     <meta property="og:type" content="article">
         
         
@@ -18,12 +16,12 @@
     <meta name="description" content="go">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://DoMySon.github.io/categories/go/">
+    <meta property="og:url" content="https://domyson.github.io/categories/go/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://DoMySon.github.io/categories/go/index.xml" title="薛定谔的BUG" />
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/categories/go/index.xml" title="薛定谔的Bug" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -40,21 +38,15 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://DoMySon.github.io/">
-                        薛定谔的BUG
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
                     </a>
                 
-                <p class="description">专注于各种划水</p>
+                <p class="description">划水码农</p>
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://DoMySon.github.io/">首页</a>
-                    
-                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
-                    
-                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    <a class="" href="https://domyson.github.io/">首页</a>
                     
                 </nav>
             </div>
@@ -81,7 +73,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Cgo/">Cgo</a>
+                <a href="https://domyson.github.io/2022/04/cgo/">Cgo</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -96,15 +88,16 @@
         </div>
         
         <div class="post-content">
-            cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/Cgo/">阅读全文</a></p>
+            cgo 一种go与c交互的技术 开启cgo  要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环境变量CGO_ENAVBLE=on,最后源码需要导入 import &quot;C&quot;
+ cgo类型映射    C type Cgo type Go type     char C.char byte   signed char C.schar int8   unsigned char C.uchar uint8   short C.short int16   unsigned short C.ushort uint16   int C.int int32   unsigned int C.uint uint32   long C.long int32   unsigned long C.ulong uint32   long long int C.……
+            <p class="readmore"><a href="https://domyson.github.io/2022/04/cgo/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">Go 编译指示</a>
+                <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">Go 编译指示</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -119,15 +112,22 @@
         </div>
         
         <div class="post-content">
-            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">阅读全文</a></p>
+            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。
+Go中的编译指示 //go:noinline func Echo(){} 指示详解 //go:noinline  使函数不内联，内联是在编译期间发生的，将函数调用处替换为被调用函数主体的一种编译器优化手段。
+   减少函数调用的开销，提高执行速度。
+  复制后的更大函数体为其他编译优化带来可能性，如 过程间优化
+  消除分支，并改善空间局部性和指令顺序性，同样可以提高性能。
+  代码复制带来的空间增长。
+  如果有大量重复代码，反而会降低缓存命中率，尤其对 CPU 缓存是致命的。
+  内联 func Max(a, b int) int {  if a &gt; b {  return a  }  return b }  func F() {  const a, b = 100, 20  if Max(a, b) == b {  panic(b)  } } 内联级别：默认常规内联，-gcflags=-l 禁用内联，-gcflags='-l -l' 二级内联，-gcflags='-l -l -l' 三级内联，-gcflags='-l -l -l -l' 四级内联，级数越大，也许更快，但bug更多……
+            <p class="readmore"><a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/">Go GC分析</a>
+                <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/">Go GC分析</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -153,14 +153,14 @@ scvg: 0 MB released
 scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
 GC forced
 </code></pre>……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/">阅读全文</a></p>
+            <p class="readmore"><a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">go历代版本</a>
+                <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">go历代版本</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -176,14 +176,14 @@ GC forced
         
         <div class="post-content">
             <h1 id="go-版本变迁差异">Go 版本变迁差异</h1>……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">阅读全文</a></p>
+            <p class="readmore"><a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">Go标准命令</a>
+                <a href="https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">Go标准命令</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -199,14 +199,14 @@ GC forced
         
         <div class="post-content">
             <p>Go源码文件包括：命令源码文件、库源码文件和测试源码文件。其中，命令源码文件总应该属于main代码包，且在其中有无参数声明、无结果声明的main函数。单个命令源码文件可以被单独编译，也可以被单独安装</p>……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">阅读全文</a></p>
+            <p class="readmore"><a href="https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/channel/">channel</a>
+                <a href="https://domyson.github.io/2020/01/channel/">channel</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -227,14 +227,14 @@ GC forced
 <blockquote>
 <p><code>channel</code> 提供了一种通信机制，通过它，一个 <code>goroutine</code> 可以与另一 <code>goroutine</code> 发送消息。<code>channel</code> 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 <code>len()</code> 获取通道当前缓冲数量。 <code>cap()</code> 获取通道最大缓冲。</p>
 </blockquote>……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/channel/">阅读全文</a></p>
+            <p class="readmore"><a href="https://domyson.github.io/2020/01/channel/">阅读全文</a></p>
         </div>
     </article>
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/post/Go-Module/">Go Module</a>
+                <a href="https://domyson.github.io/2019/12/go-module/">Go Module</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -251,7 +251,83 @@ GC forced
         <div class="post-content">
             <h1 id="module">Module</h1>
 <p>Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 <code>go.mod</code> 文件来建立依赖管理。</p>……
-            <p class="readmore"><a href="https://DoMySon.github.io/post/Go-Module/">阅读全文</a></p>
+            <p class="readmore"><a href="https://domyson.github.io/2019/12/go-module/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/12/go%E9%94%81/">Go锁</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月11日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/go'>go</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<blockquote>
+<p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/12/go%E9%94%81/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">unsafe包</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月25日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/go'>go</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">Go性能分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月23日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/go'>go</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
         </div>
     </article>
     
@@ -265,17 +341,17 @@ GC forced
 
     
     <li  class="current">
-        <a href="https://DoMySon.github.io/categories/go/">1</a>
+        <a href="https://domyson.github.io/categories/go/">1</a>
     </li>
     
     <li >
-        <a href="https://DoMySon.github.io/categories/go/page/2/">2</a>
+        <a href="https://domyson.github.io/categories/go/page/2/">2</a>
     </li>
     
 
     
     <li class="next">
-        <a href="https://DoMySon.github.io/categories/go/page/2/">下一页</a>
+        <a href="https://domyson.github.io/categories/go/page/2/">下一页</a>
     </li>
     
 </ol>
@@ -286,7 +362,7 @@ GC forced
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
         
     </div>
     <br />
@@ -307,8 +383,6 @@ GC forced
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
 
 
 
@@ -319,7 +393,7 @@ GC forced
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -329,43 +403,43 @@ GC forced
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
 </ul>
@@ -377,31 +451,29 @@ GC forced
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -410,86 +482,75 @@ GC forced
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
-    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
     
-    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    <a href="https://domyson.github.io/tags/c/">c</a>
     
-    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
     
-    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
     
-    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    <a href="https://domyson.github.io/tags/database/">database</a>
     
-    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
     
-    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
     
-    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
     
-    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    <a href="https://domyson.github.io/tags/go/">go</a>
     
-    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
     
-    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
     
-    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
     
-    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    <a href="https://domyson.github.io/tags/http/">http</a>
     
-    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
     
-    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
     
-    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
-    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
     
-    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    <a href="https://domyson.github.io/tags/network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
     
-    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
     
-    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
     
-    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
     
-    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
     
-    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
     
-    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
     
-    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
-    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    <a href="https://domyson.github.io/tags/web/">Web</a>
     
 </div>
     </section>
 
     
-<section class="widget">
-    <h3 class="widget-title">友情链接</h3>
-    <ul class="widget-list">
-        
-        <li>
-            <a target="_blank" href="" title=""></a>
-        </li>
-        
-    </ul>
-</section>
-
 
     <section class="widget">
         <h3 class="widget-title">其它</h3>
         <ul class="widget-list">
-            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
         </ul>
     </section>
 </div>

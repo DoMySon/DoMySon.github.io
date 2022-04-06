@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Web on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Web/</link>
-    <description>Recent content in Web on 薛定谔的BUG</description>
+    <title>Web on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/web/</link>
+    <description>Recent content in Web on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Web/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/web/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx</title>
-      <link>https://DoMySon.github.io/post/Nginx/</link>
+      <link>https://domyson.github.io/2019/03/nginx/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Nginx/</guid>
+      <guid>https://domyson.github.io/2019/03/nginx/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>http on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/http/</link>
-    <description>Recent content in http on 薛定谔的BUG</description>
+    <title>http on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/http/</link>
+    <description>Recent content in http on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/http/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Http</title>
-      <link>https://DoMySon.github.io/post/Http/</link>
+      <link>https://domyson.github.io/2020/02/http/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Http/</guid>
+      <guid>https://domyson.github.io/2020/02/http/</guid>
       <description>&lt;h1 id=&#34;http-请求构成&#34;&gt;Http 请求构成&lt;/h1&gt;
 &lt;h2 id=&#34;请求行&#34;&gt;请求行&lt;/h2&gt;
 &lt;blockquote&gt;

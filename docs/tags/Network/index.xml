@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Network on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Network/</link>
-    <description>Recent content in Network on 薛定谔的BUG</description>
+    <title>Network on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/network/</link>
+    <description>Recent content in Network on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Network/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DockerNetwork</title>
-      <link>https://DoMySon.github.io/post/DockerNetwork/</link>
+      <link>https://domyson.github.io/2020/01/dockernetwork/</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/DockerNetwork/</guid>
+      <guid>https://domyson.github.io/2020/01/dockernetwork/</guid>
       <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;

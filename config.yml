@@ -1,0 +1,49 @@
+#website源地址
+baseurl: "https://domyson.github.io/"
+
+#网站主题
+title: 薛定谔的Bug
+
+# 使用的主题
+theme: "maupassant"
+
+#启用 Emoji; see emoji-cheat-sheet.com
+enableEmoji: true
+
+#语言
+languageCode: "zh-CN"
+
+#创建robots.txt，建议设置为true
+enableRobotsTXT: true
+
+
+meun:
+  -
+    name: "文章"
+    weight: 20
+    identifier: "archives"
+    url: /archives/
+  -
+    name: "关于"
+    weight: 30
+    identifier: "about"
+    url: /about/
+  -
+    name: "对照表"
+    weight: 40
+    identifier: "tools"
+    url: /tools/
+
+# URL样式
+#将改变content/post/文件夹下所有文章的URL。
+#/:monthname/:day/:weekday/:weekdayname/:yearday/:section/:title/:slug/:filename/:title/ 所有可用属性
+permalinks:
+  post: /:year/:month/:title/
+
+params:
+  ads: #广告位
+  links: # 友情连接
+  subtitle: 划水码农
+  author: Treasure
+  sidebarecentlimit: 5 #侧边推荐文章限制
+  page_view_conter: true

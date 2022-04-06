@@ -6,23 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
 
-    <title> | 薛定谔的BUG</title>
-    <meta property="og:title" content=" - 薛定谔的BUG">
+    <title>Posts | 薛定谔的Bug</title>
+    <meta property="og:title" content="Posts - 薛定谔的Bug">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="">
+    <meta name="description" content="Posts">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://DoMySon.github.io/post/">
+    <meta property="og:url" content="https://domyson.github.io/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/post/index.xml" title="薛定谔的Bug" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -39,21 +38,15 @@
         <div class="col-group">
             <div class="site-name ">
                 
-                    <a id="logo" href="https://DoMySon.github.io/">
-                        薛定谔的BUG
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
                     </a>
                 
-                <p class="description">专注于各种划水</p>
+                <p class="description">划水码农</p>
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://DoMySon.github.io/">首页</a>
-                    
-                    <a  href="https://DoMySon.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://DoMySon.github.io/about/" title="关于">关于</a>
-                    
-                    <a  href="https://DoMySon.github.io/tools/" title="工具">工具</a>
+                    <a class="current" href="https://domyson.github.io/">首页</a>
                     
                 </nav>
             </div>
@@ -69,85 +62,540 @@
                     
 <div class="res-cons">
     
+    
     <article class="post">
         <header>
-            <h1 class="post-title"></h1>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+            </h1>
         </header>
         <date class="post-meta meta-date">
-            1年1月1日
+            2022年4月6日
         </date>
         
-        
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
         </div>
-        
         
         <div class="post-content">
-            <p>title: 链表反转
-date: 2022-04-06
-tags: []
-categories: [&ldquo;算法&rdquo;]
-description:
-toc: true
-draft: true</p>
-<h1 id="假定链表元素为-1---2---3---4需要变为-4---3---2---1">假定链表元素为 1 -&gt; 2 -&gt; 3 -&gt; 4,需要变为 4 -&gt; 3 -&gt; 2 -&gt; 1</h1>
-<h1 id="stack方式">stack方式</h1>
-<h1 id="原地反转">原地反转</h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">struct</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">next</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">val</span> <span style="color:#66d9ef">interface</span>{}
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>   <span style="color:#75715e">// 1 -&gt; 2 -&gt; 3 -&gt; 4
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Reverse</span>(<span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>){
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prev</span>,<span style="color:#a6e22e">next</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">n</span>,<span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">next</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">prve</span>.<span style="color:#a6e22e">next</span> = <span style="color:#66d9ef">nil</span>         <span style="color:#75715e">// 清除第一个节点的指向
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>{
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">prev</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">prev</span> = <span style="color:#a6e22e">next</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">next</span> = 
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h1 id="头插">头插</h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>  <span style="color:#75715e">// 1 -&gt; 2 -&gt; 3 -&gt; 4
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">headReverse</span>(<span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>){
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tmp</span> = new(<span style="color:#a6e22e">Node</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">change</span> = new(<span style="color:#a6e22e">Node</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span>{
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">tmp</span>.<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">n</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">n</span> = <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">next</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+            cgo 一种go与c交互的技术 开启cgo  要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环境变量CGO_ENAVBLE=on,最后源码需要导入 import &quot;C&quot;
+ cgo类型映射    C type Cgo type Go type     char C.char byte   signed char C.schar int8   unsigned char C.uchar uint8   short C.short int16   unsigned short C.ushort uint16   int C.int int32   unsigned int C.uint uint32   long C.long int32   unsigned long C.ulong uint32   long long int C.……
         </div>
-
-        
-
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
-        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2022/04/cgo/">阅读全文</a></p>
     </article>
     
     
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年7月4日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/c'>c</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="预处理器">预处理器</h1>
+<ul>
+<li>
+<p><code>#pragma</code> 用于指示编译器完成一些特定的动作</p>
+<ol>
+<li>
+<p>#pragma message usermessage</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#if defined IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">#pragma message &#34;ready complie ios...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">//complie output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   note: <span style="color:#960050;background-color:#1e0010">#</span>pragma message: ready complie ios...
+</span></span></code></pre></div></li>
+<li>
+<p>#pragma once 确保头文件仅被编译一次</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> value <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span></code></pre></div></li>
+<li>
+<p>#pragma pack(size_t) 指定内存对齐</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 2byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> foo{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(4)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> bar{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    shirt s;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> foo)); <span style="color:#75715e">//8
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bar)); <span style="color:#75715e">//12
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div></li>
+<li>
+<p>在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令</p>
+</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">#define</td>
+<td style="text-align:center">定义宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#include</td>
+<td style="text-align:center">包含一个源代码文件</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#undef</td>
+<td style="text-align:center">取消一个定义的宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifdef</td>
+<td style="text-align:center">是否定义了宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifndef</td>
+<td style="text-align:center">是否没有定义一个宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#if</td>
+<td style="text-align:center">条件检测</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#else</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#elif</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#endif</td>
+<td style="text-align:center">结束条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#error</td>
+<td style="text-align:center">当遇到标准错误，输出错误消息</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#pragma</td>
+<td style="text-align:center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#line</td>
+<td style="text-align:center">重置下一行行数</td>
+<td style="text-align:center">#line 100</td>
+</tr>
+</tbody>
+</table>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年5月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/c'>C</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/05/pointer/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年4月18日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。
+Go中的编译指示 //go:noinline func Echo(){} 指示详解 //go:noinline  使函数不内联，内联是在编译期间发生的，将函数调用处替换为被调用函数主体的一种编译器优化手段。
+   减少函数调用的开销，提高执行速度。
+  复制后的更大函数体为其他编译优化带来可能性，如 过程间优化
+  消除分支，并改善空间局部性和指令顺序性，同样可以提高性能。
+  代码复制带来的空间增长。
+  如果有大量重复代码，反而会降低缓存命中率，尤其对 CPU 缓存是致命的。
+  内联 func Max(a, b int) int {  if a &gt; b {  return a  }  return b }  func F() {  const a, b = 100, 20  if Max(a, b) == b {  panic(b)  } } 内联级别：默认常规内联，-gcflags=-l 禁用内联，-gcflags='-l -l' 二级内联，-gcflags='-l -l -l' 三级内联，-gcflags='-l -l -l -l' 四级内联，级数越大，也许更快，但bug更多……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年3月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/tools'>tools</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<ul>
+<li>
+<p>msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。</p>
+</li>
+<li>
+<p>msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载</p>
+</li>
+<li>
+<p>msys2的包管理器是使用的是 <code>pacman</code></p>
+</li>
+</ul>
+<p><a href="https://www.msys2.org/">下载地址</a></p>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/03/msys2/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月26日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="如何启用gc跟踪">如何启用GC跟踪</h1>
+<blockquote>
+<p>GODEBUG=gctrace=1 go run *.go</p>
+</blockquote>
+<p>其中 <code>gctrace=1</code> 表示只针对这个进程进行GC追踪</p>
+<h1 id="输出分析">输出分析</h1>
+<pre tabindex="0"><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
+scvg: 0 MB released
+scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
+GC forced
+</code></pre>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月13日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="go-版本变迁差异">Go 版本变迁差异</h1>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月9日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。
+位运算符   &amp; 与运算符
+都为1则为1，否则为0
+  | 或运算符
+只要一个为1，则为1
+  ^ 异或运算符
+不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）
+  ~ 取反
+1变0，0变1，但是要区分是否是有符号还是无符号的。
+   优先级    Seq Operation     1 ~   2 &lt;&lt;、&gt;&gt;   3 &amp;   4 ^   5 `   6 &amp;=、^=、`     应用 &amp;   清零……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月9日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/network'>Network</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<p>传输层安全性协议（Transport Layer Security），及其前身 <code>SSL3.0</code> 之后安全套接层（Secure Sockets Layer，缩写作SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。SSL包含记录层（Record Layer）和传输层，记录层协议确定传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用<code>RSA</code> 加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。</p>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/tls/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月9日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/network'>Network</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="http-请求构成">Http 请求构成</h1>
+<h2 id="请求行">请求行</h2>
+<blockquote>
+<p>请求行以一个方法符号开头，以空格分开，后面跟着请求的URI和协议的版本，格式如下：Method Request-URI HTTP-Version CRLF  其中 Method表示请求方法；Request-URI是一个统一资源标识符；HTTP-Version表示请求的HTTP协议版本；CRLF表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Method</th>
+<th style="text-align:center">Desc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">GET</td>
+<td style="text-align:center">请求获取Request-URI所标识的资源</td>
+</tr>
+<tr>
+<td style="text-align:center">POST</td>
+<td style="text-align:center">在Request-URI所标识的资源后附加新的数据</td>
+</tr>
+<tr>
+<td style="text-align:center">HEAD</td>
+<td style="text-align:center">请求获取由Request-URI所标识的资源的响应消息报头</td>
+</tr>
+<tr>
+<td style="text-align:center">PUT</td>
+<td style="text-align:center">请求服务器存储一个资源，并用Request-URI作为其标识</td>
+</tr>
+<tr>
+<td style="text-align:center">DELETE</td>
+<td style="text-align:center">请求服务器删除Request-URI所标识的资源</td>
+</tr>
+<tr>
+<td style="text-align:center">TRACE</td>
+<td style="text-align:center">请求服务器回送收到的请求信息，主要用于测试或诊断</td>
+</tr>
+<tr>
+<td style="text-align:center">CONNECT</td>
+<td style="text-align:center">保留将来使用</td>
+</tr>
+<tr>
+<td style="text-align:center">OPTIONS</td>
+<td style="text-align:center">请求查询服务器的性能，或者查询与资源相关的选项和需求</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><code>POST</code> 和 <code>GET</code> 的区别:</p>
+<ul>
+<li>
+<p>副作用：服务器上的资源做改变，如搜索是无副作用的，注册是副作用的。</p>
+</li>
+<li>
+<p>幂等：幂等指发送 M 和 N 次请求（两者不相同且都大于 1），服务器上资源的状态一致。</p>
+</li>
+</ul>
+<p>在规范的应用场景上说，Get 多用于无副作用，幂等的场景，例如搜索关键字。Post 多用于副作用，不幂等的场景，例如注册。</p>
+<ul>
+<li>
+<p>Get 请求能缓存，Post 不能</p>
+</li>
+<li>
+<p>Post 相对 Get 安全一点点，因为Get 请求都包含在 URL 里（当然你想写到 body 里也是可以的），且会被浏览器保存历史纪录。Post 不会，但是在抓包的情况下都是一样。</p>
+</li>
+<li>
+<p>URL有长度限制，会影响 Get 请求，但是这个长度限制是浏览器规定的，不是 RFC 规定的</p>
+</li>
+<li>
+<p>Post 支持更多的编码类型且不对数据类型限制</p>
+</li>
+</ul>
+</li>
+</ul>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/http/">阅读全文</a></p>
+    </article>
+    
+    
+    
+
+
+
+<ol class="page-navigator">
+    
 
     
+    <li  class="current">
+        <a href="https://domyson.github.io/post/">1</a>
+    </li>
     
+    <li >
+        <a href="https://domyson.github.io/post/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://domyson.github.io/post/page/3/">3</a>
+    </li>
+    
+    <li >
+        <a href="https://domyson.github.io/post/page/4/">4</a>
+    </li>
+    
+    <li >
+        <a href="https://domyson.github.io/post/page/5/">5</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="https://domyson.github.io/post/page/2/">下一页</a>
+    </li>
+    
+</ol>
+
+
+
 </div>
 
                     <footer id="footer">
     <div>
-        &copy; 2022 <a href="https://DoMySon.github.io/">薛定谔的BUG By </a>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
         
     </div>
     <br />
@@ -165,22 +613,9 @@ draft: true</p>
 </footer>
 
 
-    
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
 
 
 
@@ -191,7 +626,7 @@ draft: true</p>
         <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://DoMySon.github.io/">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
       <button type="submit" class="submit icon-search"></button>
 </form>
     </section>
@@ -201,43 +636,43 @@ draft: true</p>
 <ul class="widget-list">
     
     <li>
-        <a href="https://DoMySon.github.io/post/Cgo/" title="Cgo">Cgo</a>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/pointer/" title="pointer">pointer</a>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Msys2/" title="Msys2">Msys2</a>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/Http/" title="Http">Http</a>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/TLS/" title="TLS">TLS</a>
+        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
     </li>
     
     <li>
-        <a href="https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
     </li>
     
 </ul>
@@ -249,31 +684,29 @@ draft: true</p>
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Network/">Network (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Nginx/">Nginx (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Protobuf3/">Protobuf3 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
+    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/C/">C (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/mysql/">mysql (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/redis/">redis (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
     
 </ul>
     </section>
@@ -282,86 +715,75 @@ draft: true</p>
         <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
-    <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
     
-    <a href="https://DoMySon.github.io/tags/C#/">C#</a>
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
     
-    <a href="https://DoMySon.github.io/tags/Csharp/">Csharp</a>
+    <a href="https://domyson.github.io/tags/c/">c</a>
     
-    <a href="https://DoMySon.github.io/tags/Docker/">Docker</a>
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
     
-    <a href="https://DoMySon.github.io/tags/Dockerfile/">Dockerfile</a>
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
     
-    <a href="https://DoMySon.github.io/tags/GC/">GC</a>
+    <a href="https://domyson.github.io/tags/database/">database</a>
     
-    <a href="https://DoMySon.github.io/tags/Hash/">Hash</a>
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
     
-    <a href="https://DoMySon.github.io/tags/Hotfix/">Hotfix</a>
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
     
-    <a href="https://DoMySon.github.io/tags/I/O/">I/O</a>
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
     
-    <a href="https://DoMySon.github.io/tags/Lock/">Lock</a>
+    <a href="https://domyson.github.io/tags/go/">go</a>
     
-    <a href="https://DoMySon.github.io/tags/Locker/">Locker</a>
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
     
-    <a href="https://DoMySon.github.io/tags/Lua/">Lua</a>
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
     
-    <a href="https://DoMySon.github.io/tags/Network/">Network</a>
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
     
-    <a href="https://DoMySon.github.io/tags/Proxy/">Proxy</a>
+    <a href="https://domyson.github.io/tags/http/">http</a>
     
-    <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
     
-    <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
     
-    <a href="https://DoMySon.github.io/tags/Tree/">Tree</a>
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
-    <a href="https://DoMySon.github.io/tags/Unity/">Unity</a>
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
     
-    <a href="https://DoMySon.github.io/tags/Web/">Web</a>
+    <a href="https://domyson.github.io/tags/network/">Network</a>
     
-    <a href="https://DoMySon.github.io/tags/bit/">bit</a>
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
     
-    <a href="https://DoMySon.github.io/tags/c/">c</a>
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
     
-    <a href="https://DoMySon.github.io/tags/database/">database</a>
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
     
-    <a href="https://DoMySon.github.io/tags/go/">go</a>
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
     
-    <a href="https://DoMySon.github.io/tags/goroutine/">goroutine</a>
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
     
-    <a href="https://DoMySon.github.io/tags/http/">http</a>
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
     
-    <a href="https://DoMySon.github.io/tags/msys2/">msys2</a>
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
     
-    <a href="https://DoMySon.github.io/tags/pointer/">pointer</a>
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
     
-    <a href="https://DoMySon.github.io/tags/pprof/">pprof</a>
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
-    <a href="https://DoMySon.github.io/tags/pragma/">pragma</a>
+    <a href="https://domyson.github.io/tags/web/">Web</a>
     
 </div>
     </section>
 
     
-<section class="widget">
-    <h3 class="widget-title">友情链接</h3>
-    <ul class="widget-list">
-        
-        <li>
-            <a target="_blank" href="" title=""></a>
-        </li>
-        
-    </ul>
-</section>
-
 
     <section class="widget">
         <h3 class="widget-title">其它</h3>
         <ul class="widget-list">
-            <li><a href="https://DoMySon.github.io/index.xml">文章 RSS</a></li>
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
         </ul>
     </section>
 </div>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>redis on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/categories/redis/</link>
-    <description>Recent content in redis on 薛定谔的BUG</description>
+    <title>redis on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/redis/</link>
+    <description>Recent content in redis on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 24 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/redis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redis</title>
-      <link>https://DoMySon.github.io/post/Redis/</link>
+      <link>https://domyson.github.io/2019/07/redis/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Redis/</guid>
+      <guid>https://domyson.github.io/2019/07/redis/</guid>
       <description>&lt;h1 id=&#34;liunx安装&#34;&gt;Liunx安装&lt;/h1&gt;
 &lt;h1 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h1&gt;
 &lt;table&gt;

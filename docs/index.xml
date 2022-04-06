@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/</link>
-    <description>Recent content on 薛定谔的BUG</description>
+    <title>薛定谔的Bug</title>
+    <link>https://domyson.github.io/</link>
+    <description>Recent content on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cgo</title>
-      <link>https://DoMySon.github.io/post/Cgo/</link>
+      <link>https://domyson.github.io/2022/04/cgo/</link>
       <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Cgo/</guid>
-      <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
+      <guid>https://domyson.github.io/2022/04/cgo/</guid>
+      <description>cgo 一种go与c交互的技术 开启cgo  要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环境变量CGO_ENAVBLE=on,最后源码需要导入 import &amp;quot;C&amp;quot;
+ cgo类型映射    C type Cgo type Go type     char C.char byte   signed char C.schar int8   unsigned char C.uchar uint8   short C.short int16   unsigned short C.ushort uint16   int C.int int32   unsigned int C.uint uint32   long C.long int32   unsigned long C.ulong uint32   long long int C.</description>
     </item>
     
     <item>
       <title>预处理器</title>
-      <link>https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</link>
+      <link>https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</link>
       <pubDate>Sat, 04 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+      <guid>https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/</guid>
       <description>&lt;h1 id=&#34;预处理器&#34;&gt;预处理器&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -154,28 +155,35 @@
     
     <item>
       <title>pointer</title>
-      <link>https://DoMySon.github.io/post/pointer/</link>
+      <link>https://domyson.github.io/2020/05/pointer/</link>
       <pubDate>Sat, 02 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/pointer/</guid>
+      <guid>https://domyson.github.io/2020/05/pointer/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go 编译指示</title>
-      <link>https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</link>
+      <link>https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</link>
       <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
-      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</description>
+      <guid>https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
+      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。
+Go中的编译指示 //go:noinline func Echo(){} 指示详解 //go:noinline  使函数不内联，内联是在编译期间发生的，将函数调用处替换为被调用函数主体的一种编译器优化手段。
+   减少函数调用的开销，提高执行速度。
+  复制后的更大函数体为其他编译优化带来可能性，如 过程间优化
+  消除分支，并改善空间局部性和指令顺序性，同样可以提高性能。
+  代码复制带来的空间增长。
+  如果有大量重复代码，反而会降低缓存命中率，尤其对 CPU 缓存是致命的。
+  内联 func Max(a, b int) int {  if a &amp;gt; b {  return a  }  return b }  func F() {  const a, b = 100, 20  if Max(a, b) == b {  panic(b)  } } 内联级别：默认常规内联，-gcflags=-l 禁用内联，-gcflags=&#39;-l -l&#39; 二级内联，-gcflags=&#39;-l -l -l&#39; 三级内联，-gcflags=&#39;-l -l -l -l&#39; 四级内联，级数越大，也许更快，但bug更多</description>
     </item>
     
     <item>
       <title>Msys2</title>
-      <link>https://DoMySon.github.io/post/Msys2/</link>
+      <link>https://domyson.github.io/2020/03/msys2/</link>
       <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Msys2/</guid>
+      <guid>https://domyson.github.io/2020/03/msys2/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -193,10 +201,10 @@
     
     <item>
       <title>Go GC分析</title>
-      <link>https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/</link>
+      <link>https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/</link>
       <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go-GC%E5%88%86%E6%9E%90/</guid>
+      <guid>https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/</guid>
       <description>&lt;h1 id=&#34;如何启用gc跟踪&#34;&gt;如何启用GC跟踪&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;GODEBUG=gctrace=1 go run *.go&lt;/p&gt;
@@ -212,19 +220,19 @@ GC forced
     
     <item>
       <title>go历代版本</title>
-      <link>https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/</link>
+      <link>https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/</link>
       <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/</guid>
+      <guid>https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/</guid>
       <description>&lt;h1 id=&#34;go-版本变迁差异&#34;&gt;Go 版本变迁差异&lt;/h1&gt;</description>
     </item>
     
     <item>
       <title>Http</title>
-      <link>https://DoMySon.github.io/post/Http/</link>
+      <link>https://domyson.github.io/2020/02/http/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Http/</guid>
+      <guid>https://domyson.github.io/2020/02/http/</guid>
       <description>&lt;h1 id=&#34;http-请求构成&#34;&gt;Http 请求构成&lt;/h1&gt;
 &lt;h2 id=&#34;请求行&#34;&gt;请求行&lt;/h2&gt;
 &lt;blockquote&gt;
@@ -304,38 +312,47 @@ GC forced
     
     <item>
       <title>TLS</title>
-      <link>https://DoMySon.github.io/post/TLS/</link>
+      <link>https://domyson.github.io/2020/02/tls/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/TLS/</guid>
+      <guid>https://domyson.github.io/2020/02/tls/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;p&gt;传输层安全性协议（Transport Layer Security），及其前身 &lt;code&gt;SSL3.0&lt;/code&gt; 之后安全套接层（Secure Sockets Layer，缩写作SSL）是一种安全协议，目的是为互联网通信提供安全及数据完整性保障。SSL包含记录层（Record Layer）和传输层，记录层协议确定传输层数据的封装格式。传输层安全协议使用X.509认证，之后利用&lt;code&gt;RSA&lt;/code&gt; 加密演算来对通信方做身份认证，之后交换对称密钥作为会谈密钥（Session key）。这个会谈密钥是用来将通信两方交换的数据做加密，保证两个应用间通信的保密性和可靠性，使客户与服务器应用之间的通信不被攻击者窃听。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>位运算</title>
-      <link>https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
+      <link>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
-      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp;amp; 与运算符 都为1则为1，否</description>
+      <guid>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</guid>
+      <description>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。
+位运算符   &amp;amp; 与运算符
+都为1则为1，否则为0
+  | 或运算符
+只要一个为1，则为1
+  ^ 异或运算符
+不同为1，相同为0，两次异或一个数则是其本身（a xor b xor b = a）
+  ~ 取反
+1变0，0变1，但是要区分是否是有符号还是无符号的。
+   优先级    Seq Operation     1 ~   2 &amp;lt;&amp;lt;、&amp;gt;&amp;gt;   3 &amp;amp;   4 ^   5 `   6 &amp;amp;=、^=、`     应用 &amp;amp;   清零</description>
     </item>
     
     <item>
       <title>Go标准命令</title>
-      <link>https://DoMySon.github.io/post/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</link>
+      <link>https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</link>
       <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</guid>
+      <guid>https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</guid>
       <description>&lt;p&gt;Go源码文件包括：命令源码文件、库源码文件和测试源码文件。其中，命令源码文件总应该属于main代码包，且在其中有无参数声明、无结果声明的main函数。单个命令源码文件可以被单独编译，也可以被单独安装&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>channel</title>
-      <link>https://DoMySon.github.io/post/channel/</link>
+      <link>https://domyson.github.io/2020/01/channel/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/channel/</guid>
+      <guid>https://domyson.github.io/2020/01/channel/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -346,10 +363,10 @@ GC forced
     
     <item>
       <title>DockerNetwork</title>
-      <link>https://DoMySon.github.io/post/DockerNetwork/</link>
+      <link>https://domyson.github.io/2020/01/dockernetwork/</link>
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/DockerNetwork/</guid>
+      <guid>https://domyson.github.io/2020/01/dockernetwork/</guid>
       <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;
@@ -378,20 +395,20 @@ GC forced
     
     <item>
       <title>Go Module</title>
-      <link>https://DoMySon.github.io/post/Go-Module/</link>
+      <link>https://domyson.github.io/2019/12/go-module/</link>
       <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go-Module/</guid>
+      <guid>https://domyson.github.io/2019/12/go-module/</guid>
       <description>&lt;h1 id=&#34;module&#34;&gt;Module&lt;/h1&gt;
 &lt;p&gt;Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 &lt;code&gt;go.mod&lt;/code&gt; 文件来建立依赖管理。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Unity内存管理</title>
-      <link>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <link>https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description>&lt;h1 id=&#34;unity-托管内存&#34;&gt;Unity 托管内存&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -417,10 +434,10 @@ GC forced
     
     <item>
       <title>Go锁</title>
-      <link>https://DoMySon.github.io/post/Go%E9%94%81/</link>
+      <link>https://domyson.github.io/2019/12/go%E9%94%81/</link>
       <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go%E9%94%81/</guid>
+      <guid>https://domyson.github.io/2019/12/go%E9%94%81/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
@@ -429,10 +446,10 @@ GC forced
     
     <item>
       <title>Tree</title>
-      <link>https://DoMySon.github.io/post/Tree/</link>
+      <link>https://domyson.github.io/2019/09/tree/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Tree/</guid>
+      <guid>https://domyson.github.io/2019/09/tree/</guid>
       <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
 &lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
 &lt;blockquote&gt;
@@ -488,10 +505,10 @@ G H I   J
     
     <item>
       <title>ConsistentHash</title>
-      <link>https://DoMySon.github.io/post/ConsistentHash/</link>
+      <link>https://domyson.github.io/2019/08/consistenthash/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/ConsistentHash/</guid>
+      <guid>https://domyson.github.io/2019/08/consistenthash/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 &lt;code&gt;Key&lt;/code&gt; 从多个节点（也就是服务器）中找到缓存数据所在的节点。&lt;/p&gt;
@@ -517,10 +534,10 @@ G H I   J
     
     <item>
       <title>Snowflake</title>
-      <link>https://DoMySon.github.io/post/Snowflake/</link>
+      <link>https://domyson.github.io/2019/08/snowflake/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Snowflake/</guid>
+      <guid>https://domyson.github.io/2019/08/snowflake/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;snowflake&lt;/code&gt;（雪花算法）是一种分布式ID算法。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -537,10 +554,10 @@ G H I   J
     
     <item>
       <title>unsafe包</title>
-      <link>https://DoMySon.github.io/post/unsafe%E5%8C%85/</link>
+      <link>https://domyson.github.io/2019/08/unsafe%E5%8C%85/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/unsafe%E5%8C%85/</guid>
+      <guid>https://domyson.github.io/2019/08/unsafe%E5%8C%85/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -548,10 +565,10 @@ G H I   J
     
     <item>
       <title>Go性能分析</title>
-      <link>https://DoMySon.github.io/post/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</link>
+      <link>https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</link>
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</guid>
+      <guid>https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -559,28 +576,38 @@ G H I   J
     
     <item>
       <title>Tools</title>
-      <link>https://DoMySon.github.io/tools/</link>
+      <link>https://domyson.github.io/tools/</link>
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/tools/</guid>
-      <description>常用表 Http状态码、Header、方法 ASCII对照 16进制RGB颜色 正则表达式 Markdown文档 私人资源</description>
+      <guid>https://domyson.github.io/tools/</guid>
+      <description>常用表 Http状态码、Header、方法
+ASCII对照
+16进制RGB颜色
+正则表达式
+Markdown文档
+私人资源</description>
     </item>
     
     <item>
       <title>TopK</title>
-      <link>https://DoMySon.github.io/post/TopK/</link>
+      <link>https://domyson.github.io/2019/07/topk/</link>
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/TopK/</guid>
-      <description>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序</description>
+      <guid>https://domyson.github.io/2019/07/topk/</guid>
+      <description>问题  在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对
+ 全局排序  使用 QuickSort、HeapSort、BubbleSort 进行全局排序，然后取前 K 个或后 K 个。时间复杂度随排序算法而定
+ 局部排序  基于上一个问题，对于前 K 个数来说，后面的排序与否其实不重要，只需要排序前 K 个，那么首先算法必须是稳定排序，BubbleSort 是稳定排序算法，通过冒泡 K 次即可得到结果。时间复杂度 O(n*K)
+ 堆  那么对于前 K 个数它们的排序与否也不重要，只要大于后面的数即可，那么只需要前 K 个元素构成一个小顶堆，然后遍历剩下 n-K 个元素，再调整堆，保证这个堆所有元素均大于等于剩下的 n-K 个元素即可。时间复杂度为 O((n-K)logK)
+ 减治算法  与分治算法不同的是：减治算法是将问题分为若干个子问题，只要其中一个子问题得解，那么这个问题整体得解，比如二分查找法 BinarySearch。时间复杂度为 O(K*log(n))
+ /* 二分查找法的缺陷是要么数组是有序的，要么得知道具体目标值 */ func BinarySearch(arr []int,low,high,target int) int{  if low &amp;gt; high {  return -1  }  mid := (low+high)/2  if arr[mid] == target {  return mid  }  if arr[mid] &amp;gt; target {  return BinarySearch(arr,low,mid-1,target)  }else{  return BianrySearch(arr,mid+1,target)  } } </description>
     </item>
     
     <item>
       <title>ClassicSort</title>
-      <link>https://DoMySon.github.io/post/ClassicSort/</link>
+      <link>https://domyson.github.io/2019/07/classicsort/</link>
       <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/ClassicSort/</guid>
+      <guid>https://domyson.github.io/2019/07/classicsort/</guid>
       <description>&lt;h1 id=&#34;概念&#34;&gt;概念&lt;/h1&gt;
 &lt;h2 id=&#34;稳定排序非稳定排序&#34;&gt;稳定排序，非稳定排序&lt;/h2&gt;
 &lt;blockquote&gt;
@@ -602,19 +629,20 @@ G H I   J
     
     <item>
       <title>ILRuntime</title>
-      <link>https://DoMySon.github.io/post/ILRuntime/</link>
+      <link>https://domyson.github.io/2019/07/ilruntime/</link>
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/ILRuntime/</guid>
-      <description>这是一个介绍</description>
+      <guid>https://domyson.github.io/2019/07/ilruntime/</guid>
+      <description> 这是一个介绍
+ </description>
     </item>
     
     <item>
       <title>Redis</title>
-      <link>https://DoMySon.github.io/post/Redis/</link>
+      <link>https://domyson.github.io/2019/07/redis/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Redis/</guid>
+      <guid>https://domyson.github.io/2019/07/redis/</guid>
       <description>&lt;h1 id=&#34;liunx安装&#34;&gt;Liunx安装&lt;/h1&gt;
 &lt;h1 id=&#34;基本数据结构&#34;&gt;基本数据结构&lt;/h1&gt;
 &lt;table&gt;
@@ -661,10 +689,10 @@ G H I   J
     
     <item>
       <title>Protobuf3</title>
-      <link>https://DoMySon.github.io/post/Protobuf3/</link>
+      <link>https://domyson.github.io/2019/05/protobuf3/</link>
       <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Protobuf3/</guid>
+      <guid>https://domyson.github.io/2019/05/protobuf3/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;Protocol Buffers&lt;/code&gt;，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 &lt;code&gt;syntax = proto3&lt;/code&gt; 的协议语法。&lt;/p&gt;
 &lt;h1 id=&#34;标准类型对照&#34;&gt;标准类型对照&lt;/h1&gt;
@@ -790,10 +818,10 @@ G H I   J
     
     <item>
       <title>Goroutine</title>
-      <link>https://DoMySon.github.io/post/Goroutine/</link>
+      <link>https://domyson.github.io/2019/05/goroutine/</link>
       <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Goroutine/</guid>
+      <guid>https://domyson.github.io/2019/05/goroutine/</guid>
       <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
@@ -806,19 +834,29 @@ G H I   J
     
     <item>
       <title>Bitmap</title>
-      <link>https://DoMySon.github.io/post/Bitmap/</link>
+      <link>https://domyson.github.io/2019/05/bitmap/</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Bitmap/</guid>
-      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
+      <guid>https://domyson.github.io/2019/05/bitmap/</guid>
+      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间
+作用 查询对应的一个元素是否存在，比如一个网页请求（BoolmFilter）， 经过多次 hash 之后会得到一个数值 然后在 bitmap 中查找 value ?= 1，比 map 这种数据结构省了大量的内存。其本质还是将 key 计算的值存储，而非存储 key 本身，所以牺牲了时间而换取了空间
+缺陷   不支持非运算
+取非之后的结果，并不一定包含真实的信息，比如 []int{0,1,2,3,5} ,只不包含 4 个这个数,但是如果这个 bitmap 有10个空间，那么会认为也不包括 []int{6,7,8} ，但其本身不包含。全量 bitmap: [1,1,1,1,1,1,0,0,0,0] 与其 XOR 运算可得缺少的数正好是第四位上的数。
+  统计
+仅仅能判断存在，而不能判断存在几个
+  碰撞
+不同的数据也能有相同的 hash，所以会存在碰撞问题
+  稀疏
+对于数据过少的，也需要一定量的空间，也许比原始数据空间更大。可以通过 RoaringBitmap 解决 或 Google(EWAH)
+  实现 type bitmap struct { 	bytes []byte  	cap int }  func NewBitMap(cap int) *bitmap { 	return &amp;amp;bitmap{  //左移三位的作用是，1个byte可以存储8bit 	make([]byte, (cap&amp;gt;&amp;gt;3)+1), 	cap, 	} }  func (this *bitmap) Add(val int) { 	idx := val &amp;gt;&amp;gt; 3 	pos := val % 8 	this.</description>
     </item>
     
     <item>
       <title>mysql</title>
-      <link>https://DoMySon.github.io/post/mysql/</link>
+      <link>https://domyson.github.io/2019/03/mysql/</link>
       <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/mysql/</guid>
+      <guid>https://domyson.github.io/2019/03/mysql/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。&lt;/p&gt;
@@ -916,10 +954,10 @@ G H I   J
     
     <item>
       <title>Docker</title>
-      <link>https://DoMySon.github.io/post/Docker/</link>
+      <link>https://domyson.github.io/2019/03/docker/</link>
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Docker/</guid>
+      <guid>https://domyson.github.io/2019/03/docker/</guid>
       <description>&lt;h1 id=&#34;docker简介&#34;&gt;Docker简介&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -936,10 +974,10 @@ G H I   J
     
     <item>
       <title>Dockerfile</title>
-      <link>https://DoMySon.github.io/post/Dockerfile/</link>
+      <link>https://domyson.github.io/2019/03/dockerfile/</link>
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Dockerfile/</guid>
+      <guid>https://domyson.github.io/2019/03/dockerfile/</guid>
       <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;
@@ -948,10 +986,10 @@ G H I   J
     
     <item>
       <title>Nginx</title>
-      <link>https://DoMySon.github.io/post/Nginx/</link>
+      <link>https://domyson.github.io/2019/03/nginx/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Nginx/</guid>
+      <guid>https://domyson.github.io/2019/03/nginx/</guid>
       <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Nginx功能丰富，可作为HTTP服务器，也可作为反向代理服务器，邮件服务器。支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能。并且支持很多第三方的模块扩展。&lt;/p&gt;
@@ -976,10 +1014,10 @@ G H I   J
     
     <item>
       <title>xLua</title>
-      <link>https://DoMySon.github.io/post/xLua/</link>
+      <link>https://domyson.github.io/2019/03/xlua/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/xLua/</guid>
+      <guid>https://domyson.github.io/2019/03/xlua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -996,10 +1034,10 @@ G H I   J
     
     <item>
       <title>Lock</title>
-      <link>https://DoMySon.github.io/post/Lock/</link>
+      <link>https://domyson.github.io/2019/02/lock/</link>
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Lock/</guid>
+      <guid>https://domyson.github.io/2019/02/lock/</guid>
       <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -1031,10 +1069,10 @@ G H I   J
     
     <item>
       <title>I/O</title>
-      <link>https://DoMySon.github.io/post/I/O/</link>
+      <link>https://domyson.github.io/2019/02/i/o/</link>
       <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/I/O/</guid>
+      <guid>https://domyson.github.io/2019/02/i/o/</guid>
       <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -1077,10 +1115,10 @@ G H I   J
     
     <item>
       <title>GC</title>
-      <link>https://DoMySon.github.io/post/GC/</link>
+      <link>https://domyson.github.io/2019/02/gc/</link>
       <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/GC/</guid>
+      <guid>https://domyson.github.io/2019/02/gc/</guid>
       <description>&lt;h1 id=&#34;何谓-gc&#34;&gt;何谓 &lt;code&gt;GC&lt;/code&gt;&lt;/h1&gt;
 &lt;p&gt;GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
 曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：&lt;/p&gt;
@@ -1097,64 +1135,70 @@ G H I   J
     
     <item>
       <title>关于</title>
-      <link>https://DoMySon.github.io/about/</link>
+      <link>https://domyson.github.io/about/</link>
       <pubDate>Wed, 13 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/about/</guid>
-      <description>专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 C、Golang、CSharp、Lua 等单词 技术栈 Docker、Nginx、G</description>
+      <guid>https://domyson.github.io/about/</guid>
+      <description>专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 C、Golang、CSharp、Lua 等单词
+ 技术栈 Docker、Nginx、Golang、Git、Centos、Markdown、WebHook、hugo
+Github Pages、hugo</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://DoMySon.github.io/post/</link>
+      <link>https://domyson.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/</guid>
-      <description>Liunx 文件系统 对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook 文件类型 符号 描述 d 目录 l 符号链接 s 套接字文件 b 块设备文件 c 字符设备文件 p 命名管道文件 - 普通文件，不属于上述任</description>
+      <guid>https://domyson.github.io/1/01/</guid>
+      <description>Liunx 文件系统  对于 drwxr-xr-x 4 root root 4096 Nov 28 00:00 hook
+ 文件类型    符号 描述     d 目录   l 符号链接   s 套接字文件   b 块设备文件   c 字符设备文件   p 命名管道文件   - 普通文件，不属于上述任意一种    权限更换  chmod [who] operator [permission] filename
+   who
+   符号 描述     u 文件属主权限   g 同组用户权限   o 其他用户权限   a 所有用户      operator</description>
     </item>
     
     <item>
       <title></title>
-      <link>https://DoMySon.github.io/post/</link>
+      <link>https://domyson.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/</guid>
+      <guid>https://domyson.github.io/1/01/</guid>
       <description></description>
     </item>
     
     <item>
       <title></title>
-      <link>https://DoMySon.github.io/post/</link>
+      <link>https://domyson.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/</guid>
+      <guid>https://domyson.github.io/1/01/</guid>
       <description></description>
     </item>
     
     <item>
       <title></title>
-      <link>https://DoMySon.github.io/post/</link>
+      <link>https://domyson.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/</guid>
-      <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true 假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转</description>
+      <guid>https://domyson.github.io/1/01/</guid>
+      <description>title: 链表反转 date: 2022-04-06 tags: [] categories: [&amp;ldquo;算法&amp;rdquo;] description: toc: true draft: true
+假定链表元素为 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4,需要变为 4 -&amp;gt; 3 -&amp;gt; 2 -&amp;gt; 1 stack方式 原地反转 type Node struct {  next *Node   val interface{} }  var n *Node // 1 -&amp;gt; 2 -&amp;gt; 3 -&amp;gt; 4  func Reverse(n *Node){  prev,next := n,n.next  prve.next = nil // 清除第一个节点的指向  for n !</description>
     </item>
     
     <item>
       <title>Archives</title>
-      <link>https://DoMySon.github.io/post/Archives/</link>
+      <link>https://domyson.github.io/1/01/archives/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Archives/</guid>
+      <guid>https://domyson.github.io/1/01/archives/</guid>
       <description></description>
     </item>
     
     <item>
       <title>归档</title>
-      <link>https://DoMySon.github.io/archives/</link>
+      <link>https://domyson.github.io/archives/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/archives/</guid>
+      <guid>https://domyson.github.io/archives/</guid>
       <description></description>
     </item>
     

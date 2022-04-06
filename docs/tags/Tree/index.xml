@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tree on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Tree/</link>
-    <description>Recent content in Tree on 薛定谔的BUG</description>
+    <title>Tree on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/tree/</link>
+    <description>Recent content in Tree on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Tree/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/tree/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tree</title>
-      <link>https://DoMySon.github.io/post/Tree/</link>
+      <link>https://domyson.github.io/2019/09/tree/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Tree/</guid>
+      <guid>https://domyson.github.io/2019/09/tree/</guid>
       <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
 &lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
 &lt;blockquote&gt;

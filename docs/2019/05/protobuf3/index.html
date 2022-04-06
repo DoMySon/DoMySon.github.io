@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Protobuf3 | 薛定谔的Bug</title>
+    <meta property="og:title" content="Protobuf3 - 薛定谔的Bug">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-05-13T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-05-13T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="一种数据交换格式">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://domyson.github.io/2019/05/protobuf3/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
+                    </a>
+                
+                <p class="description">划水码农</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://domyson.github.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#指定标签">指定标签</a></li>
+    <li><a href="#字段规则">字段规则</a></li>
+    <li><a href="#消息嵌套">消息嵌套</a></li>
+    <li><a href="#保留字段">保留字段</a></li>
+    <li><a href="#默认值">默认值</a></li>
+    <li><a href="#枚举">枚举</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Protobuf3</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月13日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/protobuf3'>Protobuf3</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<p><code>Protocol Buffers</code>，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 <code>syntax = proto3</code> 的协议语法。</p>
+<h1 id="标准类型对照">标准类型对照</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">.proto</th>
+<th style="text-align:center">注释</th>
+<th style="text-align:center">C++</th>
+<th style="text-align:center">Python</th>
+<th style="text-align:center">Go</th>
+<th style="text-align:center">C#</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">double</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float64</td>
+<td style="text-align:center">double</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">定长编码</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float</td>
+<td style="text-align:center">float32</td>
+<td style="text-align:center">float</td>
+</tr>
+<tr>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint32</code></td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+</tr>
+<tr>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint64</code></td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">uint</td>
+</tr>
+<tr>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">变长编码</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">unit64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">sint32</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int32</code>更有效率</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:center">int</td>
+</tr>
+<tr>
+<td style="text-align:center">sint64</td>
+<td style="text-align:center">变长编码，对负数编码比<code>int64</code>更有效率</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">int64</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">fixed32</td>
+<td style="text-align:center">总是<code>4</code>字节，如果值大于<code>2^28</code>比<code>uint32</code>更有效率</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">fixed64</td>
+<td style="text-align:center">总是<code>8</code>字节，如果值大于<code>2^56</code>比<code>uint64</code>更有效率</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">int/long</td>
+<td style="text-align:center">uint64</td>
+<td style="text-align:center">ulong</td>
+</tr>
+<tr>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">1或0的变长编码</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">bool</td>
+</tr>
+<tr>
+<td style="text-align:center">string</td>
+<td style="text-align:center">必须是<code>UTF-8</code>编码</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str/unicode</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">string</td>
+</tr>
+<tr>
+<td style="text-align:center">bytes</td>
+<td style="text-align:center">可包含任意的字节顺序</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str</td>
+<td style="text-align:center">[]byte</td>
+<td style="text-align:center">ByteString</td>
+</tr>
+</tbody>
+</table>
+<h1 id="定义消息类型">定义消息类型</h1>
+<h2 id="example">Example</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>synatx <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#f92672">package</span> Pb;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Request</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">string</span>  xxx <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">int64</span>   yyy <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">float</span>   zzz <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">double</span>  ppp <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><ul>
+<li>
+<p>第一行指定使用 <code>proto3</code> 语法，如果不指明，则默认使用 <code>proto2</code> 语法，这一行 <code>不允许空白字符和注释</code></p>
+</li>
+<li>
+<p>第二行指明隶属于哪个包，在 <code>go</code> 中即为包名，在 <code>csharp</code> 中为命名空间</p>
+</li>
+<li>
+<p>使用 <code>//</code> 来注释</p>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="指定标签">指定标签</h2>
+<p>每一个字段都定义了一个唯一的 <code>数值标签</code>，这些唯一的数值标签用来标识 二进制消息 中你所定义的字段，一旦定义了编译后就无法修改。需要特别提醒的是标签 <code>1–15</code> 标识的字段编码仅占用 1 个字节（包括字段类型和标识标签）。 数值标签 <code>16–2047</code> 标识的字段编码占用 2 个字节。因此，你应该将标签 1–15 留给那些在你的消息类型中使用频率高的字段。记得预留一些空间（标签 1–15）给将来可能添加的高频率字段。</p>
+<h2 id="字段规则">字段规则</h2>
+<ul>
+<li>
+<p>单数：该字段可以出现0或1次</p>
+</li>
+<li>
+<p>可重复 <code>repeated</code>：改字段可以重复任意次数，可以通过 <code>[packed=true]</code> 来申明更高效的编码：<code>repeated int32 samples = 1 [packed=true];</code></p>
+</li>
+</ul>
+<h2 id="消息嵌套">消息嵌套</h2>
+<p>在一个消息结构内部定义另外一个消息结构</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Response</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//消息嵌套，可以无限嵌套
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Result</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        <span style="color:#66d9ef">string</span> url  <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//Field标签必须从1开始
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">string</span> title <span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        <span style="color:#66d9ef">repeated</span> <span style="color:#66d9ef">string</span> snippets <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    }<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">repeated</span> Result results <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">OtherResponse</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//外部使用内嵌消息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response.Result result <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="保留字段">保留字段</h2>
+<blockquote>
+<p>略</p>
+</blockquote>
+<h2 id="默认值">默认值</h2>
+<ul>
+<li>
+<p><code>string</code>默认值为空字符串。</p>
+</li>
+<li>
+<p><code>bytes</code>型默认值是空字节。</p>
+</li>
+<li>
+<p><code>bool</code>型默认值为 false。</p>
+</li>
+<li>
+<p>数值类型默认值位 0。</p>
+</li>
+<li>
+<p><code>enum</code>默认值是第一个枚举元素，它必须为 0。</p>
+</li>
+<li>
+<p><code>message</code>类型字段默认值为 null。</p>
+</li>
+</ul>
+<blockquote>
+<p>默认值字段是不会被序列化。</p>
+</blockquote>
+<h2 id="枚举">枚举</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Request</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">string</span> url <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    int number <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">enum</span> Corpus{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        None <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#75715e">//枚举标签第一个必须为0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Image<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>        Viedo<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    }<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    Corpus corpus <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h1 id="导入其它-protobuf">导入其它 <code>Protobuf</code></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#34;proj/other.proto&#34;</span> <span style="color:#75715e">//导入其他proto文件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">import</span> public <span style="color:#e6db74">&#34;other.proto&#34;</span> <span style="color:#75715e">//如果声明为public，那么other.proto导入的其他包也可以被引用
+</span></span></span></code></pre></div><h1 id="map">Map</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>map&lt;key,val&gt; mapping <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//不能使用 repeated 修饰
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">//等效于
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Entry</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    key_type key <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    val_type val <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">repeated</span> Entry entry <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><blockquote>
+<p><code>key</code> 只能是除 <code>bytes</code> &amp; <code>float、float64</code> 以外的任意类型。<code>key &amp; val</code> 也可以是自定义类型.</p>
+</blockquote>
+<h1 id="rpc-服务接口类型"><code>RPC</code> 服务接口类型</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>syntax<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchRequest</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchResponse</span>{<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">service</span> SearchService {<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//rpc接口函数是Search
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//参数是SearchRequest，返回SearchResponse 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Search (SearchRequest) <span style="color:#66d9ef">returns</span> (SearchResponse);<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2019/02/gc/">GC</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/'></a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
+    
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
+    
+    <a href="https://domyson.github.io/tags/c/">c</a>
+    
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
+    
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
+    
+    <a href="https://domyson.github.io/tags/database/">database</a>
+    
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
+    
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
+    
+    <a href="https://domyson.github.io/tags/go/">go</a>
+    
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
+    
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
+    
+    <a href="https://domyson.github.io/tags/http/">http</a>
+    
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
+    
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
+    
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/network/">Network</a>
+    
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
+    
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
+    
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
+    
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
+    
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
+    
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
+    
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
+    
+    <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

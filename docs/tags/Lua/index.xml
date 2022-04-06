@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lua on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Lua/</link>
-    <description>Recent content in Lua on 薛定谔的BUG</description>
+    <title>Lua on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/lua/</link>
+    <description>Recent content in Lua on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Lua/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/lua/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>xLua</title>
-      <link>https://DoMySon.github.io/post/xLua/</link>
+      <link>https://domyson.github.io/2019/03/xlua/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/xLua/</guid>
+      <guid>https://domyson.github.io/2019/03/xlua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;

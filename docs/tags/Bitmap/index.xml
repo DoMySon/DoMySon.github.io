@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bitmap on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/tags/Bitmap/</link>
-    <description>Recent content in Bitmap on 薛定谔的BUG</description>
+    <title>Bitmap on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/bitmap/</link>
+    <description>Recent content in Bitmap on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/tags/Bitmap/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/bitmap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bitmap</title>
-      <link>https://DoMySon.github.io/post/Bitmap/</link>
+      <link>https://domyson.github.io/2019/05/bitmap/</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Bitmap/</guid>
-      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
+      <guid>https://domyson.github.io/2019/05/bitmap/</guid>
+      <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间
+作用 查询对应的一个元素是否存在，比如一个网页请求（BoolmFilter）， 经过多次 hash 之后会得到一个数值 然后在 bitmap 中查找 value ?= 1，比 map 这种数据结构省了大量的内存。其本质还是将 key 计算的值存储，而非存储 key 本身，所以牺牲了时间而换取了空间
+缺陷   不支持非运算
+取非之后的结果，并不一定包含真实的信息，比如 []int{0,1,2,3,5} ,只不包含 4 个这个数,但是如果这个 bitmap 有10个空间，那么会认为也不包括 []int{6,7,8} ，但其本身不包含。全量 bitmap: [1,1,1,1,1,1,0,0,0,0] 与其 XOR 运算可得缺少的数正好是第四位上的数。
+  统计
+仅仅能判断存在，而不能判断存在几个
+  碰撞
+不同的数据也能有相同的 hash，所以会存在碰撞问题
+  稀疏
+对于数据过少的，也需要一定量的空间，也许比原始数据空间更大。可以通过 RoaringBitmap 解决 或 Google(EWAH)
+  实现 type bitmap struct { 	bytes []byte  	cap int }  func NewBitMap(cap int) *bitmap { 	return &amp;amp;bitmap{  //左移三位的作用是，1个byte可以存储8bit 	make([]byte, (cap&amp;gt;&amp;gt;3)+1), 	cap, 	} }  func (this *bitmap) Add(val int) { 	idx := val &amp;gt;&amp;gt; 3 	pos := val % 8 	this.</description>
     </item>
     
   </channel>

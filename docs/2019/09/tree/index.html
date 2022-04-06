@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>Tree | 薛定谔的Bug</title>
+    <meta property="og:title" content="Tree - 薛定谔的Bug">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-09-02T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-09-02T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="二叉树">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://domyson.github.io/2019/09/tree/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
+                    </a>
+                
+                <p class="description">划水码农</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://domyson.github.io/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#定义">定义</a></li>
+    <li><a href="#节点的度">节点的度</a></li>
+    <li><a href="#节点的深度">节点的深度</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#定义-1">定义</a></li>
+    <li><a href="#特点">特点</a></li>
+    <li><a href="#性质">性质</a></li>
+    <li><a href="#斜树">斜树</a></li>
+    <li><a href="#满二叉">满二叉</a>
+      <ul>
+        <li><a href="#特点-1">特点</a></li>
+      </ul>
+    </li>
+    <li><a href="#完全二叉树">完全二叉树</a>
+      <ul>
+        <li><a href="#特点-2">特点</a></li>
+      </ul>
+    </li>
+    <li><a href="#二叉树的存储结构">二叉树的存储结构</a>
+      <ul>
+        <li><a href="#顺序存储">顺序存储</a></li>
+      </ul>
+    </li>
+    <li><a href="#二叉树遍历">二叉树遍历</a>
+      <ul>
+        <li><a href="#前序遍历">前序遍历</a></li>
+        <li><a href="#中序遍历">中序遍历</a></li>
+        <li><a href="#后序遍历">后序遍历</a></li>
+        <li><a href="#层序遍历">层序遍历</a></li>
+      </ul>
+    </li>
+    <li><a href="#如何确定一个二叉树">如何确定一个二叉树</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Tree</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年9月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="树-tree">树 <code>Tree</code></h1>
+<h2 id="定义">定义</h2>
+<blockquote>
+<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
+</blockquote>
+<pre tabindex="0"><code>      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
+</ul>
+<h2 id="节点的度">节点的度</h2>
+<blockquote>
+<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
+</blockquote>
+<pre tabindex="0"><code>             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+</code></pre><h2 id="节点的深度">节点的深度</h2>
+<blockquote>
+<p>该节点的深度为 4</p>
+</blockquote>
+<pre tabindex="0"><code>------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+</code></pre><h1 id="二叉树-binarytree">二叉树 <code>BinaryTree</code></h1>
+<h2 id="定义-1">定义</h2>
+<blockquote>
+<p>二叉树是n(n&gt;=0)个结点的有限集合，该集合或者为空集（称为空二叉树），或者由一个根结点和两棵互不相交的、分别称为根结点的左子树和右子树组成。</p>
+</blockquote>
+<pre tabindex="0"><code>          A
+         / \
+        B   C
+       /   / \
+      D   E   F
+     / \   \
+    G   H   J
+       /
+      I
+</code></pre><h2 id="特点">特点</h2>
+<ul>
+<li>
+<p>每个结点最多有两颗子树，所以二叉树中不存在度大于2的结点。</p>
+</li>
+<li>
+<p>左子树和右子树是有顺序的，次序不能任意颠倒。</p>
+</li>
+<li>
+<p>即使树中某结点只有一棵子树，也要区分它是左子树还是右子树。</p>
+</li>
+</ul>
+<h2 id="性质">性质</h2>
+<ul>
+<li>
+<p>在二叉树的第i层上最多有2i-1 个节点 。（i&gt;=1）</p>
+</li>
+<li>
+<p>二叉树中如果深度为k,那么最多有2^k-1个节点。(k&gt;=1）</p>
+</li>
+<li>
+<p>n0=n2+1 n0表示度数为0的节点数，n2表示度数为2的节点数。</p>
+</li>
+<li>
+<p>在完全二叉树中，具有n个节点的完全二叉树的深度为[log2n]+1，其中[log2n]是向下取整。</p>
+</li>
+<li>
+<p>若对含 n 个结点的完全二叉树从上到下且从左至右进行 1 至 n 的编号，则对完全二叉树中任意一个编号为 i 的结点有如下特性：</p>
+<ul>
+<li>
+<p>若 i=1，则该结点是二叉树的根，无双亲, 否则，编号为 [i/2] 的结点为其双亲结点;</p>
+</li>
+<li>
+<p>若 2i&gt;n，则该结点无左孩子， 否则，编号为 2i 的结点为其左孩子结点；</p>
+</li>
+<li>
+<p>若 2i+1&gt;n，则该结点无右孩子结点， 否则，编号为2i+1 的结点为其右孩子结点。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="斜树">斜树</h2>
+<blockquote>
+<p>所有的结点都只有左子树的二叉树叫左斜树。所有结点都是只有右子树的二叉树叫右斜树。这两者统称为斜树。</p>
+</blockquote>
+<pre tabindex="0"><code>        A        A
+       /          \
+      B            C
+     /              \
+    D                F
+   /
+  G 
+</code></pre><h2 id="满二叉">满二叉</h2>
+<blockquote>
+<p>在一棵二叉树中。如果所有分支结点都存在左子树和右子树，并且所有叶子都在同一层上，这样的二叉树称为满二叉树。</p>
+</blockquote>
+<pre tabindex="0"><code>        A
+      /   \
+     B     C
+    / \   / \
+   D   E F   G
+</code></pre><h3 id="特点-1">特点</h3>
+<ul>
+<li>
+<p>叶子只能出现在最下一层。出现在其它层就不可能达成平衡。</p>
+</li>
+<li>
+<p>非叶子结点的度一定是2。</p>
+</li>
+<li>
+<p>在同样深度的二叉树中，满二叉树的结点个数最多，叶子数最多。</p>
+</li>
+</ul>
+<h2 id="完全二叉树">完全二叉树</h2>
+<blockquote>
+<p>对一颗具有n个结点的二叉树按层编号，如果编号为i(1&lt;=i&lt;=n)的结点与同样深度的满二叉树中编号为i的结点在二叉树中位置完全相同，除了最后一层之外的其他每一层都被完全填充，并且所有结点都保持向左对齐。则这棵二叉树称为完全二叉树。满二叉树一定是完全二叉树，但反过来不一定成立。</p>
+</blockquote>
+<pre tabindex="0"><code>        A
+      /   \
+     B     C
+    / \   /
+   D   E F
+</code></pre><h3 id="特点-2">特点</h3>
+<ul>
+<li>
+<p>叶子结点只能出现在最下层和次下层。</p>
+</li>
+<li>
+<p>最下层的叶子结点集中在树的左部。</p>
+</li>
+<li>
+<p>倒数第二层若存在叶子结点，一定在右部连续位置。</p>
+</li>
+<li>
+<p>如果结点度为1，则该结点只有左孩子，即没有右子树。</p>
+</li>
+<li>
+<p>同样结点数目的二叉树，完全二叉树深度最小。</p>
+</li>
+</ul>
+<h2 id="二叉树的存储结构">二叉树的存储结构</h2>
+<h3 id="顺序存储">顺序存储</h3>
+<blockquote>
+<p>当二叉树为完全二叉树时数组刚好填满，当二叉树不为完全二叉树时将会浪费空间，当出现极限情况时,如斜树，将浪费大量空间</p>
+</blockquote>
+<pre tabindex="0"><code>              A1
+            /     \
+          B2      C3
+        /   \    /  \
+      D4   E5  F6   G7
+     / \   /
+    H8 I9 J10  
+
+数组表示：
+[A,B,C,D,E,F,G,H,I,J]
+
+若 D、H、I 结点不存在时
+[A,B,C,-,E,F,G,-,-,J]
+</code></pre><h4 id="二叉链表">二叉链表</h4>
+<blockquote>
+<p>当二叉树不为完全二叉树时，可以考虑链式存储</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//树结构
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">BinaryTree</span> <span style="color:#66d9ef">struct</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">val</span> <span style="color:#66d9ef">interface</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">left</span>,<span style="color:#a6e22e">right</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BinaryTree</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="二叉树遍历">二叉树遍历</h2>
+<h3 id="前序遍历">前序遍历</h3>
+<blockquote>
+<p>从二叉树的根结点出发，当第一次到达结点时就输出结点数据，按照先向左在向右的方向访问。上图的遍历顺序为 <code>A、B、D、H、I、E、J、C、F、G</code></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//前序遍历
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">PreOrderTraverse</span>(<span style="color:#a6e22e">tree</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BinaryTree</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tree</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%+v &#34;</span>,<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PreOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">left</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PreOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">right</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="中序遍历">中序遍历</h3>
+<blockquote>
+<p>从二叉树的根结点出发，当第二次到达结点时就输出结点数据，按照先向左在向右的方向访问。上图的遍历顺序为 <code>H、D、I、B、J、E、A、F、C、G</code></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//中序遍历
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">InOrderTraverse</span>(<span style="color:#a6e22e">tree</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BinaryTree</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tree</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">InOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">left</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%+v &#34;</span>,<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">InOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">right</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="后序遍历">后序遍历</h3>
+<blockquote>
+<p>从二叉树的根结点出发，当第三次到达结点时就输出结点数据，按照先向左在向右的方向访问。上图的遍历顺序为 <code>H、I、D、J、E、B、F、G、C、A</code></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//中序遍历
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">PostOrderTraverse</span>(<span style="color:#a6e22e">tree</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BinaryTree</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tree</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PostOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">left</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">PostOrderTraverse</span>(<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">right</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%+v &#34;</span>,<span style="color:#a6e22e">tree</span>.<span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="层序遍历">层序遍历</h3>
+<blockquote>
+<p>层次遍历就是按照树的层次自上而下的遍历二叉树。上图的遍历顺序为 <code>A、B、D、E、C、F、G、H、I、J</code></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">LayerOrderTraverse</span>(<span style="color:#a6e22e">tree</span>,<span style="color:#a6e22e">left</span>,<span style="color:#a6e22e">right</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BinaryTree</span>){
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="如何确定一个二叉树">如何确定一个二叉树</h2>
+<ul>
+<li>
+<p>前序+中序 可确定唯一</p>
+</li>
+<li>
+<p>后序+中序 可确定唯一</p>
+</li>
+<li>
+<p>前序+后序 不可确定唯一</p>
+</li>
+</ul>
+<h1 id="b树">B树</h1>
+<h1 id="b树-1">B+树</h1>
+<h1 id="红黑树">红黑树</h1>
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/tree'>Tree</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/nginx/">Nginx (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/protobuf3/">Protobuf3 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
+    
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
+    
+    <a href="https://domyson.github.io/tags/c/">c</a>
+    
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
+    
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
+    
+    <a href="https://domyson.github.io/tags/database/">database</a>
+    
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
+    
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
+    
+    <a href="https://domyson.github.io/tags/go/">go</a>
+    
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
+    
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
+    
+    <a href="https://domyson.github.io/tags/http/">http</a>
+    
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
+    
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
+    
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/network/">Network</a>
+    
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
+    
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
+    
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
+    
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
+    
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
+    
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
+    
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
+    
+    <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

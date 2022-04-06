@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Unity on 薛定谔的BUG</title>
-    <link>https://DoMySon.github.io/categories/Unity/</link>
-    <description>Recent content in Unity on 薛定谔的BUG</description>
+    <title>Unity on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/unity/</link>
+    <description>Recent content in Unity on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 27 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://DoMySon.github.io/categories/Unity/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/unity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Unity内存管理</title>
-      <link>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+      <link>https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/Unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+      <guid>https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
       <description>&lt;h1 id=&#34;unity-托管内存&#34;&gt;Unity 托管内存&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -38,19 +38,20 @@
     
     <item>
       <title>ILRuntime</title>
-      <link>https://DoMySon.github.io/post/ILRuntime/</link>
+      <link>https://domyson.github.io/2019/07/ilruntime/</link>
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/ILRuntime/</guid>
-      <description>这是一个介绍</description>
+      <guid>https://domyson.github.io/2019/07/ilruntime/</guid>
+      <description> 这是一个介绍
+ </description>
     </item>
     
     <item>
       <title>xLua</title>
-      <link>https://DoMySon.github.io/post/xLua/</link>
+      <link>https://domyson.github.io/2019/03/xlua/</link>
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/post/xLua/</guid>
+      <guid>https://domyson.github.io/2019/03/xlua/</guid>
       <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;
