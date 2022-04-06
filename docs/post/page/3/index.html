@@ -71,33 +71,6 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/" title="Go不安全指针">Go不安全指针</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/08/Go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
             </h1>
         </header>
@@ -145,43 +118,6 @@
             ……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Cgo/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/08/CSharps-GC/" title="CSharp&#39;s GC">CSharp&#39;s GC</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月20日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/CSharp'>CSharp</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>.NET的GC机制有这样两个问题：</p>
-</blockquote>
-
-<ol>
-<li><p>GC并不是能释放所有的资源。它并不能自动释放非托管资源。</p></li>
-
-<li><p>GC并不是实时性的，这将会造成系统性能上的瓶颈和不确定性。</p></li>
-
-<li><p>GC并不是实时性的，这会造成系统性能上的瓶颈和不确定性。所以有了<code>IDisposable</code>接口，<code>IDisposable</code>接口定义了<code>Dispose</code>方法，这个方法用来供程序员显式调用以释放非托管资源。使用<code>using</code>语句可以简化资源管理。</p></li>
-</ol>
-
-<p><img src="/images/abc.png" alt="XX" /></p>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/CSharps-GC/">阅读全文</a></p>
     </article>
     
     
@@ -362,35 +298,6 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="C#多线程">C#多线程</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月30日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/CSharp'>CSharp</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>进程是CPU资源分配的最小单位，线程是CPU调度的最小单位。可以理解为，打开一个应用程序时，操作系统启动一个进程，为其分配虚拟内存、文件句柄等资源，一个进程至少拥有一个线程，这些线程共享该进程的资源（内存和堆），但是每个线程都有独立的栈，以记录函数的执行位置和局部变量。CPU对线程的调度可以实现任务的并行执行，提高程序的运行效率。</p>
-
-<p><code>锁</code> 确保同一份资源不会被多个线程同时使用</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/05/Protobuf3/" title="Protobuf3">Protobuf3</a>
             </h1>
         </header>
@@ -549,6 +456,203 @@
     
     
     
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/05/Go-Scheduler/" title="Go Scheduler">Go Scheduler</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="栈">栈</h1>
+
+<blockquote>
+<p>一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）</p>
+</blockquote>
+
+<h1 id="调度方式">调度方式</h1>
+
+<blockquote>
+<p>os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，<code>Goroutine</code> 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Go-Scheduler/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/05/Bitmap/" title="Bitmap">Bitmap</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月1日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Bitmap/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/03/MySQL/" title="MySQL">MySQL</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月16日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/database'>database</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+
+<blockquote>
+<p>MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。</p>
+</blockquote>
+
+<h1 id="下载地址">下载地址</h1>
+
+<p><a href="http://dev.mysql.com/downloads/mysql/">MySQL下载地址</a></p>
+
+<h1 id="基本类型">基本类型</h1>
+
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">大小</th>
+<th align="center">范围</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center"><code>tinyint(m)</code></td>
+<td align="center">1字节</td>
+<td align="center">-2^7~2^7-1</td>
+</tr>
+
+<tr>
+<td align="center"><code>smallint(m)</code></td>
+<td align="center">2字节</td>
+<td align="center">-2^15~2^15-1</td>
+</tr>
+
+<tr>
+<td align="center"><code>mediumint(m)</code></td>
+<td align="center">3字节</td>
+<td align="center">-2^23~2^23-1</td>
+</tr>
+
+<tr>
+<td align="center"><code>int(m)</code></td>
+<td align="center">4字节</td>
+<td align="center">-2^31~2^31-1</td>
+</tr>
+
+<tr>
+<td align="center"><code>bigint(m)</code></td>
+<td align="center">8字节</td>
+<td align="center">-2^63~2^63-1</td>
+</tr>
+
+<tr>
+<td align="center"><code>char(n)</code></td>
+<td align="center">1字节</td>
+<td align="center">最多255个字符</td>
+</tr>
+
+<tr>
+<td align="center"><code>varchar(n)</code></td>
+<td align="center">最多65535个字符</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>tinytext</code></td>
+<td align="center">最多255个字符</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>text</code></td>
+<td align="center">最多65535个字符</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>mediumtext</code></td>
+<td align="center">最多2的24次方-1个字符</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>longtext</code></td>
+<td align="center">最多2的32次方-1个字符</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>date</code></td>
+<td align="center">日期 &lsquo;2008-12-2&rsquo;</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>time</code></td>
+<td align="center">时间 &lsquo;12:25:36&rsquo;</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>datetime</code></td>
+<td align="center">日期时间 &lsquo;2008-12-2 22:06:44&rsquo;</td>
+<td align="center"></td>
+</tr>
+
+<tr>
+<td align="center"><code>timestamp</code></td>
+<td align="center">自动存储记录修改时间</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/03/MySQL/">阅读全文</a></p>
+    </article>
+    
+    
+    
 
 
 
@@ -657,19 +761,15 @@
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -681,7 +781,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="">database (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
     
 </ul>
     </section>
@@ -691,8 +795,6 @@
 <div class="tagcloud">
     
     <a href="https://DoMySon.github.io/tags/">Tags</a>
-    
-    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -726,11 +828,7 @@
     
     <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
-    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
-    
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
-    
-    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
     
     <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
     
@@ -745,8 +843,6 @@
     <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
     
     <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
-    
-    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
     
     <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
     

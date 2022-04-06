@@ -2,7 +2,7 @@
 title: GC
 date: 2019-02-22
 tags: [""]
-categories: ["Algorithm"]
+categories: ["算法"]
 description: gc 算法
 img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true

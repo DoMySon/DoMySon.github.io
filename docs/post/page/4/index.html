@@ -71,303 +71,6 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/05/Go-Scheduler/" title="Go Scheduler">Go Scheduler</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月12日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="栈">栈</h1>
-
-<blockquote>
-<p>一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）</p>
-</blockquote>
-
-<h1 id="调度方式">调度方式</h1>
-
-<blockquote>
-<p>os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，<code>Goroutine</code> 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Go-Scheduler/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/05/Bitmap/" title="Bitmap">Bitmap</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月1日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Algorithm'>Algorithm</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/05/Bitmap/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/04/Node.js/" title="Node.js">Node.js</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年4月22日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Javascript'>Javascript</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="异步原理">异步原理</h1>
-
-<ol>
-<li><p>Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行</p></li>
-
-<li><p>Node 底层封装了 <code>libuv</code> 库</p></li>
-
-<li><p>Node 只有执行完主线程，才会进入 <code>EventLoop</code></p></li>
-
-<li><p>Node 基于事件驱动</p></li>
-
-<li><p>事件机制的底层依赖库：<code>libuv</code>、<code>libeio</code>、<code>libev</code></p>
-
-<blockquote>
-<p><code>epoll</code> 用于Linux系统，<code>IOCP</code> 用于Windows系统；<code>epoll</code> 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；<code>IOCP</code> 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了</p>
-</blockquote></li>
-
-<li><p>Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。</p></li>
-
-<li><p>如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 <code>异步非阻塞I/O模型</code>，内核会立刻返回信号，其他事件会有机会执行</p></li>
-</ol>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/04/Node.js/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/03/Javascripts-v8/" title="Javascript&#39;s v8">Javascript&#39;s v8</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Javascript'>Javascript</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="v8内存管理机制">V8内存管理机制</h1>
-
-<h2 id="一-内存模型">一、内存模型</h2>
-
-<p><img src="/images/javascript/v8内存结构图.png" alt="V8内存" /></p>
-
-<blockquote>
-<p>堆外内存：不通过V8分配，也不受管理，Buffer对象数据存放于此除堆外内存外，其余由V8管理</p>
-
-<p>栈（Stack）的分配与回收非常直接，当程序离开某作用域后，其栈指针下移（回退），整个作用域的局部变量都会出栈，内存收回。</p>
-
-<p>最复杂的部分是堆（Heap）的管理，V8使用垃圾回收机制进行堆的内存管理，也是开发中可能造成内存泄漏的部分</p>
-
-<p>通过 <code>process.memoryUsage()</code> 查看内存。<code>rss</code> 是Resident Set Size的缩写，为常驻内存的总大小，<code>heapTotal</code> 是V8为堆分配的总大小，<code>heapUsed</code>是已使用的堆大小。可以看到，rss是大于heapTotal的，因为rss包括且不限于堆。</p>
-</blockquote>
-
-<hr />
-
-<h2 id="二-堆内存限制">二、堆内存限制</h2>
-
-<blockquote>
-<p>默认情况，V8分配内存不超过<code>1.4G(x64 1.4G,x86 0.7G)</code>,如果读取大于 <code>1.4G</code> 的文件是无法实现的，但可以通过Node命令更改V8为堆设置内存上限</p>
-
-<pre><code>//更改老生代堆内存
---max-old-space-size = 3000 //MB
-//更改新生代堆内存
---max-new-space-size = 2000//KB
-</code></pre>
-
-<p>堆的内存上限在启动时就已经决定，无法动态更改，想要更改，唯一的方法是关闭进程，使用新的配置重新启动。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/03/Javascripts-v8/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/03/MySQL/" title="MySQL">MySQL</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月16日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Database'>Database</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-
-<blockquote>
-<p>MySQL 是最流行的关系型数据库管理系统，在 WEB 应用方面 MySQL 是最好的 RDBMS(Relational Database Management System：关系数据库管理系统)应用软件之一。</p>
-</blockquote>
-
-<h1 id="下载地址">下载地址</h1>
-
-<p><a href="http://dev.mysql.com/downloads/mysql/">MySQL下载地址</a></p>
-
-<h1 id="基本类型">基本类型</h1>
-
-<table>
-<thead>
-<tr>
-<th align="center">名称</th>
-<th align="center">大小</th>
-<th align="center">范围</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="center"><code>tinyint(m)</code></td>
-<td align="center">1字节</td>
-<td align="center">-2^7~2^7-1</td>
-</tr>
-
-<tr>
-<td align="center"><code>smallint(m)</code></td>
-<td align="center">2字节</td>
-<td align="center">-2^15~2^15-1</td>
-</tr>
-
-<tr>
-<td align="center"><code>mediumint(m)</code></td>
-<td align="center">3字节</td>
-<td align="center">-2^23~2^23-1</td>
-</tr>
-
-<tr>
-<td align="center"><code>int(m)</code></td>
-<td align="center">4字节</td>
-<td align="center">-2^31~2^31-1</td>
-</tr>
-
-<tr>
-<td align="center"><code>bigint(m)</code></td>
-<td align="center">8字节</td>
-<td align="center">-2^63~2^63-1</td>
-</tr>
-
-<tr>
-<td align="center"><code>char(n)</code></td>
-<td align="center">1字节</td>
-<td align="center">最多255个字符</td>
-</tr>
-
-<tr>
-<td align="center"><code>varchar(n)</code></td>
-<td align="center">最多65535个字符</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>tinytext</code></td>
-<td align="center">最多255个字符</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>text</code></td>
-<td align="center">最多65535个字符</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>mediumtext</code></td>
-<td align="center">最多2的24次方-1个字符</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>longtext</code></td>
-<td align="center">最多2的32次方-1个字符</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>date</code></td>
-<td align="center">日期 &lsquo;2008-12-2&rsquo;</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>time</code></td>
-<td align="center">时间 &lsquo;12:25:36&rsquo;</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>datetime</code></td>
-<td align="center">日期时间 &lsquo;2008-12-2 22:06:44&rsquo;</td>
-<td align="center"></td>
-</tr>
-
-<tr>
-<td align="center"><code>timestamp</code></td>
-<td align="center">自动存储记录修改时间</td>
-<td align="center"></td>
-</tr>
-</tbody>
-</table>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/03/MySQL/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/03/Dockerfile/" title="Dockerfile">Dockerfile</a>
             </h1>
         </header>
@@ -550,6 +253,155 @@
     
     
     
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/02/I/O/" title="I/O">I/O</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Linux'>Linux</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="前言">前言</h1>
+
+<ul>
+<li><p>数据的读取分为:</p>
+
+<ol>
+<li><p>等待数据准备</p></li>
+
+<li><p>等待内核拷贝至用户空间</p></li>
+</ol></li>
+
+<li><p>基本模型矩阵</p>
+
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">阻塞</th>
+<th align="center">非阻塞</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">同步</td>
+<td align="center"><code>Read/Write</code></td>
+<td align="center"><code>Read\Write(O_NONBLOCK)</code></td>
+</tr>
+
+<tr>
+<td align="center">异步</td>
+<td align="center"><code>I/O multiplexing(select/poll)</code></td>
+<td align="center"><code>AIO</code></td>
+</tr>
+</tbody>
+</table></li>
+</ul>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/02/I/O/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/02/GC/" title="GC">GC</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月22日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="何谓-gc">何谓 <code>GC</code></h1>
+
+<p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
+1. 内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+
+<ol>
+<li>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</li>
+</ol>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/02/GC/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/1/01/Archives/" title="Archives">Archives</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/1/01/Archives/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/1/01/" title=""></a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/1/01/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/1/01/" title=""></a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/1/01/">阅读全文</a></p>
+    </article>
+    
+    
+    
 
 
 
@@ -658,19 +510,15 @@
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -682,7 +530,11 @@
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="">database (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
     
 </ul>
     </section>
@@ -692,8 +544,6 @@
 <div class="tagcloud">
     
     <a href="https://DoMySon.github.io/tags/">Tags</a>
-    
-    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -727,11 +577,7 @@
     
     <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
-    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
-    
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
-    
-    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
     
     <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
     
@@ -746,8 +592,6 @@
     <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
     
     <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
-    
-    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
     
     <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
     

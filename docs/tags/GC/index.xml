@@ -34,26 +34,5 @@ GC forced
 &lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
-    <item>
-      <title>CSharp&#39;s GC</title>
-      <link>https://DoMySon.github.io/2019/08/CSharps-GC/</link>
-      <pubDate>Tue, 20 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/08/CSharps-GC/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;.NET的GC机制有这样两个问题：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;GC并不是能释放所有的资源。它并不能自动释放非托管资源。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GC并不是实时性的，这将会造成系统性能上的瓶颈和不确定性。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GC并不是实时性的，这会造成系统性能上的瓶颈和不确定性。所以有了&lt;code&gt;IDisposable&lt;/code&gt;接口，&lt;code&gt;IDisposable&lt;/code&gt;接口定义了&lt;code&gt;Dispose&lt;/code&gt;方法，这个方法用来供程序员显式调用以释放非托管资源。使用&lt;code&gt;using&lt;/code&gt;语句可以简化资源管理。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://DoMySon.github.io/images/abc.png&#34; alt=&#34;XX&#34; /&gt;&lt;/p&gt;</description>
-    </item>
-    
   </channel>
 </rss>

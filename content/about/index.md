@@ -5,11 +5,13 @@ date: 2019-02-13
 type: about
 ---
 
-> 专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 `C、Golang、CSharp、Lua、Js、MySQL、Redis` 等单词
+> 专业 Unity、Golang 划水师，专注于各种花式打杂，会拼写 `C、Golang、CSharp、Lua` 等单词
 
 # 技术栈
 
-Docker、Nginx、Golang、Git、Centos、Markdown，WebHook
+~~Docker、Nginx、Golang、Git、Centos、Markdown、WebHook、hugo~~
+
+Github Pages、hugo
 
 # 技术栈变更
 

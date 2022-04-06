@@ -75,15 +75,6 @@
     </item>
     
     <item>
-      <title>CSharp</title>
-      <link>https://DoMySon.github.io/categories/CSharp/</link>
-      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/categories/CSharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Database</title>
       <link>https://DoMySon.github.io/categories/Database/</link>
       <pubDate>Wed, 24 Jul 2019 00:00:00 +0000</pubDate>
@@ -102,11 +93,11 @@
     </item>
     
     <item>
-      <title>Javascript</title>
-      <link>https://DoMySon.github.io/categories/Javascript/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      <title>database</title>
+      <link></link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://DoMySon.github.io/categories/Javascript/</guid>
+      <guid></guid>
       <description></description>
     </item>
     
@@ -125,6 +116,15 @@
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>https://DoMySon.github.io/categories/Linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>算法</title>
+      <link>https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     

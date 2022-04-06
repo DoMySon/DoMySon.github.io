@@ -351,54 +351,6 @@ G H I   J
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/" title="C#不安全代码">C#不安全代码</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月31日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='https://DoMySon.github.io/categories/CSharp'>CSharp</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="关键字">关键字</h1>
-
-<h2 id="volatile"><code>volatile</code></h2>
-
-<blockquote>
-<p>用于多线程变量</p>
-</blockquote>
-
-<pre><code class="language-csharp">int i1;
-
-//作用于多线程变量
-//但不能作用于局部变量
-volatile int i2;
-
-/*
-多个线程同时访问一个变量，CLR为了效率，允许每个线程进行本地缓存，这就导致了变量的不一致性。volatile就是为了解决这个问题，volatile修饰的变量，不允许线程进行本地缓存，每个线程的读写都是直接操作在共享内存上，这就保证了变量始终具有一致性。
-
-编译器在优化代码时，可能会把经常用到的代码存在Cache里面，然后下一次调用就直接读取Cache而不是内存，这样就大大提高了效率。但是问题也随之而来了。
-
-在多线程程序中，如果把一个变量放入Cache后，又有其他线程改变了变量的值，那么本线程是无法知道这个变化的。它可能会直接读Cache里的数据。但是很不幸，Cache里的数据已经过期了，读出来的是不合时宜的脏数据。这时就会出现bug。
-
-用Volatile声明变量可以解决这个问题。用Volatile声明的变量就相当于告诉编译器，我不要把这个变量写Cache，因为这个变量是可能发生改变的。
-*/
-</code></pre>……
-        </div>
-        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://DoMySon.github.io/2019/08/Snowflake/" title="Snowflake">Snowflake</a>
             </h1>
         </header>
@@ -468,6 +420,33 @@ volatile int i2;
 </ol>……
         </div>
         <p class="readmore"><a href="https://DoMySon.github.io/2019/08/ConsistentHash/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/" title="Go不安全指针">Go不安全指针</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='https://DoMySon.github.io/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/">阅读全文</a></p>
     </article>
     
     
@@ -580,19 +559,15 @@ volatile int i2;
         <h3 class="widget-title">分类</h3>
 <ul class="widget-list">
     
-    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (8)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Algorithm/">Algorithm (7)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/C/">C (3)</a></li>
     
-    <li><a href="https://DoMySon.github.io/categories/CSharp/">CSharp (3)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Database/">Database (2)</a></li>
+    <li><a href="https://DoMySon.github.io/categories/Database/">Database (1)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Docker/">Docker (4)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Go/">Go (11)</a></li>
-    
-    <li><a href="https://DoMySon.github.io/categories/Javascript/">Javascript (3)</a></li>
     
     <li><a href="https://DoMySon.github.io/categories/Linux/">Linux (2)</a></li>
     
@@ -604,7 +579,11 @@ volatile int i2;
     
     <li><a href="https://DoMySon.github.io/categories/Unity/">Unity (3)</a></li>
     
+    <li><a href="">database (1)</a></li>
+    
     <li><a href="https://DoMySon.github.io/categories/tools/">tools (1)</a></li>
+    
+    <li><a href="https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
     
 </ul>
     </section>
@@ -614,8 +593,6 @@ volatile int i2;
 <div class="tagcloud">
     
     <a href="https://DoMySon.github.io/tags/">Tags</a>
-    
-    <a href="https://DoMySon.github.io/tags/Async/">Async</a>
     
     <a href="https://DoMySon.github.io/tags/Bitmap/">Bitmap</a>
     
@@ -649,11 +626,7 @@ volatile int i2;
     
     <a href="https://DoMySon.github.io/tags/Module/">Module</a>
     
-    <a href="https://DoMySon.github.io/tags/Mutex/">Mutex</a>
-    
     <a href="https://DoMySon.github.io/tags/Network/">Network</a>
-    
-    <a href="https://DoMySon.github.io/tags/Nodejs/">Nodejs</a>
     
     <a href="https://DoMySon.github.io/tags/Pointer/">Pointer</a>
     
@@ -668,8 +641,6 @@ volatile int i2;
     <a href="https://DoMySon.github.io/tags/Sort/">Sort</a>
     
     <a href="https://DoMySon.github.io/tags/TLS/">TLS</a>
-    
-    <a href="https://DoMySon.github.io/tags/Thread/">Thread</a>
     
     <a href="https://DoMySon.github.io/tags/TopK/">TopK</a>
     

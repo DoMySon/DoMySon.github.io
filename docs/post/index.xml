@@ -516,38 +516,6 @@ G H I   J
     </item>
     
     <item>
-      <title>C#不安全代码</title>
-      <link>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</link>
-      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</guid>
-      <description>&lt;h1 id=&#34;关键字&#34;&gt;关键字&lt;/h1&gt;
-
-&lt;h2 id=&#34;volatile&#34;&gt;&lt;code&gt;volatile&lt;/code&gt;&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;用于多线程变量&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;int i1;
-
-//作用于多线程变量
-//但不能作用于局部变量
-volatile int i2;
-
-/*
-多个线程同时访问一个变量，CLR为了效率，允许每个线程进行本地缓存，这就导致了变量的不一致性。volatile就是为了解决这个问题，volatile修饰的变量，不允许线程进行本地缓存，每个线程的读写都是直接操作在共享内存上，这就保证了变量始终具有一致性。
-
-编译器在优化代码时，可能会把经常用到的代码存在Cache里面，然后下一次调用就直接读取Cache而不是内存，这样就大大提高了效率。但是问题也随之而来了。
-
-在多线程程序中，如果把一个变量放入Cache后，又有其他线程改变了变量的值，那么本线程是无法知道这个变化的。它可能会直接读Cache里的数据。但是很不幸，Cache里的数据已经过期了，读出来的是不合时宜的脏数据。这时就会出现bug。
-
-用Volatile声明变量可以解决这个问题。用Volatile声明的变量就相当于告诉编译器，我不要把这个变量写Cache，因为这个变量是可能发生改变的。
-*/
-&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    
-    <item>
       <title>ConsistentHash</title>
       <link>https://DoMySon.github.io/2019/08/ConsistentHash/</link>
       <pubDate>Tue, 27 Aug 2019 00:00:00 +0000</pubDate>
@@ -620,27 +588,6 @@ volatile int i2;
       <description>&lt;blockquote&gt;
 &lt;p&gt;单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>CSharp&#39;s GC</title>
-      <link>https://DoMySon.github.io/2019/08/CSharps-GC/</link>
-      <pubDate>Tue, 20 Aug 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/08/CSharps-GC/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;.NET的GC机制有这样两个问题：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;GC并不是能释放所有的资源。它并不能自动释放非托管资源。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GC并不是实时性的，这将会造成系统性能上的瓶颈和不确定性。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;GC并不是实时性的，这会造成系统性能上的瓶颈和不确定性。所以有了&lt;code&gt;IDisposable&lt;/code&gt;接口，&lt;code&gt;IDisposable&lt;/code&gt;接口定义了&lt;code&gt;Dispose&lt;/code&gt;方法，这个方法用来供程序员显式调用以释放非托管资源。使用&lt;code&gt;using&lt;/code&gt;语句可以简化资源管理。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://DoMySon.github.io/images/abc.png&#34; alt=&#34;XX&#34; /&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -749,19 +696,6 @@ volatile int i2;
 &lt;p&gt;&lt;a href=&#34;http://doc.redisfans.com/index.html&#34;&gt;Redis命令&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://redis.io/download&#34;&gt;Redis下载&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>C#多线程</title>
-      <link>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
-      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;进程是CPU资源分配的最小单位，线程是CPU调度的最小单位。可以理解为，打开一个应用程序时，操作系统启动一个进程，为其分配虚拟内存、文件句柄等资源，一个进程至少拥有一个线程，这些线程共享该进程的资源（内存和堆），但是每个线程都有独立的栈，以记录函数的执行位置和局部变量。CPU对线程的调度可以实现任务的并行执行，提高程序的运行效率。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;锁&lt;/code&gt; 确保同一份资源不会被多个线程同时使用&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
     
@@ -936,74 +870,6 @@ volatile int i2;
       
       <guid>https://DoMySon.github.io/2019/05/Bitmap/</guid>
       <description>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（</description>
-    </item>
-    
-    <item>
-      <title>Node.js</title>
-      <link>https://DoMySon.github.io/2019/04/Node.js/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/04/Node.js/</guid>
-      <description>&lt;h1 id=&#34;异步原理&#34;&gt;异步原理&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Node 本身是多线程，但对于用户（Js代码）的执行只会在主线程中执行&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Node 底层封装了 &lt;code&gt;libuv&lt;/code&gt; 库&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Node 只有执行完主线程，才会进入 &lt;code&gt;EventLoop&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Node 基于事件驱动&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;事件机制的底层依赖库：&lt;code&gt;libuv&lt;/code&gt;、&lt;code&gt;libeio&lt;/code&gt;、&lt;code&gt;libev&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;epoll&lt;/code&gt; 用于Linux系统，&lt;code&gt;IOCP&lt;/code&gt; 用于Windows系统；&lt;code&gt;epoll&lt;/code&gt; 是同步非阻塞模型：当事件资源满足时发出可处理通知消息（主线程需要自己去处理）；&lt;code&gt;IOCP&lt;/code&gt; 是异步非阻塞模型，当事件完成时发出通知消息（工作线程帮主线程处理完了&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Node 主线程的 event loop 在处理所有的任务/事件时，都是沿着事件队列顺序执行的，所以在其中任何一个任务/事件本身没有完成之前，其它的回调、监听器、超时、nextTick()的函数都得不到运行的机会。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;如果事件是 CPU 密集型，在这个事件处理完之前，其他事件没有机会执行，如果是 I/O 密集型，基于 &lt;code&gt;异步非阻塞I/O模型&lt;/code&gt;，内核会立刻返回信号，其他事件会有机会执行&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;</description>
-    </item>
-    
-    <item>
-      <title>Javascript&#39;s v8</title>
-      <link>https://DoMySon.github.io/2019/03/Javascripts-v8/</link>
-      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/03/Javascripts-v8/</guid>
-      <description>&lt;h1 id=&#34;v8内存管理机制&#34;&gt;V8内存管理机制&lt;/h1&gt;
-
-&lt;h2 id=&#34;一-内存模型&#34;&gt;一、内存模型&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://DoMySon.github.io/images/javascript/v8内存结构图.png&#34; alt=&#34;V8内存&#34; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;堆外内存：不通过V8分配，也不受管理，Buffer对象数据存放于此除堆外内存外，其余由V8管理&lt;/p&gt;
-
-&lt;p&gt;栈（Stack）的分配与回收非常直接，当程序离开某作用域后，其栈指针下移（回退），整个作用域的局部变量都会出栈，内存收回。&lt;/p&gt;
-
-&lt;p&gt;最复杂的部分是堆（Heap）的管理，V8使用垃圾回收机制进行堆的内存管理，也是开发中可能造成内存泄漏的部分&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;process.memoryUsage()&lt;/code&gt; 查看内存。&lt;code&gt;rss&lt;/code&gt; 是Resident Set Size的缩写，为常驻内存的总大小，&lt;code&gt;heapTotal&lt;/code&gt; 是V8为堆分配的总大小，&lt;code&gt;heapUsed&lt;/code&gt;是已使用的堆大小。可以看到，rss是大于heapTotal的，因为rss包括且不限于堆。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;二-堆内存限制&#34;&gt;二、堆内存限制&lt;/h2&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;默认情况，V8分配内存不超过&lt;code&gt;1.4G(x64 1.4G,x86 0.7G)&lt;/code&gt;,如果读取大于 &lt;code&gt;1.4G&lt;/code&gt; 的文件是无法实现的，但可以通过Node命令更改V8为堆设置内存上限&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;//更改老生代堆内存
---max-old-space-size = 3000 //MB
-//更改新生代堆内存
---max-new-space-size = 2000//KB
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;堆的内存上限在启动时就已经决定，无法动态更改，想要更改，唯一的方法是关闭进程，使用新的配置重新启动。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -1296,93 +1162,6 @@ volatile int i2;
     </item>
     
     <item>
-      <title>Javascript</title>
-      <link>https://DoMySon.github.io/2019/02/Javascript/</link>
-      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/2019/02/Javascript/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;JavaScript&lt;/code&gt; 一种直译式脚本语言，是一种动态类型、弱类型、基于原型的语言，内置支持类型。它的解释器被称为JavaScript引擎，为浏览器的一部分，广泛用于客户端的脚本语言，最早是在HTML（标准通用标记语言下的一个应用）网页上使用，用来给HTML网页增加动态功能。后来拓展到了服务端 &lt;a href=&#34;https://nodejs.org/en/&#34;&gt;Node.js&lt;/a&gt; 以及App应用 &lt;a href=&#34;https://electronjs.org/&#34;&gt;Electron&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h1 id=&#34;基本类型&#34;&gt;基本类型&lt;/h1&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;center&#34;&gt;数据类型&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;null&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;定义未赋值表示空值(在条件表达式中为false)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;undefined&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;未定义(在条件表达式中为false)&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;true 和 false&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;number&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;数字 &lt;code&gt;NaN&lt;/code&gt; &lt;code&gt;Infinity&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;string&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;用单引号或双引号表示,多行 ``,模板字符串 &amp;lsquo;${arg1},${arg2}&amp;rsquo;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;object&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;一组由键-值组成的无序集合&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;Symbol&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;唯一标记值 &lt;code&gt;ES6&lt;/code&gt; 新增&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;center&#34;&gt;&lt;code&gt;function&lt;/code&gt;&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;函数&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h1 id=&#34;变量&#34;&gt;变量&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;变量默认为 &lt;code&gt;null&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;变量作用域&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;全局作用域&lt;/li&gt;
-&lt;li&gt;局部作用域&lt;/li&gt;
-&lt;li&gt;块级作用域&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ol&gt;</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://DoMySon.github.io/1/01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://DoMySon.github.io/1/01/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title></title>
       <link>https://DoMySon.github.io/1/01/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -1392,6 +1171,15 @@ volatile int i2;
  文件类型    符号 描述     d 目录   l 符号链接   s 套接字文件   b 块设备文件   c 字符设备文件   p 命名管道文件   - 普通文件，不属于上述任意一种    权限更换  chmod [who] operator [permission] filename
   who
    符号 描述     u 文件属主权限   g 同组用户权限   o 其他用户权限   a 所有用户    operator</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://DoMySon.github.io/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://DoMySon.github.io/1/01/</guid>
+      <description></description>
     </item>
     
     <item>

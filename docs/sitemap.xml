@@ -213,21 +213,6 @@
   </url>
   
   <url>
-    <loc>https://DoMySon.github.io/2019/08/C#%E4%B8%8D%E5%AE%89%E5%85%A8%E4%BB%A3%E7%A0%81/</loc>
-    <lastmod>2019-08-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/categories/CSharp/</loc>
-    <lastmod>2019-08-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/tags/Pointer/</loc>
-    <lastmod>2019-08-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://DoMySon.github.io/2019/08/ConsistentHash/</loc>
     <lastmod>2019-08-27T00:00:00+00:00</lastmod>
   </url>
@@ -244,6 +229,11 @@
   
   <url>
     <loc>https://DoMySon.github.io/2019/08/Go%E4%B8%8D%E5%AE%89%E5%85%A8%E6%8C%87%E9%92%88/</loc>
+    <lastmod>2019-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://DoMySon.github.io/tags/Pointer/</loc>
     <lastmod>2019-08-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -275,11 +265,6 @@
   <url>
     <loc>https://DoMySon.github.io/tools/</loc>
     <lastmod>2019-08-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/2019/08/CSharps-GC/</loc>
-    <lastmod>2019-08-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -333,31 +318,6 @@
   </url>
   
   <url>
-    <loc>https://DoMySon.github.io/tags/Async/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/2019/05/C#%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/tags/Lock/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/tags/Mutex/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/tags/Thread/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://DoMySon.github.io/categories/Protobuf3/</loc>
     <lastmod>2019-05-13T00:00:00+00:00</lastmod>
   </url>
@@ -385,26 +345,6 @@
   <url>
     <loc>https://DoMySon.github.io/2019/05/Bitmap/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/categories/Javascript/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/2019/04/Node.js/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/tags/Nodejs/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://DoMySon.github.io/2019/03/Javascripts-v8/</loc>
-    <lastmod>2019-03-25T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -473,6 +413,11 @@
   </url>
   
   <url>
+    <loc>https://DoMySon.github.io/tags/Lock/</loc>
+    <lastmod>2019-02-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://DoMySon.github.io/2019/02/Lock/</loc>
     <lastmod>2019-02-26T00:00:00+00:00</lastmod>
   </url>
@@ -493,8 +438,8 @@
   </url>
   
   <url>
-    <loc>https://DoMySon.github.io/2019/02/Javascript/</loc>
-    <lastmod>2019-02-14T00:00:00+00:00</lastmod>
+    <loc>https://DoMySon.github.io/categories/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2019-02-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
