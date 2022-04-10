@@ -1,196 +1,197 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>mysql100问 | 薛定谔的Bug</title>
-    <meta property="og:title" content="mysql100问 - 薛定谔的Bug">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2022-04-06T00:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2022-04-06T00:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="mysql面试题">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/2022/04/mysql100%E9%97%AE/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
-</head>
-
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://domyson.github.io/">
-                        薛定谔的Bug
-                    </a>
-                
-                <p class="description">划水码农</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://domyson.github.io/">首页</a>
-                    
-                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>mysql100问 | 薛定谔的Bug</title>
+<meta name="keywords" content="mysql">
+<meta name="description" content="mysql面试题">
+<meta name="author" content="Treasure">
+<link rel="canonical" href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://domyson.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
             display: none;
         }
-    }
-</style>
-<div class="post-toc" style="position: absolute; top: 188px;">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-        <nav id="TableOfContents"></nav>
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if (leftPos < 220) {
-                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
             }
 
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
         }
 
-        if ($("#TableOfContents").children().length < 1) {
-            $(".post-toc").remove();
-        }
-    })
+    </style>
+</noscript><meta property="og:title" content="mysql100问" />
+<meta property="og:description" content="mysql面试题" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-04-06T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2022-04-06T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mysql100问"/>
+<meta name="twitter:description" content="mysql面试题"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://domyson.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "mysql100问",
+      "item": "https://domyson.github.io/2022/04/mysql100%E9%97%AE/"
+    }
+  ]
+}
 </script>
-    <article class="post">
-        <header>
-            <h1 class="post-title">mysql100问</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2022年4月6日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/mysql'>mysql</a></span>
-            
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "mysql100问",
+  "name": "mysql100问",
+  "description": "mysql面试题",
+  "keywords": [
+    "mysql"
+  ],
+  "articleBody": "聚集、非聚集、联合索引   A1: 聚集索引（主键索引）所有ROW都会按照主键索引进行排序\n  A2: 非聚集索引即普通索引加上字段\n  A3: 几个字段组成的索引\n  A4: 聚集索引在物理上连续，非聚集索引在物理上不连续，但在逻辑上连续\n  A5: 聚集索引影响物理存储顺序，而非聚集索引不影响\n  A6: 聚集索引插入慢，查询快，非聚集索引反之\n  A7: 索引是通过二叉树来描述的，聚集索引的子叶节点也是数据节点，而非聚集索引子叶节点仍是索引节点\n  自增主键有哪些问题  A1: 分表分库的时候可能会出现重复情况（可使用uuid替代） A2: 产生表锁 A3: id耗尽  索引无效的情况  A1: 以%开头的LIKE语句，模糊匹配 A2: OR 前后字段未同时使用索引 A3: 数据类型隐式转换（varchar-int)  查询优化  A1: 在WHERE和ORDER BY所涉及的列上加上索引 A2: SELECT避免使用*,SQL语句全部大写 A3: 避免WHERE对索引列上进行IS NULL判断，替换成IS NOT NULL A4: IN和NOT IN会导致全表扫描,替换为EXISTS或NOT EXISTS A5: 避免在索引上进行计算 A6: WHRER使用OR会放弃索引进而全表扫描  CHAR和VARCHAR的区别  A1: 存储和检索方式不同 A2: CHAR长度在创建时候指定(1~255),在存储时尾部全部填充空格  主键索引和唯一索引的区别  A1: 主键是一种约束 A2: 主键一定包含一个唯一索引，反之不成立 A3: 主键索引不允许包含空值，而唯一索引可以 A4: 一张表只能有一个主键索引，而唯一索引可以有多个  CPU飙升问题排查  A1: top命令观察mysqld A2: 若是，则show processlist查看是否是 SQL 的问题， A3: 若是，则检查执行计划是否准确，是否索引确实，数据是否太大 A4: kill上述线程，加索引，改内存，改SQL并重跑 A5: 若不是，可能是短时间有大量连接，可以限制最大连接数  如何创建索引   A1:\nCREATE INDEX indexName ON table; #创建普通索引  DROP INDEX indexName ON table;   A2: 唯一索引和普通索引的区别是唯一索引值不允许重复\nCREATE UNIQUE INDEX indexName ON table;  ALTER TABLE table ADD [UNIQUE|PRIMARY KEY] indexName; #修改表  # 直接在创建时指定   A3:\nSHOW INDEX from talbe; #显示表中的索引   ",
+  "wordCount" : "802",
+  "inLanguage": "en",
+  "datePublished": "2022-04-06T00:00:00Z",
+  "dateModified": "2022-04-06T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Treasure"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://domyson.github.io/2022/04/mysql100%E9%97%AE/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "薛定谔的Bug",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://domyson.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
         </div>
-        
-        
-        
-        <div class="clear" style="display: none">
-            <div class="toc-article">
-                <div class="toc-title">文章目录</div>
-            </div>
-        </div>
-        
-        <div class="post-content">
-            <h1 id="聚集非聚集联合索引">聚集、非聚集、联合索引</h1>
+        <ul id="menu">
+            <li>
+                <a href="https://domyson.github.io/archives/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://domyson.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      mysql100问
+    </h1>
+    <div class="post-description">
+      mysql面试题
+    </div>
+    <div class="post-meta"><span title='2022-04-06 00:00:00 +0000 UTC'>April 6, 2022</span>&nbsp;·&nbsp;Treasure
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="聚集非聚集联合索引">聚集、非聚集、联合索引<a hidden class="anchor" aria-hidden="true" href="#聚集非聚集联合索引">#</a></h1>
 <ul>
 <li>
 <p>A1: 聚集索引（主键索引）所有ROW都会按照主键索引进行排序</p>
@@ -214,19 +215,19 @@
 <p>A7: 索引是通过二叉树来描述的，聚集索引的子叶节点也是数据节点，而非聚集索引子叶节点仍是索引节点</p>
 </li>
 </ul>
-<h1 id="自增主键有哪些问题">自增主键有哪些问题</h1>
+<h1 id="自增主键有哪些问题">自增主键有哪些问题<a hidden class="anchor" aria-hidden="true" href="#自增主键有哪些问题">#</a></h1>
 <ul>
 <li>A1: 分表分库的时候可能会出现重复情况（可使用uuid替代）</li>
 <li>A2: 产生表锁</li>
 <li>A3: id耗尽</li>
 </ul>
-<h1 id="索引无效的情况">索引无效的情况</h1>
+<h1 id="索引无效的情况">索引无效的情况<a hidden class="anchor" aria-hidden="true" href="#索引无效的情况">#</a></h1>
 <ul>
 <li>A1: 以<code>%</code>开头的<code>LIKE</code>语句，模糊匹配</li>
 <li>A2: <code>OR</code> 前后字段未同时使用索引</li>
 <li>A3: 数据类型隐式转换（varchar-&gt;int)</li>
 </ul>
-<h1 id="查询优化">查询优化</h1>
+<h1 id="查询优化">查询优化<a hidden class="anchor" aria-hidden="true" href="#查询优化">#</a></h1>
 <ul>
 <li>A1: 在<code>WHERE</code>和<code>ORDER BY</code>所涉及的列上加上索引</li>
 <li>A2: <code>SELECT</code>避免使用<code>*</code>,SQL语句全部大写</li>
@@ -235,19 +236,19 @@
 <li>A5: 避免在索引上进行计算</li>
 <li>A6: <code>WHRER</code>使用<code>OR</code>会放弃索引进而全表扫描</li>
 </ul>
-<h1 id="char和varchar的区别">CHAR和VARCHAR的区别</h1>
+<h1 id="char和varchar的区别">CHAR和VARCHAR的区别<a hidden class="anchor" aria-hidden="true" href="#char和varchar的区别">#</a></h1>
 <ul>
 <li>A1: 存储和检索方式不同</li>
 <li>A2: <code>CHAR</code>长度在创建时候指定(1~255),在存储时尾部全部填充空格</li>
 </ul>
-<h1 id="主键索引和唯一索引的区别">主键索引和唯一索引的区别</h1>
+<h1 id="主键索引和唯一索引的区别">主键索引和唯一索引的区别<a hidden class="anchor" aria-hidden="true" href="#主键索引和唯一索引的区别">#</a></h1>
 <ul>
 <li>A1: 主键是一种约束</li>
 <li>A2: 主键一定包含一个唯一索引，反之不成立</li>
 <li>A3: 主键索引不允许包含空值，而唯一索引可以</li>
 <li>A4: 一张表只能有一个主键索引，而唯一索引可以有多个</li>
 </ul>
-<h1 id="cpu飙升问题排查">CPU飙升问题排查</h1>
+<h1 id="cpu飙升问题排查">CPU飙升问题排查<a hidden class="anchor" aria-hidden="true" href="#cpu飙升问题排查">#</a></h1>
 <ul>
 <li>A1: top命令观察<code>mysqld</code></li>
 <li>A2: 若是，则<code>show processlist</code>查看是否是 SQL 的问题，</li>
@@ -255,7 +256,7 @@
 <li>A4: kill上述线程，加索引，改内存，改SQL并重跑</li>
 <li>A5: 若不是，可能是短时间有大量连接，可以限制最大连接数</li>
 </ul>
-<h1 id="如何创建索引">如何创建索引</h1>
+<h1 id="如何创建索引">如何创建索引<a hidden class="anchor" aria-hidden="true" href="#如何创建索引">#</a></h1>
 <ul>
 <li>
 <p>A1:</p>
@@ -277,241 +278,85 @@
 </span></span></code></pre></div></li>
 </ul>
 
-        </div>
 
-        
+  </div>
 
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/mysql'>mysql</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://domyson.github.io/tags/mysql/">mysql</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
     
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-    
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
 
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
 
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
-    
-    <a href="https://domyson.github.io/tags/bit/">bit</a>
-    
-    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
-    
-    <a href="https://domyson.github.io/tags/c/">c</a>
-    
-    <a href="https://domyson.github.io/tags/c#/">C#</a>
-    
-    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
-    
-    <a href="https://domyson.github.io/tags/database/">database</a>
-    
-    <a href="https://domyson.github.io/tags/docker/">Docker</a>
-    
-    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
-    
-    <a href="https://domyson.github.io/tags/gc/">GC</a>
-    
-    <a href="https://domyson.github.io/tags/go/">go</a>
-    
-    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
-    
-    <a href="https://domyson.github.io/tags/hash/">Hash</a>
-    
-    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
-    
-    <a href="https://domyson.github.io/tags/http/">http</a>
-    
-    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
-    
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
-    <a href="https://domyson.github.io/tags/lua/">Lua</a>
-    
-    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
-    
-    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
-    
-    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://domyson.github.io/tags/network/">Network</a>
-    
-    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
-    
-    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
-    
-    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
-    
-    <a href="https://domyson.github.io/tags/sort/">Sort</a>
-    
-    <a href="https://domyson.github.io/tags/tls/">TLS</a>
-    
-    <a href="https://domyson.github.io/tags/topk/">TopK</a>
-    
-    <a href="https://domyson.github.io/tags/tree/">Tree</a>
-    
-    <a href="https://domyson.github.io/tags/unity/">Unity</a>
-    
-    <a href="https://domyson.github.io/tags/web/">Web</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
+</script>
 </body>
 
 </html>

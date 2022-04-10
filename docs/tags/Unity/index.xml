@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Unity on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/unity/</link>
@@ -42,7 +42,7 @@
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/07/ilruntime/</guid>
-      <description>这是一个介绍</description>
+      <description>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</description>
     </item>
     
     <item>
@@ -51,18 +51,7 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/xlua/</guid>
-      <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <description>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</description>
     </item>
     
   </channel>

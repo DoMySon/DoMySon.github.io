@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Dockerfile on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/dockerfile/</link>
@@ -13,10 +13,7 @@
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/dockerfile/</guid>
-      <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>Dockerfile是一个好东西</description>
     </item>
     
   </channel>

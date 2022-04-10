@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>mysql on 薛定谔的Bug</title>
     <link>https://domyson.github.io/categories/mysql/</link>
@@ -13,7 +13,7 @@
       <pubDate>Wed, 06 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2022/04/mysql100%E9%97%AE/</guid>
-      <description>聚集、非聚集、联合索引 A1: 聚集索引（主键索引）所有ROW都会按照主键索引进行排序 A2: 非聚集索引即普通索引加上字段 A3: 几个字段组成的索引 A4: 聚集索引在</description>
+      <description>mysql面试题</description>
     </item>
     
   </channel>

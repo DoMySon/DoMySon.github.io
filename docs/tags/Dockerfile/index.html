@@ -1,313 +1,211 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Dockerfile | 薛定谔的Bug</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="Treasure">
+<link rel="canonical" href="https://domyson.github.io/tags/dockerfile/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://domyson.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/dockerfile/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-    <title>Dockerfile | 薛定谔的Bug</title>
-    <meta property="og:title" content="Dockerfile - 薛定谔的Bug">
-    <meta property="og:type" content="article">
-        
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="Dockerfile">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/tags/dockerfile/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/dockerfile/index.xml" title="薛定谔的Bug" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            .list {
+                background: var(--theme);
+            }
 
-    
-    
-    
-    
-    
-    
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Dockerfile" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://domyson.github.io/tags/dockerfile/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dockerfile"/>
+<meta name="twitter:description" content=""/>
+
 </head>
 
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://domyson.github.io/">
-                        薛定谔的Bug
-                    </a>
-                
-                <p class="description">划水码农</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://domyson.github.io/">首页</a>
-                    
-                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
         </div>
-    </div>
+        <ul id="menu">
+            <li>
+                <a href="https://domyson.github.io/archives/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://domyson.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>Dockerfile</h1>
 </header>
 
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Dockerfile
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Dockerfile  Dockerfile 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。docker build 命令用于从 Dockerfile构建映像。命令中使用 -f 标志指向文件系统中任何位置的 Dockerfile 文件。
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-03-12 00:00:00 +0000 UTC'>March 12, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to Dockerfile" href="https://domyson.github.io/2019/03/dockerfile/"></a>
+</article>
+    </main>
     
-    <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Dockerfile</span>
-        的文章
-    </h3>
-    
-
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/03/dockerfile/">Dockerfile</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月12日
-        </date>
-        
-        <div class="post-meta meta-category">
-            |
-            
-            <a href='/categories/docker'>Docker</a>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="dockerfile">Dockerfile</h1>
-<blockquote>
-<p><code>Dockerfile</code> 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。<code>docker build</code> 命令用于从 <code>Dockerfile</code>构建映像。命令中使用 <code>-f</code> 标志指向文件系统中任何位置的 <code>Dockerfile</code> 文件。</p>
-</blockquote>……
-            <p class="readmore"><a href="https://domyson.github.io/2019/03/dockerfile/">阅读全文</a></p>
-        </div>
-    </article>
-    
-
-    
-
-
-
-
-
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
 
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
 
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
-    
-    <a href="https://domyson.github.io/tags/bit/">bit</a>
-    
-    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
-    
-    <a href="https://domyson.github.io/tags/c/">c</a>
-    
-    <a href="https://domyson.github.io/tags/c#/">C#</a>
-    
-    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
-    
-    <a href="https://domyson.github.io/tags/database/">database</a>
-    
-    <a href="https://domyson.github.io/tags/docker/">Docker</a>
-    
-    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
-    
-    <a href="https://domyson.github.io/tags/gc/">GC</a>
-    
-    <a href="https://domyson.github.io/tags/go/">go</a>
-    
-    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
-    
-    <a href="https://domyson.github.io/tags/hash/">Hash</a>
-    
-    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
-    
-    <a href="https://domyson.github.io/tags/http/">http</a>
-    
-    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
-    
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
-    <a href="https://domyson.github.io/tags/lua/">Lua</a>
-    
-    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
-    
-    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
-    
-    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://domyson.github.io/tags/network/">Network</a>
-    
-    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
-    
-    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
-    
-    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
-    
-    <a href="https://domyson.github.io/tags/sort/">Sort</a>
-    
-    <a href="https://domyson.github.io/tags/tls/">TLS</a>
-    
-    <a href="https://domyson.github.io/tags/topk/">TopK</a>
-    
-    <a href="https://domyson.github.io/tags/tree/">Tree</a>
-    
-    <a href="https://domyson.github.io/tags/unity/">Unity</a>
-    
-    <a href="https://domyson.github.io/tags/web/">Web</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
+</script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tree on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/tree/</link>
@@ -13,57 +13,7 @@
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/09/tree/</guid>
-      <description>&lt;h1 id=&#34;树-tree&#34;&gt;树 &lt;code&gt;Tree&lt;/code&gt;&lt;/h1&gt;
-&lt;h2 id=&#34;定义&#34;&gt;定义&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;树（Tree）是n（n&amp;gt;=0)个结点的有限集。&lt;code&gt;n=0&lt;/code&gt; 时称为空树。在任意一颗非空树中：&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      A
-     / \
-    B   C
-   /   / \
-  D   E   F
- /|\   \
-G H I   J
-&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;有且仅有一个特定的称为根（Root）的结点；&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;当n&amp;gt;1时，其余结点可分为m(m&amp;gt;0)个互不相交的有限集T1、T2、&amp;hellip;&amp;hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;n&amp;gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;m&amp;gt;0时，子树的个数没有限制，但它们一定是互不相交的。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;节点的度&#34;&gt;节点的度&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;节点又有子树数目成为节点的 &lt;code&gt;度&lt;/code&gt;，如上图&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;             A -度2
-            / \
-           B   C -度2
-          /   / \
-   度3 - D   E   F - 度0
-        /|\   \
-       G H I   J
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;节点的深度&#34;&gt;节点的深度&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;该节点的深度为 4&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;------------------------------
-          A         第一层       
--------- /-\------------------
-        B   C       第二层 
--------/---/-\----------------        
-      D   E   F     第三层
------/|\---\------------------            
-    G H I   J       第四层
-------------------------------
-&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>二叉树</description>
     </item>
     
   </channel>

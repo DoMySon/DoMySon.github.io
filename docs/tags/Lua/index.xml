@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Lua on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/lua/</link>
@@ -13,18 +13,16 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/xlua/</guid>
-      <description>&lt;h1 id=&#34;xlua&#34;&gt;XLua&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/releases&#34;&gt;XLua下载&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/hotfix.md&#34;&gt;配置文档&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/Tencent/xLua/blob/master/Assets/XLua/Doc/faq.md&#34;&gt;FAQ&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <description>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</description>
+    </item>
+    
+    <item>
+      <title>Lua元表(metatable)</title>
+      <link>https://domyson.github.io/1/01/lua%E5%85%83%E8%A1%A8metatable/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/1/01/lua%E5%85%83%E8%A1%A8metatable/</guid>
+      <description>非可逆加密 MD5(Messgae-digest algorithm5)信息摘要 将任意长度的明文字符串生成 128bit 的哈希值，也为32个十六进制的数 SHA(Secure Hash Algorithm)信息摘要 SHA-1 生成</description>
     </item>
     
   </channel>

@@ -1,210 +1,197 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>Markdown | 薛定谔的Bug</title>
-    <meta property="og:title" content="Markdown - 薛定谔的Bug">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-03-05T00:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-03-05T00:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="文本标记">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/2019/03/markdown/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
-</head>
-
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://domyson.github.io/">
-                        薛定谔的Bug
-                    </a>
-                
-                <p class="description">划水码农</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://domyson.github.io/">首页</a>
-                    
-                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Markdown | 薛定谔的Bug</title>
+<meta name="keywords" content="Markdown">
+<meta name="description" content="文本标记">
+<meta name="author" content="Treasure">
+<link rel="canonical" href="https://domyson.github.io/2019/03/markdown/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://domyson.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
             display: none;
         }
-    }
-</style>
-<div class="post-toc" style="position: absolute; top: 188px;">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#这是二级标题">这是二级标题</a>
-      <ul>
-        <li><a href="#这是三级标题">这是三级标题</a></li>
-      </ul>
-    </li>
-  </ul>
 
-  <ul>
-    <li><a href="#无序列表">无序列表</a></li>
-    <li><a href="#有序列表">有序列表</a></li>
-    <li><a href="#列表嵌套">列表嵌套</a></li>
-  </ul>
-</nav>
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if (leftPos < 220) {
-                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
             }
 
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
         }
 
-        if ($("#TableOfContents").children().length < 1) {
-            $(".post-toc").remove();
-        }
-    })
+    </style>
+</noscript><meta property="og:title" content="Markdown" />
+<meta property="og:description" content="文本标记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://domyson.github.io/2019/03/markdown/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-03-05T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2019-03-05T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Markdown"/>
+<meta name="twitter:description" content="文本标记"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://domyson.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Markdown",
+      "item": "https://domyson.github.io/2019/03/markdown/"
+    }
+  ]
+}
 </script>
-    <article class="post">
-        <header>
-            <h1 class="post-title">Markdown</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月5日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/others'>others</a></span>
-            
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Markdown",
+  "name": "Markdown",
+  "description": "文本标记",
+  "keywords": [
+    "Markdown"
+  ],
+  "articleBody": "目录 只能跳转标题，如果有同名标题与标题等级无关，匹配最优先的标题\n 标题 字体 引用 分割线 超链接 表格 代码 流程图 语法高亮 转义字符  一、标题 在想要设置为标题的文字前面加#来表示。一个#是一级标题，二个#是二级标题，以此类推。支持六级标题。\n示例:\n# 这是一级标题\r## 这是二级标题\r### 这是三级标题\r#### 这是四级标题\r##### 这是五级标题\r###### 这是六级标题\r 效果:\n这是一级标题 这是二级标题 这是三级标题 这是四级标题 这是五级标题 这是六级标题  二、字体   加粗 要加粗的文字左右分别用两个*号包起来\n  斜体 要倾斜的文字左右分别用一个*号包起来\n  斜体加粗 要倾斜和加粗的文字左右分别用三个*号包起来\n  删除线 要加删除线的文字左右分别用两个~~号包起来\n  示例:\n**这是加粗的文字**\r*这是倾斜的文字*\r***这是斜体加粗的文字***\r~~这是加删除线的文字~~\r 效果:\n这是加粗的文字\n这是倾斜的文字`\n这是斜体加粗的文字\n这是加删除线的文字\n 三、引用 在引用的文字前加即可。引用也可以嵌套，如加两个»三个» n个…\n示例:\n这是引用的内容\r这是引用的内容\r这是引用的内容\r 效果:\n 这是引用的内容\n 这是引用的内容\n        这是引用的内容\n           四、分割线  三个或者三个以上的 - 或者 * 都可以。\n 示例:\n---\r----\r***\r*****\r 效果:\n     五、图片 语法:\n![alt](图片地址 \"title\")\r alt 就是显示在图片下面的文字，相当于对图片内容的解释。title 是图片的标题，当鼠标移到图片上时显示的内容。title 可加可不加\n效果:\n 六、超链接 语法：\n[name](url \"title\") `title` 可加可不加\r 示例:\n[简书](http://jianshu.com)\r[百度](http://baidu.com)\r 效果:\n简书\n百度\n 七、列表 无序列表 语法：\n无序列表用 - + * 任何一种都可以\n- 列表内容\r+ 列表内容\r* 列表内容\r 注意：- + * 跟内容之间都要有一个空格\n效果：\n 列表内容   列表内容   列表内容   列表内容   有序列表 语法:\n1. 列表内容\r2. 列表内容\r3. 列表内容\r  注意：序号跟内容之间要有空格\n 效果:\n 列表内容 列表内容 列表内容   列表嵌套 示例:\n+ 一级无序列表内容\r+ 二级无序列表内容\r+ 二级无序列表内容\r+ 二级无序列表内容\r+ 一级无序列表内容\r1. 二级有序列表内容\r2. 二级有序列表内容\r3. 二级有序列表内容\r1. 一级有序列表内容\r+ 二级无序列表内容\r+ 二级无序列表内容\r+ 二级无序列表内容\r2. 一级有序列表内容\r1. 二级有序列表内容\r2. 二级有序列表内容\r3. 二级有序列表内容\r 效果:\n  一级无序列表内容\n 二级无序列表内容 二级无序列表内容 二级无序列表内容    一级无序列表内容\n 二级有序列表内容 二级有序列表内容 二级有序列表内容      一级有序列表内容\n 二级无序列表内容 二级无序列表内容 二级无序列表内容    一级有序列表内容\n 二级有序列表内容 二级有序列表内容 二级有序列表内容     八、表格 语法:\n表头|表头|表头\r---|:--:|---:\r内容|内容|内容\r内容|内容|内容\r  第二行分割表头和内容。- 有一个就行，为了对齐，多加了几个文字默认居左,- 两边加：表示文字居中,- 右边加：表示文字居右\n  注：原生的语法两边都要用 | 包起来。此处省略\n 示例:\n姓名|技能|排行\r--|:--:|--:\r刘备|哭|大哥\r关羽|打|二哥\r张飞|骂|三弟\r 效果:\n   姓名 技能 排行     刘备 哭 大哥   关羽 打 二哥   张飞 骂 三弟     九、代码 语法:\n 单行代码:代码之间分别用一个反引号包起来 `代码内容`,\n  代码块:代码之间分别用三个反引号包起来，且两边的反引号单独占一行\n 示例:\n单行代码\n`create database hero;`\r 代码块\n```\rfunction fun(){\recho \"这是一句非常牛逼的代码\";\r}\rfun();\r```\r 效果:\n单行代码\ncreate database hero;\n代码块\nfunction fun(){  echo \"这是一句非常牛逼的代码\"; } fun();  十、流程图  Vscode 不支持\n ```flow\rst=start: 开始\rop=operation: My Operation\rcond=condition: Yes or No?\re=end\rst-op-cond\rcond(yes)-e\rcond(no)-op\r\u0026```\r  十一、语法高亮 语法:\n```key\rcode\r```\r 支持的 key 常用\n   language key     C++ cpp   C# cs   CSS css   Erlang erlang   Go go   HTML html   JavaScript javascript   Json json   Lua lua   Makefile makefile   Nginx nginx   Python python   ProtocolBuffer protobuf   SQL sql   text text/plain   TypeScript typescript   XML xml     十二、转义字符    显示结果 描述 实体名称 实体编号      空格 \u0026nbsp; \u0026#160;    小于号 \u0026lt; \u0026#60;    大于号 \u0026gt; \u0026#62;   \u0026 与号 \u0026amp; \u0026#38;   \" 引号 \u0026quot; \u0026#34;   ' 撇号 \u0026apos;(IE不支持) \u0026#39;     十三、公式 $$dmg=atk-def$$\n",
+  "wordCount" : "1609",
+  "inLanguage": "en",
+  "datePublished": "2019-03-05T00:00:00Z",
+  "dateModified": "2019-03-05T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Treasure"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://domyson.github.io/2019/03/markdown/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "薛定谔的Bug",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://domyson.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
         </div>
-        
-        
-        
-        <div class="clear" style="display: none">
-            <div class="toc-article">
-                <div class="toc-title">文章目录</div>
-            </div>
-        </div>
-        
-        <div class="post-content">
-            <h1 id="目录">目录</h1>
+        <ul id="menu">
+            <li>
+                <a href="https://domyson.github.io/archives/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://domyson.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Markdown
+    </h1>
+    <div class="post-description">
+      文本标记
+    </div>
+    <div class="post-meta"><span title='2019-03-05 00:00:00 +0000 UTC'>March 5, 2019</span>&nbsp;·&nbsp;Treasure
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="目录">目录<a hidden class="anchor" aria-hidden="true" href="#目录">#</a></h1>
 <p>只能跳转标题，如果有同名标题与标题等级无关，匹配最优先的标题</p>
 <ul>
 <li><a href="#%E4%B8%80%E3%80%81%E6%A0%87%E9%A2%98">标题</a></li>
@@ -218,7 +205,7 @@
 <li><a href="#%E5%8D%81%E4%B8%80%E3%80%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE">语法高亮</a></li>
 <li><a href="#%E5%8D%81%E4%BA%8C%E3%80%81%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6">转义字符</a></li>
 </ul>
-<h1 id="一标题">一、标题</h1>
+<h1 id="一标题">一、标题<a hidden class="anchor" aria-hidden="true" href="#一标题">#</a></h1>
 <p>在想要设置为标题的文字前面加#来表示。一个#是一级标题，二个#是二级标题，以此类推。支持六级标题。</p>
 <p>示例:</p>
 <pre><code># 这是一级标题
@@ -234,14 +221,14 @@
 ###### 这是六级标题
 </code></pre>
 <p>效果:</p>
-<h1 id="这是一级标题">这是一级标题</h1>
-<h2 id="这是二级标题">这是二级标题</h2>
-<h3 id="这是三级标题">这是三级标题</h3>
-<h4 id="这是四级标题">这是四级标题</h4>
-<h5 id="这是五级标题">这是五级标题</h5>
-<h6 id="这是六级标题">这是六级标题</h6>
+<h1 id="这是一级标题">这是一级标题<a hidden class="anchor" aria-hidden="true" href="#这是一级标题">#</a></h1>
+<h2 id="这是二级标题">这是二级标题<a hidden class="anchor" aria-hidden="true" href="#这是二级标题">#</a></h2>
+<h3 id="这是三级标题">这是三级标题<a hidden class="anchor" aria-hidden="true" href="#这是三级标题">#</a></h3>
+<h4 id="这是四级标题">这是四级标题<a hidden class="anchor" aria-hidden="true" href="#这是四级标题">#</a></h4>
+<h5 id="这是五级标题">这是五级标题<a hidden class="anchor" aria-hidden="true" href="#这是五级标题">#</a></h5>
+<h6 id="这是六级标题">这是六级标题<a hidden class="anchor" aria-hidden="true" href="#这是六级标题">#</a></h6>
 <hr>
-<h1 id="二字体">二、字体</h1>
+<h1 id="二字体">二、字体<a hidden class="anchor" aria-hidden="true" href="#二字体">#</a></h1>
 <ul>
 <li>
 <p>加粗
@@ -275,7 +262,7 @@
 <p><em><strong>这是斜体加粗的文字</strong></em></p>
 <p><del>这是加删除线的文字</del></p>
 <hr>
-<h1 id="三引用">三、引用</h1>
+<h1 id="三引用">三、引用<a hidden class="anchor" aria-hidden="true" href="#三引用">#</a></h1>
 <p>在引用的文字前加&gt;即可。引用也可以嵌套，如加两个&raquo;三个&raquo;&gt;
 n个&hellip;</p>
 <p>示例:</p>
@@ -310,7 +297,7 @@ n个&hellip;</p>
 </blockquote>
 </blockquote>
 <hr>
-<h1 id="四分割线">四、分割线</h1>
+<h1 id="四分割线">四、分割线<a hidden class="anchor" aria-hidden="true" href="#四分割线">#</a></h1>
 <blockquote>
 <p>三个或者三个以上的 <code>-</code> 或者 <code>*</code> 都可以。</p>
 </blockquote>
@@ -326,17 +313,16 @@ n个&hellip;</p>
 <hr>
 <hr>
 <hr>
-<h1 id="五图片">五、图片</h1>
+<h1 id="五图片">五、图片<a hidden class="anchor" aria-hidden="true" href="#五图片">#</a></h1>
 <p>语法:</p>
 <pre><code>![alt](图片地址 &quot;title&quot;)
 </code></pre>
 <p><code>alt</code> 就是显示在图片下面的文字，相当于对图片内容的解释。<code>title</code> 是图片的标题，当鼠标移到图片上时显示的内容。<code>title</code> 可加可不加</p>
 <p>效果:</p>
-<p>
-        <img class="mx-auto" alt="图片" src="https://upload-images.jianshu.io/upload_images/8245841-7ed8a7dcaa5c8fe4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />   
-    </p>
+<p><img loading="lazy" src="https://upload-images.jianshu.io/upload_images/8245841-7ed8a7dcaa5c8fe4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图片"  />
+</p>
 <hr>
-<h1 id="六超链接">六、超链接</h1>
+<h1 id="六超链接">六、超链接<a hidden class="anchor" aria-hidden="true" href="#六超链接">#</a></h1>
 <p>语法：</p>
 <pre><code>[name](url &quot;title&quot;) `title` 可加可不加
 </code></pre>
@@ -348,8 +334,8 @@ n个&hellip;</p>
 <p><a href="http://jianshu.com">简书</a></p>
 <p><a href="http://baidu.com">百度</a></p>
 <hr>
-<h1 id="七列表">七、列表</h1>
-<h2 id="无序列表">无序列表</h2>
+<h1 id="七列表">七、列表<a hidden class="anchor" aria-hidden="true" href="#七列表">#</a></h1>
+<h2 id="无序列表">无序列表<a hidden class="anchor" aria-hidden="true" href="#无序列表">#</a></h2>
 <p>语法：</p>
 <p>无序列表用 <code>-</code> <code>+</code> <code>*</code> 任何一种都可以</p>
 <pre><code>- 列表内容
@@ -371,7 +357,7 @@ n个&hellip;</p>
 <li>列表内容</li>
 </ul>
 <hr>
-<h2 id="有序列表">有序列表</h2>
+<h2 id="有序列表">有序列表<a hidden class="anchor" aria-hidden="true" href="#有序列表">#</a></h2>
 <p>语法:</p>
 <pre><code>1. 列表内容
 2. 列表内容
@@ -387,7 +373,7 @@ n个&hellip;</p>
 <li>列表内容</li>
 </ol>
 <hr>
-<h2 id="列表嵌套">列表嵌套</h2>
+<h2 id="列表嵌套">列表嵌套<a hidden class="anchor" aria-hidden="true" href="#列表嵌套">#</a></h2>
 <p>示例:</p>
 <pre><code>+ 一级无序列表内容
 
@@ -452,7 +438,7 @@ n个&hellip;</p>
 </li>
 </ol>
 <hr>
-<h1 id="八表格">八、表格</h1>
+<h1 id="八表格">八、表格<a hidden class="anchor" aria-hidden="true" href="#八表格">#</a></h1>
 <p>语法:</p>
 <pre><code>表头|表头|表头
 ---|:--:|---:
@@ -500,7 +486,7 @@ n个&hellip;</p>
 </tbody>
 </table>
 <hr>
-<h1 id="九代码">九、代码</h1>
+<h1 id="九代码">九、代码<a hidden class="anchor" aria-hidden="true" href="#九代码">#</a></h1>
 <p>语法:</p>
 <blockquote>
 <p>单行代码:代码之间分别用一个反引号包起来 `代码内容`,</p>
@@ -529,7 +515,7 @@ fun();
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">fun</span>();
 </span></span></code></pre></div><hr>
-<h1 id="十流程图">十、流程图</h1>
+<h1 id="十流程图">十、流程图<a hidden class="anchor" aria-hidden="true" href="#十流程图">#</a></h1>
 <blockquote>
 <p>Vscode 不支持</p>
 </blockquote>
@@ -544,7 +530,7 @@ cond(no)-&gt;op
 &amp;```
 </code></pre>
 <hr>
-<h1 id="十一语法高亮">十一、语法高亮</h1>
+<h1 id="十一语法高亮">十一、语法高亮<a hidden class="anchor" aria-hidden="true" href="#十一语法高亮">#</a></h1>
 <p>语法:</p>
 <pre><code>```key
     code
@@ -630,7 +616,7 @@ cond(no)-&gt;op
 </tbody>
 </table>
 <hr>
-<h1 id="十二转义字符">十二、转义字符</h1>
+<h1 id="十二转义字符">十二、转义字符<a hidden class="anchor" aria-hidden="true" href="#十二转义字符">#</a></h1>
 <table>
 <thead>
 <tr>
@@ -680,243 +666,87 @@ cond(no)-&gt;op
 </tbody>
 </table>
 <hr>
-<h1 id="十三公式">十三、公式</h1>
+<h1 id="十三公式">十三、公式<a hidden class="anchor" aria-hidden="true" href="#十三公式">#</a></h1>
 <p>$$dmg=atk-def$$</p>
-        </div>
 
-        
+  </div>
 
-
-        
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/markdown'>Markdown</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://domyson.github.io/tags/markdown/">Markdown</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
     
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-    
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
 
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
 
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
-    
-    <a href="https://domyson.github.io/tags/bit/">bit</a>
-    
-    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
-    
-    <a href="https://domyson.github.io/tags/c/">c</a>
-    
-    <a href="https://domyson.github.io/tags/c#/">C#</a>
-    
-    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
-    
-    <a href="https://domyson.github.io/tags/database/">database</a>
-    
-    <a href="https://domyson.github.io/tags/docker/">Docker</a>
-    
-    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
-    
-    <a href="https://domyson.github.io/tags/gc/">GC</a>
-    
-    <a href="https://domyson.github.io/tags/go/">go</a>
-    
-    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
-    
-    <a href="https://domyson.github.io/tags/hash/">Hash</a>
-    
-    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
-    
-    <a href="https://domyson.github.io/tags/http/">http</a>
-    
-    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
-    
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
-    <a href="https://domyson.github.io/tags/lua/">Lua</a>
-    
-    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
-    
-    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
-    
-    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://domyson.github.io/tags/network/">Network</a>
-    
-    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
-    
-    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
-    
-    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
-    
-    <a href="https://domyson.github.io/tags/sort/">Sort</a>
-    
-    <a href="https://domyson.github.io/tags/tls/">TLS</a>
-    
-    <a href="https://domyson.github.io/tags/topk/">TopK</a>
-    
-    <a href="https://domyson.github.io/tags/tree/">Tree</a>
-    
-    <a href="https://domyson.github.io/tags/unity/">Unity</a>
-    
-    <a href="https://domyson.github.io/tags/web/">Web</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
+</script>
 </body>
 
 </html>

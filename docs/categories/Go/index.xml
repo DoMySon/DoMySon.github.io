@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>go on 薛定谔的Bug</title>
     <link>https://domyson.github.io/categories/go/</link>
@@ -22,7 +22,7 @@
       <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
-      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</description>
+      <description>go pragma</description>
     </item>
     
     <item>
@@ -31,17 +31,7 @@
       <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/</guid>
-      <description>&lt;h1 id=&#34;如何启用gc跟踪&#34;&gt;如何启用GC跟踪&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;GODEBUG=gctrace=1 go run *.go&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;其中 &lt;code&gt;gctrace=1&lt;/code&gt; 表示只针对这个进程进行GC追踪&lt;/p&gt;
-&lt;h1 id=&#34;输出分析&#34;&gt;输出分析&lt;/h1&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&amp;gt;5-&amp;gt;1 MB, 5 MB goal, 12 P
-scvg: 0 MB released
-scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
-GC forced
-&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>go 内置命令</description>
     </item>
     
     <item>
@@ -50,7 +40,7 @@ GC forced
       <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/</guid>
-      <description>&lt;h1 id=&#34;go-版本变迁差异&#34;&gt;Go 版本变迁差异&lt;/h1&gt;</description>
+      <description>go版本变迁史</description>
     </item>
     
     <item>
@@ -59,7 +49,7 @@ GC forced
       <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</guid>
-      <description>&lt;p&gt;Go源码文件包括：命令源码文件、库源码文件和测试源码文件。其中，命令源码文件总应该属于main代码包，且在其中有无参数声明、无结果声明的main函数。单个命令源码文件可以被单独编译，也可以被单独安装&lt;/p&gt;</description>
+      <description>go 内置命令</description>
     </item>
     
     <item>
@@ -82,8 +72,7 @@ GC forced
       <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/12/go-module/</guid>
-      <description>&lt;h1 id=&#34;module&#34;&gt;Module&lt;/h1&gt;
-&lt;p&gt;Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 &lt;code&gt;go.mod&lt;/code&gt; 文件来建立依赖管理。&lt;/p&gt;</description>
+      <description>Go Mutex</description>
     </item>
     
     <item>
@@ -92,10 +81,7 @@ GC forced
       <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/12/go%E9%94%81/</guid>
-      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>Go Mutex</description>
     </item>
     
     <item>
@@ -115,9 +101,7 @@ GC forced
       <pubDate>Fri, 23 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>Go单元测试&amp;amp;基准测试</description>
     </item>
     
     <item>
@@ -126,14 +110,7 @@ GC forced
       <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/05/goroutine/</guid>
-      <description>&lt;h1 id=&#34;栈&#34;&gt;栈&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;调度方式&#34;&gt;调度方式&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，&lt;code&gt;Goroutine&lt;/code&gt; 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>Go 并发原理</description>
     </item>
     
   </channel>

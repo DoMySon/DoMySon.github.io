@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Encryption on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/encryption/</link>
+    <description>Recent content in Encryption on 薛定谔的Bug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language><atom:link href="https://domyson.github.io/tags/encryption/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CRC(循环冗余校验)</title>
+      <link>https://domyson.github.io/1/01/crc%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A0%A1%E9%AA%8C/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/1/01/crc%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A0%A1%E9%AA%8C/</guid>
+      <description>CRC 是一种根据网络数据包或电脑文件等数据产生简短固定位数校验码的一种散列函数，主要用来检测或校验数据传输或者保存后可能出现的错误。它是利用除法及余数的原理来作错误侦测的。</description>
+    </item>
+    
+  </channel>
+</rss>

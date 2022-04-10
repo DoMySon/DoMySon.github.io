@@ -1,731 +1,346 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
 <head>
-	<meta name="generator" content="Hugo 0.96.0" />
+	<meta name="generator" content="Hugo 0.96.0" /><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>薛定谔的Bug</title>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+<meta name="description" content="">
+<meta name="author" content="Treasure">
+<link rel="canonical" href="https://domyson.github.io/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://domyson.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-    <title>薛定谔的Bug | 划水码农</title>
-    <meta property="og:title" content="薛定谔的Bug | 划水码农">
-    <meta property="og:type" content="website">
-    <meta name="Keywords" content="">
-    <meta name="description" content="">
-    <meta property="og:url" content="https://domyson.github.io/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/index.xml" title="薛定谔的Bug" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            .list {
+                background: var(--theme);
+            }
 
-    
-    
-    
-    
-    
-    
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="薛定谔的Bug" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://domyson.github.io/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="薛定谔的Bug"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "薛定谔的Bug",
+  "url": "https://domyson.github.io/",
+  "description": "",
+  "thumbnailUrl": "https://domyson.github.io/favicon.ico",
+  "sameAs": [
+      
+  ]
+}
+</script>
 </head>
 
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <h1>
-                        <a id="logo" href="https://domyson.github.io/">
-                            薛定谔的Bug
-                        </a>
-                    </h1>
-                
-                <p class="description">划水码农</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://domyson.github.io/">首页</a>
-                    
-                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
 
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
+</script>
 
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/08/ascii/" title="ASCII">ASCII</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/others'>others</a></span>
-            
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
         </div>
-        
-        <div class="post-content">
-            ……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/08/ascii/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/" title="unsafe包">unsafe包</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月23日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/topk/" title="TopK">TopK</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月31日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/topk/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/classicsort/" title="ClassicSort">ClassicSort</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="概念">概念</h1>
-<h2 id="稳定排序非稳定排序">稳定排序，非稳定排序</h2>
-<blockquote>
-<p>如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  <code>非稳定排序</code></p>
-</blockquote>
-<h2 id="原地排序非原地排序">原地排序，非原地排序</h2>
-<blockquote>
-<p>原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 <code>非原地排序</code></p>
-</blockquote>
-<h2 id="时间复杂度">时间复杂度</h2>
-<blockquote>
-<p>一个算法执行所耗费的时间</p>
-</blockquote>
-<h2 id="空间复杂度">空间复杂度</h2>
-<blockquote>
-<p>完成算法所需的内存空间大小</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/classicsort/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/ilruntime/" title="ILRuntime">ILRuntime</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/unity'>Unity</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            这是一个介绍……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/ilruntime/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/redis/" title="Redis">Redis</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月24日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/redis'>redis</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="liunx安装">Liunx安装</h1>
-<h1 id="基本数据结构">基本数据结构</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>string</code></td>
-<td style="text-align:center">键值对</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>has</code></td>
-<td style="text-align:center">hash表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>list</code></td>
-<td style="text-align:center">字符串列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>set</code></td>
-<td style="text-align:center">无重复列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>sorted set</code></td>
-<td style="text-align:center">有序无重复列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>subscribe/publish</code></td>
-<td style="text-align:center">发布订阅模式</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><a href="http://doc.redisfans.com/index.html">Redis命令</a></p>
-</blockquote>
-<blockquote>
-<p><a href="https://redis.io/download">Redis下载</a></p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/redis/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/05/protobuf3/" title="Protobuf3">Protobuf3</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月13日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/others'>others</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<p><code>Protocol Buffers</code>，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 <code>syntax = proto3</code> 的协议语法。</p>
-<h1 id="标准类型对照">标准类型对照</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">.proto</th>
-<th style="text-align:center">注释</th>
-<th style="text-align:center">C++</th>
-<th style="text-align:center">Python</th>
-<th style="text-align:center">Go</th>
-<th style="text-align:center">C#</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">double</td>
-<td style="text-align:center">定长编码</td>
-<td style="text-align:center">double</td>
-<td style="text-align:center">float</td>
-<td style="text-align:center">float64</td>
-<td style="text-align:center">double</td>
-</tr>
-<tr>
-<td style="text-align:center">float</td>
-<td style="text-align:center">定长编码</td>
-<td style="text-align:center">float</td>
-<td style="text-align:center">float</td>
-<td style="text-align:center">float32</td>
-<td style="text-align:center">float</td>
-</tr>
-<tr>
-<td style="text-align:center">int32</td>
-<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint32</code></td>
-<td style="text-align:center">int32</td>
-<td style="text-align:center">int</td>
-<td style="text-align:center">int32</td>
-<td style="text-align:center">int</td>
-</tr>
-<tr>
-<td style="text-align:center">int64</td>
-<td style="text-align:center">变长编码,负数编码效率低，可使用<code>sint64</code></td>
-<td style="text-align:center">int64</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">int64</td>
-<td style="text-align:center">long</td>
-</tr>
-<tr>
-<td style="text-align:center">uint32</td>
-<td style="text-align:center">变长编码</td>
-<td style="text-align:center">uint32</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">uint32</td>
-<td style="text-align:center">uint</td>
-</tr>
-<tr>
-<td style="text-align:center">uint64</td>
-<td style="text-align:center">变长编码</td>
-<td style="text-align:center">uint64</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">unit64</td>
-<td style="text-align:center">ulong</td>
-</tr>
-<tr>
-<td style="text-align:center">sint32</td>
-<td style="text-align:center">变长编码，对负数编码比<code>int32</code>更有效率</td>
-<td style="text-align:center">int32</td>
-<td style="text-align:center">int</td>
-<td style="text-align:center">int32</td>
-<td style="text-align:center">int</td>
-</tr>
-<tr>
-<td style="text-align:center">sint64</td>
-<td style="text-align:center">变长编码，对负数编码比<code>int64</code>更有效率</td>
-<td style="text-align:center">int64</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">int64</td>
-<td style="text-align:center">long</td>
-</tr>
-<tr>
-<td style="text-align:center">fixed32</td>
-<td style="text-align:center">总是<code>4</code>字节，如果值大于<code>2^28</code>比<code>uint32</code>更有效率</td>
-<td style="text-align:center">uint32</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">uint64</td>
-<td style="text-align:center">ulong</td>
-</tr>
-<tr>
-<td style="text-align:center">fixed64</td>
-<td style="text-align:center">总是<code>8</code>字节，如果值大于<code>2^56</code>比<code>uint64</code>更有效率</td>
-<td style="text-align:center">uint64</td>
-<td style="text-align:center">int/long</td>
-<td style="text-align:center">uint64</td>
-<td style="text-align:center">ulong</td>
-</tr>
-<tr>
-<td style="text-align:center">bool</td>
-<td style="text-align:center">1或0的变长编码</td>
-<td style="text-align:center">bool</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">bool</td>
-<td style="text-align:center">bool</td>
-</tr>
-<tr>
-<td style="text-align:center">string</td>
-<td style="text-align:center">必须是<code>UTF-8</code>编码</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">str/unicode</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">string</td>
-</tr>
-<tr>
-<td style="text-align:center">bytes</td>
-<td style="text-align:center">可包含任意的字节顺序</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">str</td>
-<td style="text-align:center">[]byte</td>
-<td style="text-align:center">ByteString</td>
-</tr>
-</tbody>
-</table>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/05/protobuf3/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/05/goroutine/" title="Goroutine">Goroutine</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月12日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="栈">栈</h1>
-<blockquote>
-<p>一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）</p>
-</blockquote>
-<h1 id="调度方式">调度方式</h1>
-<blockquote>
-<p>os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，<code>Goroutine</code> 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/05/goroutine/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/05/bitmap/" title="Bitmap">Bitmap</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月1日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/05/bitmap/">阅读全文</a></p>
-    </article>
-    
-    
-
-
-
-<ol class="page-navigator">
-    
-    <li class="prev">
-        <a href="https://domyson.github.io/page/2/">上一页</a>
-    </li>
-    
-
-    
-    <li >
-        <a href="https://domyson.github.io/">1</a>
-    </li>
-    
-    <li >
-        <a href="https://domyson.github.io/page/2/">2</a>
-    </li>
-    
-    <li  class="current">
-        <a href="https://domyson.github.io/page/3/">3</a>
-    </li>
-    
-    <li >
-        <a href="https://domyson.github.io/page/4/">4</a>
-    </li>
-    
-    <li >
-        <a href="https://domyson.github.io/page/5/">5</a>
-    </li>
-    
-
-    
-    <li class="next">
-        <a href="https://domyson.github.io/page/4/">下一页</a>
-    </li>
-    
-</ol>
-
-
-
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
-
-
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
-    
-    <a href="https://domyson.github.io/tags/bit/">bit</a>
-    
-    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
-    
-    <a href="https://domyson.github.io/tags/c/">c</a>
-    
-    <a href="https://domyson.github.io/tags/c#/">C#</a>
-    
-    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
-    
-    <a href="https://domyson.github.io/tags/database/">database</a>
-    
-    <a href="https://domyson.github.io/tags/docker/">Docker</a>
-    
-    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
-    
-    <a href="https://domyson.github.io/tags/gc/">GC</a>
-    
-    <a href="https://domyson.github.io/tags/go/">go</a>
-    
-    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
-    
-    <a href="https://domyson.github.io/tags/hash/">Hash</a>
-    
-    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
-    
-    <a href="https://domyson.github.io/tags/http/">http</a>
-    
-    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
-    
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
-    <a href="https://domyson.github.io/tags/lua/">Lua</a>
-    
-    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
-    
-    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
-    
-    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://domyson.github.io/tags/network/">Network</a>
-    
-    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
-    
-    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
-    
-    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
-    
-    <a href="https://domyson.github.io/tags/sort/">Sort</a>
-    
-    <a href="https://domyson.github.io/tags/tls/">TLS</a>
-    
-    <a href="https://domyson.github.io/tags/topk/">TopK</a>
-    
-    <a href="https://domyson.github.io/tags/tree/">Tree</a>
-    
-    <a href="https://domyson.github.io/tags/unity/">Unity</a>
-    
-    <a href="https://domyson.github.io/tags/web/">Web</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        <ul id="menu">
+            <li>
+                <a href="https://domyson.github.io/archives/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://domyson.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
         </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>ASCII
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p></p>
+  </section>
+  <footer class="entry-footer"><span title='2019-08-25 00:00:00 +0000 UTC'>August 25, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to ASCII" href="https://domyson.github.io/2019/08/ascii/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>unsafe包
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> Golang 默认指针是类型安全的，但它有很多限制。Golang 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-08-25 00:00:00 +0000 UTC'>August 25, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to unsafe包" href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Go性能分析
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p> 单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-08-23 00:00:00 +0000 UTC'>August 23, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to Go性能分析" href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>TopK
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-07-31 00:00:00 +0000 UTC'>July 31, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to TopK" href="https://domyson.github.io/2019/07/topk/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>ClassicSort
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>概念 稳定排序，非稳定排序  如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为 非稳定排序
+ 原地排序，非原地排序  原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 非原地排序
+ 时间复杂度  一个算法执行所耗费的时间
+ 空间复杂度  完成算法所需的内存空间大小
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-07-27 00:00:00 +0000 UTC'>July 27, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to ClassicSort" href="https://domyson.github.io/2019/07/classicsort/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>ILRuntime
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>这是一个介绍</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-07-25 00:00:00 +0000 UTC'>July 25, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to ILRuntime" href="https://domyson.github.io/2019/07/ilruntime/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Redis
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>Liunx安装 基本数据结构    类型 介绍     string 键值对   has hash表   list 字符串列表   set 无重复列表   sorted set 有序无重复列表   subscribe/publish 发布订阅模式     Redis命令
+  Redis下载
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-07-24 00:00:00 +0000 UTC'>July 24, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to Redis" href="https://domyson.github.io/2019/07/redis/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>MD5
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>简介 MD5(Messgae-digest algorithm5)信息摘要 将任意长度的明文生成 128bit 或 16byte 的哈希值，也为16个byte,一般转为16进制表示,所以会显示32个字符，而M...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-05-22 00:00:00 +0000 UTC'>May 22, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to MD5" href="https://domyson.github.io/2019/05/md5/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Protobuf3
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>简介 Protocol Buffers，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 syntax = proto3 的协议语法。
+标准类型对照    .proto 注释 C&#43;&#43; Python Go C#     double 定长编码 double float float64 double   float 定长编码 float float float32 float   int32 变长编码,负数编码效率低，可使用sint32 int32 int int32 int   int64 变长编码,负数编码效率低，可使用sint64 int64 int/long int64 long   uint32 变长编码 uint32 int/long uint32 uint   uint64 变长编码 uint64 int/long unit64 ulong   sint32 变长编码，对负数编码比int32更有效率 int32 int int32 int   sint64 变长编码，对负数编码比int64更有效率 int64 int/long int64 long   fixed32 总是4字节，如果值大于2^28比uint32更有效率 uint32 int/long uint64 ulong   fixed64 总是8字节，如果值大于2^56比uint64更有效率 uint64 int/long uint64 ulong   bool 1或0的变长编码 bool boolean bool bool   string 必须是UTF-8编码 string str/unicode string string   bytes 可包含任意的字节顺序 string str []byte ByteString   ...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-05-13 00:00:00 +0000 UTC'>May 13, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to Protobuf3" href="https://domyson.github.io/2019/05/protobuf3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Goroutine
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>栈  一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）
+ 调度方式  os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，Goroutine 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。
+...</p>
+  </section>
+  <footer class="entry-footer"><span title='2019-05-12 00:00:00 +0000 UTC'>May 12, 2019</span>&nbsp;·&nbsp;Treasure</footer>
+  <a class="entry-link" aria-label="post link to Goroutine" href="https://domyson.github.io/2019/05/goroutine/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://domyson.github.io/page/2/">« Prev Page</a>
+    <a class="next" href="https://domyson.github.io/page/4/">Next Page »</a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
 </body>
 
 </html>

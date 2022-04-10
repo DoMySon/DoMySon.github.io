@@ -1,208 +1,199 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
-    <title>Protobuf3 | 薛定谔的Bug</title>
-    <meta property="og:title" content="Protobuf3 - 薛定谔的Bug">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2019-05-13T00:00:00&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2019-05-13T00:00:00&#43;08:00'>
-        
-    <meta name="Keywords" content="">
-    <meta name="description" content="一种数据交换格式">
-        
-    <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/2019/05/protobuf3/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
-
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    
-    
-    
-    
-    
-    
-</head>
-
-<body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://domyson.github.io/">
-                        薛定谔的Bug
-                    </a>
-                
-                <p class="description">划水码农</p>
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://domyson.github.io/">首页</a>
-                    
-                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
-                    
-                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Protobuf3 | 薛定谔的Bug</title>
+<meta name="keywords" content="">
+<meta name="description" content="一种数据交换格式">
+<meta name="author" content="Treasure">
+<link rel="canonical" href="https://domyson.github.io/2019/05/protobuf3/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://domyson.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
             display: none;
         }
-    }
-</style>
-<div class="post-toc" style="position: absolute; top: 188px;">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#example">Example</a></li>
-    <li><a href="#指定标签">指定标签</a></li>
-    <li><a href="#字段规则">字段规则</a></li>
-    <li><a href="#消息嵌套">消息嵌套</a></li>
-    <li><a href="#保留字段">保留字段</a></li>
-    <li><a href="#默认值">默认值</a></li>
-    <li><a href="#枚举">枚举</a></li>
-  </ul>
-</nav>
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if (leftPos < 220) {
-                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
             }
 
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
         }
 
-        if ($("#TableOfContents").children().length < 1) {
-            $(".post-toc").remove();
-        }
-    })
+    </style>
+</noscript><meta property="og:title" content="Protobuf3" />
+<meta property="og:description" content="一种数据交换格式" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://domyson.github.io/2019/05/protobuf3/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-05-13T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2019-05-13T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Protobuf3"/>
+<meta name="twitter:description" content="一种数据交换格式"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://domyson.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Protobuf3",
+      "item": "https://domyson.github.io/2019/05/protobuf3/"
+    }
+  ]
+}
 </script>
-    <article class="post">
-        <header>
-            <h1 class="post-title">Protobuf3</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月13日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/others'>others</a></span>
-            
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Protobuf3",
+  "name": "Protobuf3",
+  "description": "一种数据交换格式",
+  "keywords": [
+    ""
+  ],
+  "articleBody": "简介 Protocol Buffers，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 syntax = proto3 的协议语法。\n标准类型对照    .proto 注释 C++ Python Go C#     double 定长编码 double float float64 double   float 定长编码 float float float32 float   int32 变长编码,负数编码效率低，可使用sint32 int32 int int32 int   int64 变长编码,负数编码效率低，可使用sint64 int64 int/long int64 long   uint32 变长编码 uint32 int/long uint32 uint   uint64 变长编码 uint64 int/long unit64 ulong   sint32 变长编码，对负数编码比int32更有效率 int32 int int32 int   sint64 变长编码，对负数编码比int64更有效率 int64 int/long int64 long   fixed32 总是4字节，如果值大于2^28比uint32更有效率 uint32 int/long uint64 ulong   fixed64 总是8字节，如果值大于2^56比uint64更有效率 uint64 int/long uint64 ulong   bool 1或0的变长编码 bool boolean bool bool   string 必须是UTF-8编码 string str/unicode string string   bytes 可包含任意的字节顺序 string str []byte ByteString    定义消息类型 Example synatx = \"proto3\";package Pb;message Request{ string xxx = 1; int64 yyy = 2; float zzz = 3; double ppp = 4;}  第一行指定使用 proto3 语法，如果不指明，则默认使用 proto2 语法，这一行 不允许空白字符和注释\n  第二行指明隶属于哪个包，在 go 中即为包名，在 csharp 中为命名空间\n  使用 // 来注释\n  指定标签 每一个字段都定义了一个唯一的 数值标签，这些唯一的数值标签用来标识 二进制消息 中你所定义的字段，一旦定义了编译后就无法修改。需要特别提醒的是标签 1–15 标识的字段编码仅占用 1 个字节（包括字段类型和标识标签）。 数值标签 16–2047 标识的字段编码占用 2 个字节。因此，你应该将标签 1–15 留给那些在你的消息类型中使用频率高的字段。记得预留一些空间（标签 1–15）给将来可能添加的高频率字段。\n字段规则   单数：该字段可以出现0或1次\n  可重复 repeated：改字段可以重复任意次数，可以通过 [packed=true] 来申明更高效的编码：repeated int32 samples = 1 [packed=true];\n  消息嵌套 在一个消息结构内部定义另外一个消息结构\nmessage Response{ //消息嵌套，可以无限嵌套  message Result{ string url = 1; //Field标签必须从1开始  string title =2; repeated string snippets = 3; } repeated Result results = 1;}message OtherResponse{ //外部使用内嵌消息  Response.Result result =1;}保留字段  略\n 默认值   string默认值为空字符串。\n  bytes型默认值是空字节。\n  bool型默认值为 false。\n  数值类型默认值位 0。\n  enum默认值是第一个枚举元素，它必须为 0。\n  message类型字段默认值为 null。\n   默认值字段是不会被序列化。\n 枚举 message Request{ string url = 1; int number = 2; enum Corpus{ None = 0; //枚举标签第一个必须为0  Image=1; Viedo=2; } Corpus corpus = 4;}导入其它 Protobuf import \"proj/other.proto\" //导入其他proto文件 import public \"other.proto\" //如果声明为public，那么other.proto导入的其他包也可以被引用 Map map mapping = 1; //不能使用 repeated 修饰 //等效于 message Entry{ key_type key = 1; val_type val = 2;}repeated Entry entry = 1; key 只能是除 bytes \u0026 float、float64 以外的任意类型。key \u0026 val 也可以是自定义类型.\n RPC 服务接口类型 syntax=\"proto3\";message SearchRequest{}message SearchResponse{}service SearchService { //rpc接口函数是Search  //参数是SearchRequest，返回SearchResponse  Search (SearchRequest) returns (SearchResponse);}",
+  "wordCount" : "1155",
+  "inLanguage": "en",
+  "datePublished": "2019-05-13T00:00:00Z",
+  "dateModified": "2019-05-13T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Treasure"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://domyson.github.io/2019/05/protobuf3/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "薛定谔的Bug",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://domyson.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
         </div>
-        
-        
-        
-        <div class="clear" style="display: none">
-            <div class="toc-article">
-                <div class="toc-title">文章目录</div>
-            </div>
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
+        <ul id="menu">
+            <li>
+                <a href="https://domyson.github.io/archives/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://domyson.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Protobuf3
+    </h1>
+    <div class="post-description">
+      一种数据交换格式
+    </div>
+    <div class="post-meta"><span title='2019-05-13 00:00:00 +0000 UTC'>May 13, 2019</span>&nbsp;·&nbsp;Treasure
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="简介">简介<a hidden class="anchor" aria-hidden="true" href="#简介">#</a></h1>
 <p><code>Protocol Buffers</code>，是Google公司开发的一种数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面。本文只介绍 <code>syntax = proto3</code> 的协议语法。</p>
-<h1 id="标准类型对照">标准类型对照</h1>
+<h1 id="标准类型对照">标准类型对照<a hidden class="anchor" aria-hidden="true" href="#标准类型对照">#</a></h1>
 <table>
 <thead>
 <tr>
@@ -321,8 +312,8 @@
 </tr>
 </tbody>
 </table>
-<h1 id="定义消息类型">定义消息类型</h1>
-<h2 id="example">Example</h2>
+<h1 id="定义消息类型">定义消息类型<a hidden class="anchor" aria-hidden="true" href="#定义消息类型">#</a></h1>
+<h2 id="example">Example<a hidden class="anchor" aria-hidden="true" href="#example">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>synatx <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#f92672">package</span> Pb;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
@@ -344,9 +335,9 @@
 </li>
 </ul>
 <!-- raw HTML omitted -->
-<h2 id="指定标签">指定标签</h2>
+<h2 id="指定标签">指定标签<a hidden class="anchor" aria-hidden="true" href="#指定标签">#</a></h2>
 <p>每一个字段都定义了一个唯一的 <code>数值标签</code>，这些唯一的数值标签用来标识 二进制消息 中你所定义的字段，一旦定义了编译后就无法修改。需要特别提醒的是标签 <code>1–15</code> 标识的字段编码仅占用 1 个字节（包括字段类型和标识标签）。 数值标签 <code>16–2047</code> 标识的字段编码占用 2 个字节。因此，你应该将标签 1–15 留给那些在你的消息类型中使用频率高的字段。记得预留一些空间（标签 1–15）给将来可能添加的高频率字段。</p>
-<h2 id="字段规则">字段规则</h2>
+<h2 id="字段规则">字段规则<a hidden class="anchor" aria-hidden="true" href="#字段规则">#</a></h2>
 <ul>
 <li>
 <p>单数：该字段可以出现0或1次</p>
@@ -355,7 +346,7 @@
 <p>可重复 <code>repeated</code>：改字段可以重复任意次数，可以通过 <code>[packed=true]</code> 来申明更高效的编码：<code>repeated int32 samples = 1 [packed=true];</code></p>
 </li>
 </ul>
-<h2 id="消息嵌套">消息嵌套</h2>
+<h2 id="消息嵌套">消息嵌套<a hidden class="anchor" aria-hidden="true" href="#消息嵌套">#</a></h2>
 <p>在一个消息结构内部定义另外一个消息结构</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Response</span>{<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//消息嵌套，可以无限嵌套
@@ -371,11 +362,11 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#75715e">//外部使用内嵌消息
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Response.Result result <span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
-</span></span></span></code></pre></div><h2 id="保留字段">保留字段</h2>
+</span></span></span></code></pre></div><h2 id="保留字段">保留字段<a hidden class="anchor" aria-hidden="true" href="#保留字段">#</a></h2>
 <blockquote>
 <p>略</p>
 </blockquote>
-<h2 id="默认值">默认值</h2>
+<h2 id="默认值">默认值<a hidden class="anchor" aria-hidden="true" href="#默认值">#</a></h2>
 <ul>
 <li>
 <p><code>string</code>默认值为空字符串。</p>
@@ -399,7 +390,7 @@
 <blockquote>
 <p>默认值字段是不会被序列化。</p>
 </blockquote>
-<h2 id="枚举">枚举</h2>
+<h2 id="枚举">枚举<a hidden class="anchor" aria-hidden="true" href="#枚举">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">Request</span>{<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">string</span> url <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    int number <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;<span style="color:#960050;background-color:#1e0010">
@@ -412,11 +403,11 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    Corpus corpus <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
-</span></span></span></code></pre></div><h1 id="导入其它-protobuf">导入其它 <code>Protobuf</code></h1>
+</span></span></span></code></pre></div><h1 id="导入其它-protobuf">导入其它 <code>Protobuf</code><a hidden class="anchor" aria-hidden="true" href="#导入其它-protobuf">#</a></h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#e6db74">&#34;proj/other.proto&#34;</span> <span style="color:#75715e">//导入其他proto文件
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">import</span> public <span style="color:#e6db74">&#34;other.proto&#34;</span> <span style="color:#75715e">//如果声明为public，那么other.proto导入的其他包也可以被引用
-</span></span></span></code></pre></div><h1 id="map">Map</h1>
+</span></span></span></code></pre></div><h1 id="map">Map<a hidden class="anchor" aria-hidden="true" href="#map">#</a></h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>map&lt;key,val&gt; mapping <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">//不能使用 repeated 修饰
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">//等效于
@@ -429,7 +420,7 @@
 </span></span></span></code></pre></div><blockquote>
 <p><code>key</code> 只能是除 <code>bytes</code> &amp; <code>float、float64</code> 以外的任意类型。<code>key &amp; val</code> 也可以是自定义类型.</p>
 </blockquote>
-<h1 id="rpc-服务接口类型"><code>RPC</code> 服务接口类型</h1>
+<h1 id="rpc-服务接口类型"><code>RPC</code> 服务接口类型<a hidden class="anchor" aria-hidden="true" href="#rpc-服务接口类型">#</a></h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span>syntax<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;proto3&#34;</span>;<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">message</span> <span style="color:#a6e22e">SearchRequest</span>{<span style="color:#960050;background-color:#1e0010">
@@ -446,250 +437,84 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    Search (SearchRequest) <span style="color:#66d9ef">returns</span> (SearchResponse);<span style="color:#960050;background-color:#1e0010">
 </span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>}<span style="color:#960050;background-color:#1e0010">
 </span></span></span></code></pre></div>
-        </div>
 
-        
+  </div>
 
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2019/02/gc/">GC</a></li>
-        
+  <footer class="post-footer">
+    <ul class="post-tags">
     </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/'></a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
+  </footer>
+</article>
+    </main>
     
-    
-
-    
-    
-</div>
-
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-    
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
 
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
 
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/tls/" title="TLS">TLS</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
-    
-    <a href="https://domyson.github.io/tags/bit/">bit</a>
-    
-    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
-    
-    <a href="https://domyson.github.io/tags/c/">c</a>
-    
-    <a href="https://domyson.github.io/tags/c#/">C#</a>
-    
-    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
-    
-    <a href="https://domyson.github.io/tags/database/">database</a>
-    
-    <a href="https://domyson.github.io/tags/docker/">Docker</a>
-    
-    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
-    
-    <a href="https://domyson.github.io/tags/gc/">GC</a>
-    
-    <a href="https://domyson.github.io/tags/go/">go</a>
-    
-    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
-    
-    <a href="https://domyson.github.io/tags/hash/">Hash</a>
-    
-    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
-    
-    <a href="https://domyson.github.io/tags/http/">http</a>
-    
-    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
-    
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
-    <a href="https://domyson.github.io/tags/lua/">Lua</a>
-    
-    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
-    
-    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
-    
-    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
-    
-    <a href="https://domyson.github.io/tags/network/">Network</a>
-    
-    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
-    
-    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
-    
-    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
-    
-    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
-    
-    <a href="https://domyson.github.io/tags/sort/">Sort</a>
-    
-    <a href="https://domyson.github.io/tags/tls/">TLS</a>
-    
-    <a href="https://domyson.github.io/tags/topk/">TopK</a>
-    
-    <a href="https://domyson.github.io/tags/tree/">Tree</a>
-    
-    <a href="https://domyson.github.io/tags/unity/">Unity</a>
-    
-    <a href="https://domyson.github.io/tags/web/">Web</a>
-    
-</div>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
-</div>
-            </div>
-        </div>
-    </div>
+</script>
 </body>
 
 </html>
