@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://domyson.github.io/categories/</loc>
+    <lastmod>2022-04-11T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://domyson.github.io/post/</loc>
     <lastmod>2022-04-11T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/</loc>
+    <lastmod>2022-04-11T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</loc>
+    <lastmod>2022-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2022-04-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/</loc>
     <lastmod>2022-04-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/tags/c/</loc>
-    <lastmod>2022-04-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://domyson.github.io/categories/</loc>
     <lastmod>2022-04-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/2022/04/cgo/</loc>
@@ -93,9 +99,6 @@
     <lastmod>2020-02-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/</loc>
-    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2020-02-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://domyson.github.io/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/</loc>

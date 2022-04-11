@@ -68,6 +68,40 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/02/gc/" title="GC">GC</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月22日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="何谓-gc">何谓 <code>GC</code></h1>
+<p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
+<ol>
+<li>
+<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+</li>
+<li>
+<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
+</li>
+</ol>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/02/gc/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://domyson.github.io/1/01/" title=""></a>
             </h1>
         </header>
@@ -209,22 +243,6 @@
         <p class="readmore"><a href="https://domyson.github.io/1/01/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/1/01/" title=""></a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            1年1月1日
-        </date>
-        
-        <div class="post-content">
-            线程的实现模型主要有3种： 内核级线程模型、用户级线程模型和两级线程模型（也称混合型线程模型），它们之间最大的差异就在于用户线程与内核调度实体……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/1/01/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -316,6 +334,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">消息队列</a>
     </li>
     
@@ -351,10 +373,6 @@
         <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
-    <li>
-        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -386,7 +404,7 @@
     
     <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
 </ul>
     </section>

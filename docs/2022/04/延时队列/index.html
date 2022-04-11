@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>mysql100问 | 薛定谔的Bug</title>
-    <meta property="og:title" content="mysql100问 - 薛定谔的Bug">
+    <title>延时队列 | 薛定谔的Bug</title>
+    <meta property="og:title" content="延时队列 - 薛定谔的Bug">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2022-04-06T00:00:00&#43;08:00'>
+    <meta property="article:published_time" content='2022-04-11T00:00:00&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2022-04-06T00:00:00&#43;08:00'>
+    <meta property="article:modified_time" content='2022-04-11T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="mysql面试题">
+    <meta name="description" content="延时队列">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/2022/04/mysql100%E9%97%AE/">
+    <meta property="og:url" content="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -168,16 +168,16 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">mysql100问</h1>
+            <h1 class="post-title">延时队列</h1>
         </header>
         <date class="post-meta meta-date">
-            2022年4月6日
+            2022年4月11日
         </date>
         
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/%E5%85%AB%E8%82%A1%E6%96%87'>八股文</a></span>
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
             
         </div>
         
@@ -190,93 +190,70 @@
         </div>
         
         <div class="post-content">
-            <h1 id="聚集非聚集联合索引">聚集、非聚集、联合索引</h1>
-<ul>
-<li>
-<p>A1: 聚集索引（主键索引）所有ROW都会按照主键索引进行排序</p>
-</li>
-<li>
-<p>A2: 非聚集索引即普通索引加上字段</p>
-</li>
-<li>
-<p>A3: 几个字段组成的索引</p>
-</li>
-<li>
-<p>A4: 聚集索引在物理上连续，非聚集索引在物理上不连续，但在逻辑上连续</p>
-</li>
-<li>
-<p>A5: 聚集索引影响物理存储顺序，而非聚集索引不影响</p>
-</li>
-<li>
-<p>A6: 聚集索引插入慢，查询快，非聚集索引反之</p>
-</li>
-<li>
-<p>A7: 索引是通过二叉树来描述的，聚集索引的子叶节点也是数据节点，而非聚集索引子叶节点仍是索引节点</p>
-</li>
-</ul>
-<h1 id="自增主键有哪些问题">自增主键有哪些问题</h1>
-<ul>
-<li>A1: 分表分库的时候可能会出现重复情况（可使用uuid替代）</li>
-<li>A2: 产生表锁</li>
-<li>A3: id耗尽</li>
-</ul>
-<h1 id="索引无效的情况">索引无效的情况</h1>
-<ul>
-<li>A1: 以<code>%</code>开头的<code>LIKE</code>语句，模糊匹配</li>
-<li>A2: <code>OR</code> 前后字段未同时使用索引</li>
-<li>A3: 数据类型隐式转换（varchar-&gt;int)</li>
-</ul>
-<h1 id="查询优化">查询优化</h1>
-<ul>
-<li>A1: 在<code>WHERE</code>和<code>ORDER BY</code>所涉及的列上加上索引</li>
-<li>A2: <code>SELECT</code>避免使用<code>*</code>,SQL语句全部大写</li>
-<li>A3: 避免<code>WHERE</code>对索引列上进行<code>IS NULL</code>判断，替换成<code>IS NOT NULL</code></li>
-<li>A4: <code>IN</code>和<code>NOT IN</code>会导致全表扫描,替换为<code>EXISTS</code>或<code>NOT EXISTS</code></li>
-<li>A5: 避免在索引上进行计算</li>
-<li>A6: <code>WHRER</code>使用<code>OR</code>会放弃索引进而全表扫描</li>
-</ul>
-<h1 id="char和varchar的区别">CHAR和VARCHAR的区别</h1>
-<ul>
-<li>A1: 存储和检索方式不同</li>
-<li>A2: <code>CHAR</code>长度在创建时候指定(1~255),在存储时尾部全部填充空格</li>
-</ul>
-<h1 id="主键索引和唯一索引的区别">主键索引和唯一索引的区别</h1>
-<ul>
-<li>A1: 主键是一种约束</li>
-<li>A2: 主键一定包含一个唯一索引，反之不成立</li>
-<li>A3: 主键索引不允许包含空值，而唯一索引可以</li>
-<li>A4: 一张表只能有一个主键索引，而唯一索引可以有多个</li>
-</ul>
-<h1 id="cpu飙升问题排查">CPU飙升问题排查</h1>
-<ul>
-<li>A1: top命令观察<code>mysqld</code></li>
-<li>A2: 若是，则<code>show processlist</code>查看是否是 SQL 的问题，</li>
-<li>A3: 若是，则检查执行计划是否准确，是否索引确实，数据是否太大</li>
-<li>A4: kill上述线程，加索引，改内存，改SQL并重跑</li>
-<li>A5: 若不是，可能是短时间有大量连接，可以限制最大连接数</li>
-</ul>
-<h1 id="如何创建索引">如何创建索引</h1>
-<ul>
-<li>
-<p>A1:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> indexName <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">table</span>; <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">创建普通索引</span>
+            <h1 id="原理">原理</h1>
+<p>一个队列，没有明确触发时间，而是由某个触发器触发的调用。</p>
+<h1 id="实现">实现</h1>
+<p>一般通过时间轮子来实现，也有redis的分布式延时队列实现（以后补充）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// 基于纯go的 delay_queue 伪代码
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Task</span> <span style="color:#66d9ef">struct</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cycle</span> <span style="color:#66d9ef">int</span>  <span style="color:#75715e">// 第几次循环执行，0 即可执行，意味着某个循环的周期
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cb</span> <span style="color:#66d9ef">func</span>()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">INDEX</span> indexName <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">table</span>;
-</span></span></code></pre></div></li>
-<li>
-<p>A2: 唯一索引和普通索引的区别是唯一索引值不允许重复</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">UNIQUE</span> <span style="color:#66d9ef">INDEX</span> indexName <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">table</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">next</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Task</span>  <span style="color:#75715e">// 减少数组移动，也可以使用ring
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">table</span> <span style="color:#66d9ef">ADD</span> [<span style="color:#66d9ef">UNIQUE</span><span style="color:#f92672">|</span><span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>] indexName; <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">修改表</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">wheel</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Task</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">直接在创建时指定</span> 
-</span></span></code></pre></div></li>
-<li>
-<p>A3:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">SHOW</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#66d9ef">from</span> talbe; <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">显示表中的索引</span>
-</span></span></code></pre></div></li>
-</ul>
-
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">delay_queue</span> <span style="color:#66d9ef">struct</span>{
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">p</span> <span style="color:#66d9ef">int64</span>   <span style="color:#75715e">// 当前任务队列指向的数组偏移
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wheelSize</span> <span style="color:#66d9ef">int64</span>   <span style="color:#75715e">// 时间轮尺寸， 那么时间轮周期为 interval * size
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wheelInterval</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Duration</span>  <span style="color:#75715e">// 最小tick周期
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wheelTimer</span> <span style="color:#a6e22e">timer</span>.<span style="color:#a6e22e">Tick</span>  <span style="color:#75715e">// 计时器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">wheels</span> []<span style="color:#a6e22e">wheel</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">dq</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">delay_queue</span>) <span style="color:#a6e22e">Run</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheelTimer</span>{
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">head</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheels</span>[<span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">p</span><span style="color:#f92672">%</span><span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheelSize</span>]
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">next</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">head</span>  <span style="color:#75715e">// 防止链表前面任务晚于后续任务
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">head</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>               <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">cycle</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>                   <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">cb</span>()
+</span></span><span style="display:flex;"><span>                   <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheels</span>[<span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">p</span><span style="color:#f92672">%</span><span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheelSize</span>] = <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">next</span> <span style="color:#75715e">// 移除完成的任务
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>               } <span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">cycle</span> <span style="color:#f92672">--</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">head</span> = <span style="color:#a6e22e">head</span>.<span style="color:#a6e22e">next</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">dp</span>.<span style="color:#a6e22e">p</span> <span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>        } 
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">dq</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">delay_queue</span>) <span style="color:#a6e22e">Put</span>(<span style="color:#a6e22e">callback</span> <span style="color:#66d9ef">func</span>(),<span style="color:#a6e22e">delay</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Duration</span>) {
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">pos</span> <span style="color:#f92672">:=</span>  <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">p</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">delay</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">cycle</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pos</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">dp</span>.<span style="color:#a6e22e">wheelSize</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">offset</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pos</span><span style="color:#f92672">%</span><span style="color:#a6e22e">dp</span>.<span style="color:#a6e22e">wheelSize</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Task</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cycle</span>:<span style="color:#a6e22e">cycle</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">cb</span> : <span style="color:#a6e22e">callback</span>,
+</span></span><span style="display:flex;"><span>     }
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">if</span>  <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheels</span>[<span style="color:#a6e22e">offset</span>] <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>         <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheels</span>[<span style="color:#a6e22e">offset</span>]  = <span style="color:#a6e22e">wheel</span>{<span style="color:#a6e22e">t</span>}
+</span></span><span style="display:flex;"><span>     }<span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">dq</span>.<span style="color:#a6e22e">wheels</span>[<span style="color:#a6e22e">offset</span>].<span style="color:#a6e22e">next</span> = <span style="color:#a6e22e">t</span>
+</span></span><span style="display:flex;"><span>     }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
         </div>
 
         
@@ -284,12 +261,29 @@
 
         
 
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></li>
+        
+        <li><a href="/2020/01/go%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4/">Go标准命令</a></li>
+        
+        <li><a href="/2019/08/snowflake/">Snowflake</a></li>
+        
+        <li><a href="/2019/05/protobuf3/">Protobuf3</a></li>
+        
+        <li><a href="/2019/02/gc/">GC</a></li>
+        
+    </ul>
+</div>
+
 
         <div class="post-meta meta-tags">
             
             <ul class="clearfix">
                 
-                <li><a href='/tags/mysql'>mysql</a></li>
+                <li><a href='/tags/'></a></li>
                 
             </ul>
             
