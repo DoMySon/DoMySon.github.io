@@ -1,217 +1,370 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
+<!doctype html>
+<html lang="zh-CN">
+<head>
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Tree | 薛定谔的Bug</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="Treasure">
-<link rel="canonical" href="https://domyson.github.io/tags/tree/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://domyson.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/tree/index.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
+    <title>Tree | 薛定谔的Bug</title>
+    <meta property="og:title" content="Tree - 薛定谔的Bug">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Tree">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://domyson.github.io/tags/tree/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
-            .list {
-                background: var(--theme);
-            }
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/tree/index.xml" title="薛定谔的Bug" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="Tree" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://domyson.github.io/tags/tree/" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tree"/>
-<meta name="twitter:description" content=""/>
-
+    
+    
+    
+    
+    
+    
 </head>
 
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
+                    </a>
+                
+                <p class="description">划水码农</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://domyson.github.io/">首页</a>
+                    
+                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://domyson.github.io/archives/" title="文章">
-                    <span>文章</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://domyson.github.io/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header">
-  <h1>Tree</h1>
+    </div>
 </header>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Tree
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>树 Tree 定义  树（Tree）是n（n&gt;=0)个结点的有限集。n=0 时称为空树。在任意一颗非空树中：
-  A/ \B C/ / \D E F/|\ \G H I J   有且仅有一个特定的称为根（Root）的结点；
-  当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、……、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。
-  n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。
-  m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。
-  节点的度  节点又有子树数目成为节点的 度，如上图
-  A -度2/ \B C -度2/ / \度3 - D E F - 度0/|\ \G H I J 节点的深度  该节点的深度为 4
- ------------------------------A 第一层 -------- /-\------------------B C 第二层 -------/---/-\---------------- D E F 第三层-----/|\---\------------------ G H I J 第四层------------------------------ ...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-09-02 00:00:00 +0000 UTC'>September 2, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to Tree" href="https://domyson.github.io/2019/09/tree/"></a>
-</article>
-    </main>
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
     
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">Tree</span>
+        的文章
+    </h3>
+    
+
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/09/tree/">Tree</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年9月2日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="树-tree">树 <code>Tree</code></h1>
+<h2 id="定义">定义</h2>
+<blockquote>
+<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
+</blockquote>
+<pre tabindex="0"><code>      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
+</ul>
+<h2 id="节点的度">节点的度</h2>
+<blockquote>
+<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
+</blockquote>
+<pre tabindex="0"><code>             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+</code></pre><h2 id="节点的深度">节点的深度</h2>
+<blockquote>
+<p>该节点的深度为 4</p>
+</blockquote>
+<pre tabindex="0"><code>------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+</code></pre>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/09/tree/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
-</script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">消息队列</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://domyson.github.io/categories/algorithm/">Algorithm (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
+    
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
+    
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
+    
+    <a href="https://domyson.github.io/tags/c/">c</a>
+    
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
+    
+    <a href="https://domyson.github.io/tags/channel/">channel</a>
+    
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
+    
+    <a href="https://domyson.github.io/tags/database/">database</a>
+    
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
+    
+    <a href="https://domyson.github.io/tags/encryption/">Encryption</a>
+    
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
+    
+    <a href="https://domyson.github.io/tags/go/">go</a>
+    
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://domyson.github.io/tags/go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">go源码分析</a>
+    
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
+    
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
+    
+    <a href="https://domyson.github.io/tags/http/">http</a>
+    
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
+    
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
+    
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://domyson.github.io/tags/network/">Network</a>
+    
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
+    
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
+    
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
+    
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
+    
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
+    
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
+    
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
+    
+    <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

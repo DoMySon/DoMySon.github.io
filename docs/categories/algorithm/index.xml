@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Algorithm on 薛定谔的Bug</title>
     <link>https://domyson.github.io/categories/algorithm/</link>
@@ -13,7 +13,7 @@
       <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/05/md5/</guid>
-      <description>go 内置命令</description>
+      <description>简介 MD5(Messgae-digest algorithm5)信息摘要 将任意长度的明文生成 128bit 或 16byte 的哈希值，也为16个byte,一般转为16进制表示,所以会显示32个字符，而M</description>
     </item>
     
     <item>
@@ -22,7 +22,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/1/01/crc%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A0%A1%E9%AA%8C/</guid>
-      <description>CRC 是一种根据网络数据包或电脑文件等数据产生简短固定位数校验码的一种散列函数，主要用来检测或校验数据传输或者保存后可能出现的错误。它是利用除法及余数的原理来作错误侦测的。</description>
+      <description>简介 在数据传输过程中，无论传输系统的设计再怎么完美，差错总会存在，这种差错可能会导致在链路上传输的一个或者多个帧被破坏(出现比特差错，0变为</description>
     </item>
     
   </channel>

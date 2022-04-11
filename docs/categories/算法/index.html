@@ -1,317 +1,589 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
+<!doctype html>
+<html lang="zh-CN">
+<head>
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>算法 | 薛定谔的Bug</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="Treasure">
-<link rel="canonical" href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://domyson.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/index.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
+    <title>算法 | 薛定谔的Bug</title>
+    <meta property="og:title" content="算法 - 薛定谔的Bug">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="算法">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
-            .list {
-                background: var(--theme);
-            }
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/index.xml" title="薛定谔的Bug" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="算法" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="算法"/>
-<meta name="twitter:description" content=""/>
-
+    
+    
+    
+    
+    
+    
 </head>
 
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
+                    </a>
+                
+                <p class="description">划水码农</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://domyson.github.io/">首页</a>
+                    
+                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://domyson.github.io/archives/" title="文章">
-                    <span>文章</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://domyson.github.io/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header">
-  <h1>算法</h1>
+    </div>
 </header>
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>位运算
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp; 与运算符 都为1则为1，否...</p>
-  </section>
-  <footer class="entry-footer"><span title='2020-02-09 00:00:00 +0000 UTC'>February 9, 2020</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to 位运算" href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/"></a>
-</article>
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
 
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Tree
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>树 Tree 定义  树（Tree）是n（n&gt;=0)个结点的有限集。n=0 时称为空树。在任意一颗非空树中：
-  A/ \B C/ / \D E F/|\ \G H I J   有且仅有一个特定的称为根（Root）的结点；
-  当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、……、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。
-  n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。
-  m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。
-  节点的度  节点又有子树数目成为节点的 度，如上图
-  A -度2/ \B C -度2/ / \度3 - D E F - 度0/|\ \G H I J 节点的深度  该节点的深度为 4
- ------------------------------A 第一层 -------- /-\------------------B C 第二层 -------/---/-\---------------- D E F 第三层-----/|\---\------------------ G H I J 第四层------------------------------ ...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-09-02 00:00:00 +0000 UTC'>September 2, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to Tree" href="https://domyson.github.io/2019/09/tree/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>ConsistentHash
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>简介  一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 Key 从多个节点（也就是服务器）中找到缓存数据所在的节点。
-  一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。
-   平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。
-  单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。
-  分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。
-  负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。
- ...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-08-27 00:00:00 +0000 UTC'>August 27, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to ConsistentHash" href="https://domyson.github.io/2019/08/consistenthash/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Snowflake
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p> snowflake（雪花算法）是一种分布式ID算法。
- 对比其他的优缺点   UUID : 对于数据敏感场景不宜使用，且不适合于分布式场景。
-  GUID : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。
- ...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-08-27 00:00:00 +0000 UTC'>August 27, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to Snowflake" href="https://domyson.github.io/2019/08/snowflake/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>TopK
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-07-31 00:00:00 +0000 UTC'>July 31, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to TopK" href="https://domyson.github.io/2019/07/topk/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>ClassicSort
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>概念 稳定排序，非稳定排序  如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为 非稳定排序
- 原地排序，非原地排序  原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 非原地排序
- 时间复杂度  一个算法执行所耗费的时间
- 空间复杂度  完成算法所需的内存空间大小
-...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-07-27 00:00:00 +0000 UTC'>July 27, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to ClassicSort" href="https://domyson.github.io/2019/07/classicsort/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Bitmap
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-05-01 00:00:00 +0000 UTC'>May 1, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to Bitmap" href="https://domyson.github.io/2019/05/bitmap/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>GC
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>何谓 GC GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。 曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C&#43;&#43;）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：
-  内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。
-  智能指针。这是 c&#43;&#43; 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。 为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(Garbage-Collect)。
- ...</p>
-  </section>
-  <footer class="entry-footer"><span title='2019-02-22 00:00:00 +0000 UTC'>February 22, 2019</span>&nbsp;·&nbsp;Treasure</footer>
-  <a class="entry-link" aria-label="post link to GC" href="https://domyson.github.io/2019/02/gc/"></a>
-</article>
-    </main>
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
     
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    <h3 class="archive-title">
+        分类
+        <span class="keyword">算法</span>
+        中的文章
+    </h3>
+    
+
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月9日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            简介 程序中的所有数在计算机内存中都是以二进制的形式储存的。位运算就是直接对整数在内存中的二进制位进行操作。 位运算符 &amp; 与运算符 都为1则为1，否……
+            <p class="readmore"><a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/09/tree/">Tree</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年9月2日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="树-tree">树 <code>Tree</code></h1>
+<h2 id="定义">定义</h2>
+<blockquote>
+<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
+</blockquote>
+<pre tabindex="0"><code>      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
+</ul>
+<h2 id="节点的度">节点的度</h2>
+<blockquote>
+<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
+</blockquote>
+<pre tabindex="0"><code>             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+</code></pre><h2 id="节点的深度">节点的深度</h2>
+<blockquote>
+<p>该节点的深度为 4</p>
+</blockquote>
+<pre tabindex="0"><code>------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+</code></pre>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/09/tree/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/consistenthash/">ConsistentHash</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<blockquote>
+<p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
+</blockquote>
+<blockquote>
+<p>一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。</p>
+</blockquote>
+<ol>
+<li>
+<p>平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。</p>
+</li>
+<li>
+<p>单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。</p>
+</li>
+<li>
+<p>分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。</p>
+</li>
+<li>
+<p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
+</li>
+</ol>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/08/consistenthash/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/08/snowflake/">Snowflake</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p><code>snowflake</code>（雪花算法）是一种分布式ID算法。</p>
+</blockquote>
+<h1 id="对比其他的优缺点">对比其他的优缺点</h1>
+<ul>
+<li>
+<p><code>UUID</code> : 对于数据敏感场景不宜使用，且不适合于分布式场景。</p>
+</li>
+<li>
+<p><code>GUID</code> : 采用无意义字符串，数据量增大时造成访问过慢，且不宜排序。</p>
+</li>
+</ul>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/08/snowflake/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/topk/">TopK</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月31日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序……
+            <p class="readmore"><a href="https://domyson.github.io/2019/07/topk/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/07/classicsort/">ClassicSort</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月27日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="概念">概念</h1>
+<h2 id="稳定排序非稳定排序">稳定排序，非稳定排序</h2>
+<blockquote>
+<p>如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  <code>非稳定排序</code></p>
+</blockquote>
+<h2 id="原地排序非原地排序">原地排序，非原地排序</h2>
+<blockquote>
+<p>原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 <code>非原地排序</code></p>
+</blockquote>
+<h2 id="时间复杂度">时间复杂度</h2>
+<blockquote>
+<p>一个算法执行所耗费的时间</p>
+</blockquote>
+<h2 id="空间复杂度">空间复杂度</h2>
+<blockquote>
+<p>完成算法所需的内存空间大小</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/07/classicsort/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/05/bitmap/">Bitmap</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月1日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            Bitmap 原理 bitmap 使用一个 bit 来标记某个元素对应的一个 value（0、1） ，其实质性作用节省了内存空间 作用 查询对应的一个元素是否存在，比如一个网页请求（……
+            <p class="readmore"><a href="https://domyson.github.io/2019/05/bitmap/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/02/gc/">GC</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年2月22日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E7%AE%97%E6%B3%95'>算法</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="何谓-gc">何谓 <code>GC</code></h1>
+<p>GC如其名，就是垃圾收集，当然这里仅就内存而言。Garbage Collector（垃圾收集器，在不至于混淆的情况下也成为GC）以应用程序的root为基础，遍历应用程序在Heap上动态分配的所有对象，通过识别它们是否被引用来确定哪些对象是已经死亡的、哪些仍需要被使用。已经不再被应用程序的root或者别的对象所引用的对象就是已经死亡的对象，即所谓的垃圾，需要被回收。这就是GC工作的原理。为了实现这个原理，GC有多种算法。比较常见的算法有Reference Counting，Mark Sweep，Copy Collection等等。目前主流的虚拟系统 .NET CLR，Java VM和Rotor都是采用的Mark Sweep算法。
+曾几何时，内存管理是程序员开发应用的一大难题。传统的系统级编程语言（主要指C/C++）中，程序员必须对内存小心的进行管理操作，控制内存的申请及释放。稍有不慎，就可能产生内存泄露问题，这种问题不易发现并且难以定位，一直成为困扰开发者的噩梦。如何解决这个头疼的问题呢？过去一般采用两种办法：</p>
+<ol>
+<li>
+<p>内存泄露检测工具。这种工具的原理一般是静态代码扫描，通过扫描程序检测可能出现内存泄露的代码段。然而检测工具难免有疏漏和不足，只能起到辅助作用。</p>
+</li>
+<li>
+<p>智能指针。这是 c++ 中引入的自动内存管理方法，通过拥有自动内存管理功能的指针对象来引用对象，是程序员不用太关注内存的释放，而达到内存自动释放的目的。这种方法是采用最广泛的做法，但是对程序员有一定的学习成本（并非语言层面的原生支持），而且一旦有忘记使用的场景依然无法避免内存泄露。
+为了解决这个问题，后来开发出来的几乎所有新语言（java，python，php等等）都引入了语言层面的自动内存管理 – 也就是语言的使用者只用关注内存的申请而不必关心内存的释放，内存释放由虚拟机（virtual machine）或运行时（runtime）来自动进行管理。而这种对不再使用的内存资源进行自动回收的行为就被称为垃圾回收(<code>Garbage-Collect</code>)。</p>
+</li>
+</ol>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/02/gc/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
-</script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">消息队列</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://domyson.github.io/categories/algorithm/">Algorithm (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
+    
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
+    
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
+    
+    <a href="https://domyson.github.io/tags/c/">c</a>
+    
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
+    
+    <a href="https://domyson.github.io/tags/channel/">channel</a>
+    
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
+    
+    <a href="https://domyson.github.io/tags/database/">database</a>
+    
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
+    
+    <a href="https://domyson.github.io/tags/encryption/">Encryption</a>
+    
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
+    
+    <a href="https://domyson.github.io/tags/go/">go</a>
+    
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://domyson.github.io/tags/go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">go源码分析</a>
+    
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
+    
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
+    
+    <a href="https://domyson.github.io/tags/http/">http</a>
+    
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
+    
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
+    
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://domyson.github.io/tags/network/">Network</a>
+    
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
+    
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
+    
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
+    
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
+    
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
+    
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
+    
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
+    
+    <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

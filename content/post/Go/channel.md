@@ -1,7 +1,7 @@
 ---
 title: channel
 date: 2020-01-20
-tags: []
+tags: ["go源码分析"]
 categories: ["go"]
 description: 
 toc: true
@@ -14,6 +14,35 @@ draft: false
 > `channel` 提供了一种通信机制，通过它，一个 `goroutine` 可以与另一 `goroutine` 发送消息。`channel` 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 `len()` 获取通道当前缓冲数量。 `cap()` 获取通道最大缓冲。
 
 <!--more-->
+
+
+# 源码分析
+
+`channel` 源码位于 `${GOPATH}/runtime/chan.go`
+
+```go
+type hchan struct {
+    qcount   uint           // 当前还有多少数据
+    dataqsiz uint           // 初始化时候设置的值
+    buf      unsafe.Pointer // 指向环形缓冲的指针
+    elemsize uint16         // 元素的sizeof
+    closed   uint32         // 关闭标识
+    elemtype *_type // element type
+    sendx    uint   // 相对于环形缓冲的写指针
+    recvx    uint   // 相对于环形缓冲的读指针
+    recvq    waitq  // 等待接收的groutine
+    sendq    waitq  // 等待发送的groutine
+
+    // lock protects all fields in hchan, as well as several
+    // fields in sudogs blocked on this channel.
+    //
+    // Do not change another G's status while holding this lock
+    // (in particular, do not ready a G), as this can deadlock
+    // with stack shrinking.
+    lock mutex  // 互斥锁
+}
+
+```
 
 
 `channel` 用于在不同的 `goroutine` 中实现数据传递和共享，是一个FIFO的队列，同样也是一个线程安全的结构。
@@ -93,7 +122,7 @@ draft: false
 
 8. `select-case`
     ```go
-    //select用于监听 channel 的触发
+    //select用于监听 channel 的触发，会造成Go调度器挂起此goroutine
     select{
         case <- ch1:
         //TODO

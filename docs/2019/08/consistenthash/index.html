@@ -1,197 +1,204 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
+<!doctype html>
+<html lang="zh-CN">
+<head>
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>ConsistentHash | 薛定谔的Bug</title>
-<meta name="keywords" content="Hash">
-<meta name="description" content="一致性Hash算法">
-<meta name="author" content="Treasure">
-<link rel="canonical" href="https://domyson.github.io/2019/08/consistenthash/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.4dcb3c4f38462f66c6b6137227726f5543cb934cca9788f041c087e374491df2.js" integrity="sha256-Tcs8TzhGL2bGthNyJ3JvVUPLk0zKl4jwQcCH43RJHfI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://domyson.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://domyson.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://domyson.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://domyson.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://domyson.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
+    <title>ConsistentHash | 薛定谔的Bug</title>
+    <meta property="og:title" content="ConsistentHash - 薛定谔的Bug">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-27T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-27T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="一致性Hash算法">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://domyson.github.io/2019/08/consistenthash/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
-            .list {
-                background: var(--theme);
-            }
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="ConsistentHash" />
-<meta property="og:description" content="一致性Hash算法" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://domyson.github.io/2019/08/consistenthash/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2019-08-27T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2019-08-27T00:00:00&#43;00:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ConsistentHash"/>
-<meta name="twitter:description" content="一致性Hash算法"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://domyson.github.io/post/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "ConsistentHash",
-      "item": "https://domyson.github.io/2019/08/consistenthash/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "ConsistentHash",
-  "name": "ConsistentHash",
-  "description": "一致性Hash算法",
-  "keywords": [
-    "Hash"
-  ],
-  "articleBody": "简介  一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 Key 从多个节点（也就是服务器）中找到缓存数据所在的节点。\n  一致性哈希算法是一种特殊的哈希算法。在使用一致性哈希算法后，哈希表槽位数（大小）的改变平均只需要对K/n个关键字重新映射，其中K是关键字的数量，n是槽位数量。然而在传统的哈希表中，添加或者删除一个槽位，几乎需要对所有的关键字进行重新映射。\n   平衡性(Balance)：平衡性是指哈希的结果能够尽可能分布到所有的缓冲中去，这样可以使得所有的缓冲空间都得到利用。很多哈希算法都能够满足这一条件。\n  单调性(Monotonicity)：单调性是指如果已经有一些内容通过哈希分派到了相应的缓冲中，又有新的缓冲加入到系统中。哈希的结果应能够保证原有已分配的内容可以被映射到原有的或者新的缓冲中去，而不会被映射到旧的缓冲集合中的其他缓冲区。\n  分散性(Spread)：在分布式环境中，终端有可能看不到所有的缓冲，而是只能看到其中的一部分。当终端希望通过哈希过程将内容映射到缓冲上时，由于不同终端所见的缓冲范围有可能不同，从而导致哈希的结果不一致，最终的结果是相同的内容被不同的终端映射到不同的缓冲区中。这种情况显然是应该避免的，因为它导致相同内容被存储到不同缓冲中去，降低了系统存储的效率。分散性的定义就是上述情况发生的严重程度。好的哈希算法应能够尽量避免不一致的情况发生，也就是尽量降低分散性。\n  负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。\n  场景   传统哈希算法在分布式缓存场景\n当前环境存在3（A，B，C）个节点，依次过来10个数据，为了简单，我们忽略哈希值的计算，假设这10个数据的哈希值分别是1-10。则数据的路由情况如下：\n   哈希值 1%3 2%3 3%3 4%3 5%3 6%3 7%3 8%3 9%3 10%3     节点 B C A B C A B C A B    若此时新增一个节点，命中情况：\n   哈希值 1%4 2%4 3%4 4%4 5%4 6%4 7%4 8%4 9%4 10%4     节点 B C D A B C D A B C       此时会有8个数据需要进行移动。对这8个数据的访问都是无法命中的，导致缓存失效。如果此系统非常依赖缓存，那么大量没有命中的数据需要从数据库中重新获取，导致数据库负载增高，甚至系统崩溃。\n    一致性哈希算法\n 一致性哈希算法也是取模。但是不是对节点数取模，而是对2^32取模。不管环境中存在多少节点都是对2^32取模。\n 有一个圆环，而0到2^32-1这些数字均匀的分布在这个环上面。假设有3个节点，这3个节点肯定都有自己的IP。我们根据节点的IP地址计算哈希值，并将结果对2^32取模。所得的结果介于0-2^32-1之间，那么在圆环上肯定有一个点与之对应\n当收到一个数据的时候，计算其哈希值并对2^32取模，从节点哈希值中查找，比此哈希值大且最节点此哈希值的节点即为数据缓存的节点。此处为了能够快速的找对这个节点，可以按照节点的哈希值进行排序，再使用二分法查找。\n     对于上述同一个问题\n假设当前有3个节点，为了简化问题，我们不构造2^32这么大的圆，我们构造一个10个节点的圆环。说明：为什么在一致性哈希算法中会构造数据量非常大的圆环呢？增大哈希值的域，避免冲突。另外假设，3个节点的哈希值分别为0，3，6。那么此时10个数据的路由情况是：\n   哈希值 1%10 2%10 3%10 4%10 5%10 6%10 7%10 8%10 9%10 10%10     节点 B B B C C C A A A A    当再增加一个节点时，假设节点的哈希值是8，此时的路由情况是：\n   哈希值 1%10 2%10 3%10 4%10 5%10 6%10 7%10 8%10 9%10 10%10     节点 B B B C C C D D A A     此时只有2个数据未命中，过渡平滑得多。\n   原理  简单来说，一致性哈希将整个哈希值空间组织成一个虚拟的圆环，如假设某哈希函数H的值空间为0-2^32-1（即哈希值是一个32位无符号整形）。整个空间按顺时针方向组织。0和2^32-1在零点中方向重合。\n   将各个服务器使用Hash进行一个哈希，具体可以选择服务器的ip或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置   将数据key使用相同的函数Hash计算出哈希值，并确定此数据在环上的位置，从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器。根据一致性哈希算法，数据A会被定为到Node A上，B被定为到Node B上，C被定为到Node C上，D被定为到Node D上。   特点   单调性(Monotonicity)，单调性是指如果已经有一些请求通过哈希分派到了相应的服务器进行处理，又有新的服务器加入到系统中时候，应保证原有的请求可以被映射到原有的或者新的服务器中去，而不会被映射到原来的其它服务器上去。 这个通过上面新增服务器ip5可以证明，新增ip5后，原来被ip1处理的user6现在还是被ip1处理，原来被ip1处理的user5现在被新增的ip5处理。\n  分散性(Spread)：分布式环境中，客户端请求时候可能不知道所有服务器的存在，可能只知道其中一部分服务器，在客户端看来他看到的部分服务器会形成一个完整的hash环。如果多个客户端都把部分服务器作为一个完整hash环，那么可能会导致，同一个用户的请求被路由到不同的服务器进行处理。这种情况显然是应该避免的，因为它不能保证同一个用户的请求落到同一个服务器。所谓分散性是指上述情况发生的严重程度。好的哈希算法应尽量避免尽量降低分散性。 一致性hash具有很低的分散性\n  平衡性(Balance)：平衡性也就是说负载均衡，是指客户端hash后的请求应该能够分散到不同的服务器上去。一致性hash可以做到每个服务器都进行处理请求，但是不能保证每个服务器处理的请求的数量大致相同\n  容错性 假设Node C不幸宕机，可以看到此时对象A、B、D不会受到影响，只有C对象被重定位到Node D。一般的，在一致性哈希算法中，如果一台服务器不可用，则受影响的数据仅仅是此服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它不会受到影响。\n拓展性 如果在系统中增加一台服务器Node X，此时对象Object A、B、D不受影响，只有对象C需要重定位到新的Node X 。一般的，在一致性哈希算法中，如果增加一台服务器，则受影响的数据仅仅是新服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它数据也不会受到影响。\n综上所述，一致性哈希算法对于节点的增减都只需重定位环空间中的一小部分数据，具有较好的容错性和可扩展性。 虚拟节点  假设一个服务器系统中只存在两个节点，此时必然造成大量数据集中到Node A上，而只有极少量会定位到Node B上。为了解决这种数据倾斜问题，一致性哈希算法引入了虚拟节点机制，即对每一个服务节点计算多个哈希，每个计算结果位置都放置一个此服务节点，称为虚拟节点。具体做法可以在服务器ip或主机名的后面增加编号来实现。\n  可以为每台服务器计算三个虚拟节点，于是可以分别计算 “Node A#1”、“Node A#2”、“Node A#3”、“Node B#1”、“Node B#2”、“Node B#3”的哈希值，于是形成六个虚拟节点：,同时数据定位算法不变，只是多了一步虚拟节点到实际节点的映射，例如定位到“Node A#1”、“Node A#2”、“Node A#3”三个虚拟节点的数据均定位到Node A上。这样就解决了服务节点少时数据倾斜的问题。在实际应用中，通常将虚拟节点数设置为32甚至更大，因此即使很少的服务节点也能做到相对均匀的数据分布。\n ",
-  "wordCount" : "3066",
-  "inLanguage": "en",
-  "datePublished": "2019-08-27T00:00:00Z",
-  "dateModified": "2019-08-27T00:00:00Z",
-  "author":{
-    "@type": "Person",
-    "name": "Treasure"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://domyson.github.io/2019/08/consistenthash/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "薛定谔的Bug",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://domyson.github.io/favicon.ico"
-    }
-  }
-}
-</script>
+    
+    
+    
+    
+    
+    
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://domyson.github.io/">
+                        薛定谔的Bug
+                    </a>
+                
+                <p class="description">划水码农</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://domyson.github.io/">首页</a>
+                    
+                    <a  href="https://domyson.github.io/archives/" title="文章">文章</a>
+                    
+                    <a  href="https://domyson.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
-</script>
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
 
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://domyson.github.io/" accesskey="h" title="薛定谔的Bug (Alt + H)">薛定谔的Bug</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://domyson.github.io/archives/" title="文章">
-                    <span>文章</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://domyson.github.io/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title">
-      ConsistentHash
-    </h1>
-    <div class="post-description">
-      一致性Hash算法
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#原理">原理</a></li>
+    <li><a href="#特点">特点</a></li>
+    <li><a href="#容错性">容错性</a></li>
+    <li><a href="#拓展性">拓展性</a></li>
+    <li><a href="#虚拟节点">虚拟节点</a></li>
+  </ul>
+</nav>
     </div>
-    <div class="post-meta"><span title='2019-08-27 00:00:00 +0000 UTC'>August 27, 2019</span>&nbsp;·&nbsp;Treasure
-
 </div>
-  </header> 
-  <div class="post-content"><h1 id="简介">简介<a hidden class="anchor" aria-hidden="true" href="#简介">#</a></h1>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">ConsistentHash</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月27日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
 <blockquote>
 <p>一致性哈希算法（ConsistentHash）常用于分布式缓存的场景。通过 <code>Key</code> 从多个节点（也就是服务器）中找到缓存数据所在的节点。</p>
 </blockquote>
@@ -212,7 +219,7 @@
 <p>负载(Load)：负载问题实际上是从另一个角度看待分散性问题。既然不同的终端可能将相同的内容映射到不同的缓冲区中，那么对于一个特定的缓冲区而言，也可能被不同的用户映射为不同 的内容。与分散性一样，这种情况也是应当避免的，因此好的哈希算法应能够尽量降低缓冲的负荷。</p>
 </li>
 </ol>
-<h1 id="场景">场景<a hidden class="anchor" aria-hidden="true" href="#场景">#</a></h1>
+<h1 id="场景">场景</h1>
 <ul>
 <li>
 <p>传统哈希算法在分布式缓存场景</p>
@@ -373,23 +380,25 @@
 </blockquote>
 </li>
 </ul>
-<h2 id="原理">原理<a hidden class="anchor" aria-hidden="true" href="#原理">#</a></h2>
+<h2 id="原理">原理</h2>
 <blockquote>
 <p>简单来说，一致性哈希将整个哈希值空间组织成一个虚拟的圆环，如假设某哈希函数H的值空间为0-2^32-1（即哈希值是一个32位无符号整形）。整个空间按顺时针方向组织。0和2^32-1在零点中方向重合。</p>
 </blockquote>
 <ul>
 <li>
 <p>将各个服务器使用Hash进行一个哈希，具体可以选择服务器的ip或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置
-<img loading="lazy" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172523808-1567363338.png" alt="哈希环"  />
-</p>
+
+        <img class="mx-auto" alt="哈希环" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172523808-1567363338.png" />   
+    </p>
 </li>
 <li>
 <p>将数据key使用相同的函数Hash计算出哈希值，并确定此数据在环上的位置，从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器。根据一致性哈希算法，数据A会被定为到Node A上，B被定为到Node B上，C被定为到Node C上，D被定为到Node D上。
-<img loading="lazy" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172807745-742859090.png" alt="哈希寻址"  />
-</p>
+
+        <img class="mx-auto" alt="哈希寻址" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172807745-742859090.png" />   
+    </p>
 </li>
 </ul>
-<h2 id="特点">特点<a hidden class="anchor" aria-hidden="true" href="#特点">#</a></h2>
+<h2 id="特点">特点</h2>
 <ul>
 <li>
 <p>单调性(Monotonicity)，单调性是指如果已经有一些请求通过哈希分派到了相应的服务器进行处理，又有新的服务器加入到系统中时候，应保证原有的请求可以被映射到原有的或者新的服务器中去，而不会被映射到原来的其它服务器上去。  这个通过上面新增服务器ip5可以证明，新增ip5后，原来被ip1处理的user6现在还是被ip1处理，原来被ip1处理的user5现在被新增的ip5处理。</p>
@@ -401,103 +410,272 @@
 <p>平衡性(Balance)：平衡性也就是说负载均衡，是指客户端hash后的请求应该能够分散到不同的服务器上去。一致性hash可以做到每个服务器都进行处理请求，但是不能保证每个服务器处理的请求的数量大致相同</p>
 </li>
 </ul>
-<h2 id="容错性">容错性<a hidden class="anchor" aria-hidden="true" href="#容错性">#</a></h2>
+<h2 id="容错性">容错性</h2>
 <p>假设Node C不幸宕机，可以看到此时对象A、B、D不会受到影响，只有C对象被重定位到Node D。一般的，在一致性哈希算法中，如果一台服务器不可用，则受影响的数据仅仅是此服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它不会受到影响。</p>
-<h2 id="拓展性">拓展性<a hidden class="anchor" aria-hidden="true" href="#拓展性">#</a></h2>
+<h2 id="拓展性">拓展性</h2>
 <p>如果在系统中增加一台服务器Node X，此时对象Object A、B、D不受影响，只有对象C需要重定位到新的Node X 。一般的，在一致性哈希算法中，如果增加一台服务器，则受影响的数据仅仅是新服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它数据也不会受到影响。</p>
 <p>综上所述，一致性哈希算法对于节点的增减都只需重定位环空间中的一小部分数据，具有较好的容错性和可扩展性。
-<img loading="lazy" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172901526-169091807.png" alt="拓展节点"  />
-</p>
-<h2 id="虚拟节点">虚拟节点<a hidden class="anchor" aria-hidden="true" href="#虚拟节点">#</a></h2>
+
+        <img class="mx-auto" alt="拓展节点" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172901526-169091807.png" />   
+    </p>
+<h2 id="虚拟节点">虚拟节点</h2>
 <blockquote>
 <p>假设一个服务器系统中只存在两个节点，此时必然造成大量数据集中到Node A上，而只有极少量会定位到Node B上。为了解决这种数据倾斜问题，一致性哈希算法引入了虚拟节点机制，即对每一个服务节点计算多个哈希，每个计算结果位置都放置一个此服务节点，称为虚拟节点。具体做法可以在服务器ip或主机名的后面增加编号来实现。</p>
 </blockquote>
-<p><img loading="lazy" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172922917-1331181630.png" alt="数据倾斜"  />
-</p>
+<p>
+        <img class="mx-auto" alt="数据倾斜" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172922917-1331181630.png" />   
+    </p>
 <blockquote>
 <p>可以为每台服务器计算三个虚拟节点，于是可以分别计算 “Node A#1”、“Node A#2”、“Node A#3”、“Node B#1”、“Node B#2”、“Node B#3”的哈希值，于是形成六个虚拟节点：,同时数据定位算法不变，只是多了一步虚拟节点到实际节点的映射，例如定位到“Node A#1”、“Node A#2”、“Node A#3”三个虚拟节点的数据均定位到Node A上。这样就解决了服务节点少时数据倾斜的问题。在实际应用中，通常将虚拟节点数设置为32甚至更大，因此即使很少的服务节点也能做到相对均匀的数据分布。</p>
 </blockquote>
-<p><img loading="lazy" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172943917-133540408.png" alt="虚拟节点"  />
-</p>
+<p>
+        <img class="mx-auto" alt="虚拟节点" src="https://images2015.cnblogs.com/blog/498077/201608/498077-20160822172943917-133540408.png" />   
+    </p>
+        </div>
 
-  </div>
+        
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://domyson.github.io/tags/hash/">Hash</a></li>
-    </ul>
-  </footer>
-</article>
-    </main>
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/hash'>Hash</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
     
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://domyson.github.io/">薛定谔的Bug By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
 
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
-</script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://domyson.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">消息队列</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2020/02/http/" title="Http">Http</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://domyson.github.io/categories/algorithm/">Algorithm (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/c/">C (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://domyson.github.io/tags/ascii/">ASCII</a>
+    
+    <a href="https://domyson.github.io/tags/bit/">bit</a>
+    
+    <a href="https://domyson.github.io/tags/bitmap/">Bitmap</a>
+    
+    <a href="https://domyson.github.io/tags/c/">c</a>
+    
+    <a href="https://domyson.github.io/tags/c#/">C#</a>
+    
+    <a href="https://domyson.github.io/tags/channel/">channel</a>
+    
+    <a href="https://domyson.github.io/tags/csharp/">Csharp</a>
+    
+    <a href="https://domyson.github.io/tags/database/">database</a>
+    
+    <a href="https://domyson.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://domyson.github.io/tags/dockerfile/">Dockerfile</a>
+    
+    <a href="https://domyson.github.io/tags/encryption/">Encryption</a>
+    
+    <a href="https://domyson.github.io/tags/gc/">GC</a>
+    
+    <a href="https://domyson.github.io/tags/go/">go</a>
+    
+    <a href="https://domyson.github.io/tags/goroutine/">goroutine</a>
+    
+    <a href="https://domyson.github.io/tags/go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">go源码分析</a>
+    
+    <a href="https://domyson.github.io/tags/hash/">Hash</a>
+    
+    <a href="https://domyson.github.io/tags/hotfix/">Hotfix</a>
+    
+    <a href="https://domyson.github.io/tags/http/">http</a>
+    
+    <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
+    
+    <a href="https://domyson.github.io/tags/lua/">Lua</a>
+    
+    <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
+    
+    <a href="https://domyson.github.io/tags/msys2/">msys2</a>
+    
+    <a href="https://domyson.github.io/tags/mysql/">mysql</a>
+    
+    <a href="https://domyson.github.io/tags/network/">Network</a>
+    
+    <a href="https://domyson.github.io/tags/pointer/">pointer</a>
+    
+    <a href="https://domyson.github.io/tags/pprof/">pprof</a>
+    
+    <a href="https://domyson.github.io/tags/pragma/">pragma</a>
+    
+    <a href="https://domyson.github.io/tags/proxy/">Proxy</a>
+    
+    <a href="https://domyson.github.io/tags/sort/">Sort</a>
+    
+    <a href="https://domyson.github.io/tags/tls/">TLS</a>
+    
+    <a href="https://domyson.github.io/tags/topk/">TopK</a>
+    
+    <a href="https://domyson.github.io/tags/tree/">Tree</a>
+    
+    <a href="https://domyson.github.io/tags/unity/">Unity</a>
+    
+    <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://domyson.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

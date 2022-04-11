@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lock on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/lock/</link>
@@ -13,7 +13,33 @@
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/02/lock/</guid>
-      <description>解决并发场景下的数据竞争问题</description>
+      <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;优点:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;缺点:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;即乐观锁的优点&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
     </item>
     
   </channel>

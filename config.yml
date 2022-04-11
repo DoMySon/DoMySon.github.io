@@ -5,7 +5,7 @@ baseurl: "https://domyson.github.io/"
 title: 薛定谔的Bug
 
 # 使用的主题
-theme: "PaperMod"
+theme: "maupassant"
 
 #启用 Emoji; see emoji-cheat-sheet.com
 enableEmoji: true

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>pragma on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/pragma/</link>
@@ -13,7 +13,7 @@
       <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/</guid>
-      <description>go pragma</description>
+      <description>编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</description>
     </item>
     
   </channel>

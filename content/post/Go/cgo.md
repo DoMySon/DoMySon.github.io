@@ -35,7 +35,7 @@ size_t|C.size_t|uint
 
 ### 函数指针
 > go引用c的函数指针比较特别
-1. 官方给出的Example(https://github.com/golang/go/wiki/cgo#function-pointer-callbacks)
+1. 官方给出的[Example](https://github.com/golang/go/wiki/cgo#function-pointer-callbacks)
 
 2. 我这里给出另外一种,通过c wrap 这个函数指针成一个普通函数，然后go调用它
 
@@ -73,7 +73,7 @@ int wrap_add(add f,int a){
     func Mock(){
         var u = C.union_U1; // u的type为 [8]byte
     }
-```
+    ```
 4. 枚举在cgo中会被替换为一个常量，通过 C.Enum来访问
 
 
@@ -101,5 +101,5 @@ int div(int a, int b){  // 如果b=0,在go中将返回 (0,invalid argument)
 ```
 
 
-## 编译和连接参数 (https://www.cntofu.com/book/73/ch2-cgo/ch2-11-link.md)
+## 编译和连接参数 [Link](https://www.cntofu.com/book/73/ch2-cgo/ch2-11-link.md)
 

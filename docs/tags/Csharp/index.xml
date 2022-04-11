@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Csharp on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/csharp/</link>
@@ -13,7 +13,7 @@
       <pubDate>Thu, 25 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/07/ilruntime/</guid>
-      <description>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</description>
+      <description>这是一个介绍</description>
     </item>
     
   </channel>

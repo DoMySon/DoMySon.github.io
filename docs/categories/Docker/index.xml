@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on 薛定谔的Bug</title>
     <link>https://domyson.github.io/categories/docker/</link>
@@ -13,7 +13,30 @@
       <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/01/dockernetwork/</guid>
-      <description>Dockerfile是一个好东西</description>
+      <description>&lt;h1 id=&#34;docker-network&#34;&gt;Docker Network&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Docker&lt;/code&gt; 在安装时候，默认创建三个网络 &lt;code&gt;bridge（默认）&lt;/code&gt;,&lt;code&gt;none&lt;/code&gt;,&lt;code&gt;host&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;docker network create --driver [bridge|host|none|container] networkname&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;bridge&lt;/code&gt;：默认模式，容器使用独立 network Namespace，并连接到&lt;code&gt;docker0&lt;/code&gt;虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 &lt;code&gt;docker0&lt;/code&gt; 中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;host&lt;/code&gt;：与宿主机共享网络，此时容器没有使用网络的namespace，&lt;code&gt;-p&lt;/code&gt; 将不会起任何作用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;none&lt;/code&gt;：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;container&lt;/code&gt;：与指定的容器共享网络，如果有的话。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -22,7 +45,18 @@
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/docker/</guid>
-      <description>Docker是一个好东西</description>
+      <description>&lt;h1 id=&#34;docker简介&#34;&gt;Docker简介&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;轻量，在一台机器上运行的多个Docker容器可以共享这台机器的操作系统内核；它们能够迅速启动，只需占用很少的计算和内存资源。镜像是通过文件系统层进行构造的，并共享一些公共文件。这样就能尽量降低磁盘用量，并能更快地下载镜像。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;标准，Docker 容器基于开放式标准，能够在所有主流Linux版本、Microsoft Windows以及包括VM、裸机服务器和云在内的任何基础设施上运行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安全，Docker 赋予应用的隔离性不仅限于彼此隔离，还独立于底层的基础设施。Docker默认提供最强的隔离，因此应用出现问题，也只是单个容器的问题，而不会波及到整台机器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -31,7 +65,10 @@
       <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/dockerfile/</guid>
-      <description>Dockerfile是一个好东西</description>
+      <description>&lt;h1 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;Dockerfile&lt;/code&gt; 是一个包含用于组合映像的命令的文本文档。可以使用在命令行中调用任何命令。 Docker通过读取Dockerfile中的指令自动生成映像。&lt;code&gt;docker build&lt;/code&gt; 命令用于从 &lt;code&gt;Dockerfile&lt;/code&gt;构建映像。命令中使用 &lt;code&gt;-f&lt;/code&gt; 标志指向文件系统中任何位置的 &lt;code&gt;Dockerfile&lt;/code&gt; 文件。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
   </channel>

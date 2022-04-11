@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go源码分析 on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/tags/go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in go源码分析 on 薛定谔的Bug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/go%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>channel</title>
+      <link>https://domyson.github.io/2020/01/channel/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2020/01/channel/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;CSP(communicating sequential processes)&lt;/code&gt; 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 &lt;code&gt;Actor&lt;/code&gt; 模型不同，&lt;code&gt;CSP&lt;/code&gt; 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 &lt;code&gt;goroutine，&lt;/code&gt; 消息通道对应的就是 &lt;code&gt;channel&lt;/code&gt;。&lt;code&gt;CSP&lt;/code&gt; 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;channel&lt;/code&gt; 提供了一种通信机制，通过它，一个 &lt;code&gt;goroutine&lt;/code&gt; 可以与另一 &lt;code&gt;goroutine&lt;/code&gt; 发送消息。&lt;code&gt;channel&lt;/code&gt; 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 &lt;code&gt;len()&lt;/code&gt; 获取通道当前缓冲数量。 &lt;code&gt;cap()&lt;/code&gt; 获取通道最大缓冲。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

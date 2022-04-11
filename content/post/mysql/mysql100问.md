@@ -2,7 +2,7 @@
 title: mysql100问
 date: 2022-04-06
 tags: ['mysql']
-categories: ['mysql']
+categories: ['八股文']
 description:  mysql面试题
 toc: true
 draft: false

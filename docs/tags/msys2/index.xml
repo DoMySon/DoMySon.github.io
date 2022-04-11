@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>msys2 on 薛定谔的Bug</title>
     <link>https://domyson.github.io/tags/msys2/</link>
@@ -13,7 +13,19 @@
       <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2020/03/msys2/</guid>
-      <description>高性能web代理</description>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;msys2的包管理器是使用的是 &lt;code&gt;pacman&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.msys2.org/&#34;&gt;下载地址&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
