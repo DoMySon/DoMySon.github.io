@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>源码分析 | 薛定谔的Bug</title>
-    <meta property="og:title" content="源码分析 - 薛定谔的Bug">
+    <title>Locker | 薛定谔的Bug</title>
+    <meta property="og:title" content="Locker - 薛定谔的Bug">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="源码分析">
+    <meta name="description" content="Locker">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+    <meta property="og:url" content="https://domyson.github.io/tags/locker/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.xml" title="薛定谔的Bug" />
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/locker/index.xml" title="薛定谔的Bug" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -67,9 +67,9 @@
 <div class="res-cons">
     
     <h3 class="archive-title">
-        分类
-        <span class="keyword">源码分析</span>
-        中的文章
+        包含标签
+        <span class="keyword">Locker</span>
+        的文章
     </h3>
     
 
@@ -77,7 +77,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/">golang内置锁</a>
+                <a href="https://domyson.github.io/2019/12/go%E9%94%81/">Go锁</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -87,13 +87,16 @@
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90'>源码分析</a>
+            <a href='/categories/go'>go</a>
             
         </div>
         
         <div class="post-content">
-            sync.Mutex mutex相关的所有事情都是通过sync.Mutex类型的两个方法sync.Lock()和sync.Unlock()函数来完成的，前者用于……
-            <p class="readmore"><a href="https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/">阅读全文</a></p>
+            <h1 id="简介">简介</h1>
+<blockquote>
+<p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/12/go%E9%94%81/">阅读全文</a></p>
         </div>
     </article>
     
@@ -149,7 +152,7 @@
 <ul class="widget-list">
     
     <li>
-        <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
+        <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
     </li>
     
     <li>
@@ -203,27 +206,23 @@
     
     <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/go/">go (10)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
     
     <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
-    
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/others/">others (5)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (1)</a></li>
-    
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
 </ul>
     </section>
@@ -269,6 +268,10 @@
     <a href="https://domyson.github.io/tags/http/">http</a>
     
     <a href="https://domyson.github.io/tags/i/o/">I/O</a>
+    
+    <a href="https://domyson.github.io/tags/lock/">Lock</a>
+    
+    <a href="https://domyson.github.io/tags/locker/">Locker</a>
     
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
