@@ -1,19 +1,12 @@
 ---
-title: Go锁
+title: golang内置锁
 date: 2019-12-11
-tags: ["Locker"]
-categories: ["go"]
+tags: ["go"]
+categories: ["源码分析"]
 description: Go Mutex
-img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false
 ---
-
-# 简介
-
-> 锁是传统并发程序对共享资源进行访问控制的主要手段。
-
-<!--more-->
 
 # sync.Mutex
 
@@ -131,7 +124,7 @@ cond.L.Unlock()
 
 # sync.Once
 
-> 基于原生的 `Mutex`，和一个标志量
+> 基于 `Mutex`，和一个标志量
 
 ## 作用
 

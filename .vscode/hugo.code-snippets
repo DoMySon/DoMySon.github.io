@@ -29,5 +29,13 @@
 			"---"
 		],
 		"description": "hugo template"
+	},
+
+	"more split": {
+		"prefix": "m",
+		"body": [
+			"<!--more-->"
+		],
+		"description": "more split"
 	}
 }

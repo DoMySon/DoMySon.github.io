@@ -6,7 +6,21 @@
     <description>Recent content on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 11 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mysql batch update</title>
+      <link>https://domyson.github.io/2022/04/mysql-batch-update/</link>
+      <pubDate>Wed, 13 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2022/04/mysql-batch-update/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+&lt;p&gt;最近开发公会功能，需要定时保存一些，如果每次都是以公会为单位的话，相当于n个公会执行了n次&lt;code&gt;UPDATE&lt;/code&gt;操作&lt;/p&gt;
+&lt;h1 id=&#34;实现&#34;&gt;实现&lt;/h1&gt;
+&lt;h2 id=&#34;简单粗暴update&#34;&gt;简单粗暴&lt;code&gt;UPDATE&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;UPDATE&lt;/span&gt; mytable &lt;span style=&#34;color:#66d9ef&#34;&gt;SET&lt;/span&gt; field1&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;val1,field2&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;val2 [WHRER CONDITION];
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
     <item>
       <title>消息队列</title>
       <link>https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</link>
@@ -434,15 +448,12 @@ GC forced
     </item>
     
     <item>
-      <title>Go锁</title>
-      <link>https://domyson.github.io/2019/12/go%E9%94%81/</link>
+      <title>golang内置锁</title>
+      <link>https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/</link>
       <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://domyson.github.io/2019/12/go%E9%94%81/</guid>
-      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <guid>https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/</guid>
+      <description>sync.Mutex mutex相关的所有事情都是通过sync.Mutex类型的两个方法sync.Lock()和sync.Unlock()函数来完成的，前者用于</description>
     </item>
     
     <item>
@@ -906,7 +917,8 @@ G H I   J
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://domyson.github.io/2019/03/markdown/</guid>
-      <description>&lt;h1 id=&#34;目录&#34;&gt;目录&lt;/h1&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;http://xianbai.me/learn-md/article/syntax/emphasis.html&#34;&gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;目录&#34;&gt;目录&lt;/h1&gt;
 &lt;p&gt;只能跳转标题，如果有同名标题与标题等级无关，匹配最优先的标题&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#%E4%B8%80%E3%80%81%E6%A0%87%E9%A2%98&#34;&gt;标题&lt;/a&gt;&lt;/li&gt;
@@ -943,38 +955,15 @@ G H I   J
     </item>
     
     <item>
-      <title>Lock</title>
-      <link>https://domyson.github.io/2019/02/lock/</link>
+      <title>线程锁</title>
+      <link>https://domyson.github.io/2019/02/%E7%BA%BF%E7%A8%8B%E9%94%81/</link>
       <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://domyson.github.io/2019/02/lock/</guid>
-      <description>&lt;h1 id=&#34;悲观锁&#34;&gt;悲观锁&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;若锁住时间长，则会严重影响性能。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;优点:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;在竞争激烈条件下更有优势&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;当锁住的不止有一个变量的情况下&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;缺点:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;即乐观锁的优点&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;乐观锁&#34;&gt;乐观锁&lt;/h1&gt;</description>
+      <guid>https://domyson.github.io/2019/02/%E7%BA%BF%E7%A8%8B%E9%94%81/</guid>
+      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
     </item>
     
     <item>

@@ -4,10 +4,11 @@ date: 2019-03-05
 tags: ["Markdown"]
 categories: ["others"]
 description: 文本标记
-img: https://www.runoob.com/wp-content/uploads/2015/06/go128.png
 toc: true
 draft: false
 ---
+
+[Link](http://xianbai.me/learn-md/article/syntax/emphasis.html)
 
 # 目录
 

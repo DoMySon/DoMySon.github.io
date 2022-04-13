@@ -16,5 +16,14 @@
       <description>cgo 一种go与c交互的技术 开启cgo 要求系统安装C/C++工具链，macos和linux(gcc 自带)，windows(mingw),并确保环</description>
     </item>
     
+    <item>
+      <title>golang内置锁</title>
+      <link>https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/</link>
+      <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/</guid>
+      <description>sync.Mutex mutex相关的所有事情都是通过sync.Mutex类型的两个方法sync.Lock()和sync.Unlock()函数来完成的，前者用于</description>
+    </item>
+    
   </channel>
 </rss>

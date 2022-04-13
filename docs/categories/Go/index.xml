@@ -87,18 +87,6 @@ GC forced
     </item>
     
     <item>
-      <title>Go锁</title>
-      <link>https://domyson.github.io/2019/12/go%E9%94%81/</link>
-      <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://domyson.github.io/2019/12/go%E9%94%81/</guid>
-      <description>&lt;h1 id=&#34;简介&#34;&gt;简介&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;锁是传统并发程序对共享资源进行访问控制的主要手段。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
       <title>unsafe包</title>
       <link>https://domyson.github.io/2019/08/unsafe%E5%8C%85/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
