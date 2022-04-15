@@ -208,7 +208,7 @@
             <h1 id="编译指示">编译指示</h1>
 <p>在计算机编程中，<code>编译指示(pragma)</code> 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。</p>
 <h1 id="go中的编译指示">Go中的编译指示</h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//go:noinline
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//go:pragma
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Echo</span>(){}
 </span></span></code></pre></div><h1 id="指示详解">指示详解</h1>
 <h2 id="gonoinline">//go:noinline</h2>
@@ -246,8 +246,9 @@
 </span></span><span style="display:flex;"><span>                panic(<span style="color:#a6e22e">b</span>)
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>内联级别：默认常规内联，-gcflags=-l 禁用内联，<code>-gcflags='-l -l'</code> 二级内联，<code>-gcflags='-l -l -l'</code> 三级内联，<code>-gcflags='-l -l -l -l'</code> 四级内联，级数越大，也许更快，但bug更多</p>
-<p><code>Max</code> 函数被内联，死码消除之后，<code>F()</code> 函数被变成了 <code>F(){ return }</code></p>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// `Max` 函数被内联，死码消除之后，`F()` 函数被变成了 `F(){ return }`
+</span></span></span></code></pre></div><p>内联级别：默认常规内联，-gcflags=-l 禁用内联，<code>-gcflags='-l -l'</code> 二级内联，<code>-gcflags='-l -l -l'</code> 三级内联，<code>-gcflags='-l -l -l -l'</code> 四级内联，级数越大，也许更快，但bug更多</p>
 <h2 id="gonosplit">//go:nosplit</h2>
 <blockquote>
 <p>跳过栈溢出检测。默认一个 <code>goroutine</code> 起始栈是2K，而后根据需求动态增长。</p>
@@ -272,7 +273,7 @@
 <p>可能返回为空</p>
 </li>
 <li>
-<p>使用汇编实现其主体</p>
+<p>需要使用汇编实现其主体</p>
 </li>
 </ul>
 <h3 id="逃逸分析">逃逸分析</h3>
@@ -392,11 +393,35 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/golang%E5%BC%80%E6%BA%90%E5%BA%93/" title="Golang开源库">Golang开源库</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/" title="如何避免死锁">如何避免死锁</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/b%E6%A0%91/" title="B树">B树</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/sync.map/" title="sync.Map">sync.Map</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" title="消息队列">消息队列</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/innodb/" title="innodb">innodb</a>
     </li>
     
     <li>
@@ -405,30 +430,6 @@
     
     <li>
         <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
 </ul>
@@ -452,7 +453,7 @@
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/mysql/">mysql (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (2)</a></li>
     
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
@@ -462,11 +463,15 @@
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (2)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/">同步 (1)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (8)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%BC%80%E6%BA%90%E5%BA%93/">开源库 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (2)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
 </ul>
     </section>
@@ -542,6 +547,8 @@
     <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
     <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+    <a href="https://domyson.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
     
 </div>
     </section>

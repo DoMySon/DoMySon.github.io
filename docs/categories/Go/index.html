@@ -254,32 +254,6 @@ GC forced
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/12/go%E9%94%81/">Go锁</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月11日
-        </date>
-        
-        <div class="post-meta meta-category">
-            |
-            
-            <a href='/categories/go'>go</a>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<blockquote>
-<p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
-</blockquote>……
-            <p class="readmore"><a href="https://domyson.github.io/2019/12/go%E9%94%81/">阅读全文</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
                 <a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">unsafe包</a>
             </h1>
         </header>
@@ -327,30 +301,40 @@ GC forced
         </div>
     </article>
     
-
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/05/goroutine/">Goroutine</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年5月12日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/go'>go</a>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="栈">栈</h1>
+<blockquote>
+<p>一个 os 线程会有一个给固定大小的内存块（一般是 2MB），用来存储当前线程中调用或挂起函数的内部变量，固定大小的栈对于复杂和深层次递归是不够的，而 Goroutine 会以一个很小的栈（2KB）开始其生命周期，这个栈会动态伸缩，最大能到达 1GB（32位系统是 250M）</p>
+</blockquote>
+<h1 id="调度方式">调度方式</h1>
+<blockquote>
+<p>os 线程由操作系统内核调用，每过一定时间（毫秒），硬件计时器会中断处理器，并调用一个名为 scheduler 的内建函数，这个函数会挂起当前执行的线程并保存内存中它的寄存器内存，然后检查线程列表并决定下一次执行哪个线程，并从内存中恢复该线程的寄存器信息，恢复该线程的线程并执行，这就是上下文切换，增加了 CPU 的运行周期。而 Go 的 runtime 包含了自身的调度器，和 os 线程不同是，<code>Goroutine</code> 属于用户级线程由语言支持，调度由语言支持，所有开销会减少很多（相比于内核上下文切换）。</p>
+</blockquote>……
+            <p class="readmore"><a href="https://domyson.github.io/2019/05/goroutine/">阅读全文</a></p>
+        </div>
+    </article>
     
 
-
-
-<ol class="page-navigator">
     
 
-    
-    <li  class="current">
-        <a href="https://domyson.github.io/categories/go/">1</a>
-    </li>
-    
-    <li >
-        <a href="https://domyson.github.io/categories/go/page/2/">2</a>
-    </li>
-    
 
-    
-    <li class="next">
-        <a href="https://domyson.github.io/categories/go/page/2/">下一页</a>
-    </li>
-    
-</ol>
 
 
 
@@ -399,6 +383,26 @@ GC forced
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/golang%E5%BC%80%E6%BA%90%E5%BA%93/" title="Golang开源库">Golang开源库</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/" title="如何避免死锁">如何避免死锁</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/b%E6%A0%91/" title="B树">B树</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/sync.map/" title="sync.Map">sync.Map</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
     </li>
     
@@ -407,35 +411,15 @@ GC forced
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/innodb/" title="innodb">innodb</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
         <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
 </ul>
@@ -453,21 +437,29 @@ GC forced
     
     <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (10)</a></li>
     
     <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (2)</a></li>
+    
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (5)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/">同步 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%BC%80%E6%BA%90%E5%BA%93/">开源库 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (2)</a></li>
     
     <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
@@ -516,10 +508,6 @@ GC forced
     
     <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
     <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
@@ -549,6 +537,8 @@ GC forced
     <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
     <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+    <a href="https://domyson.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
     
 </div>
     </section>

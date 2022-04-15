@@ -18,7 +18,7 @@ draft: false
 # Go中的编译指示
 
 ```go
-//go:noinline
+//go:pragma
 func Echo(){}
 ```
 
@@ -55,11 +55,12 @@ func F() {
                 panic(b)
         }
 }
+
+// `Max` 函数被内联，死码消除之后，`F()` 函数被变成了 `F(){ return }`
 ```
 
 内联级别：默认常规内联，-gcflags=-l 禁用内联，`-gcflags='-l -l'` 二级内联，`-gcflags='-l -l -l'` 三级内联，`-gcflags='-l -l -l -l'` 四级内联，级数越大，也许更快，但bug更多 
 
-`Max` 函数被内联，死码消除之后，`F()` 函数被变成了 `F(){ return }`
 
 
 ## //go:nosplit
@@ -79,7 +80,7 @@ func F() {
 
 + 可能返回为空
 
-+ 使用汇编实现其主体
++ 需要使用汇编实现其主体
 
 ### 逃逸分析
 

@@ -21,5 +21,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
+    <item>
+      <title>innodb</title>
+      <link>https://domyson.github.io/2022/04/innodb/</link>
+      <pubDate>Thu, 07 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2022/04/innodb/</guid>
+      <description>Innodb 事务隔离级别有四种默认是RR READ UNCOMMITTED 未提交读，A事务修改了数据但未提交，B事务可以读到这些未提交的数据（脏读） READ COMMITTED 提交读，A事务可以读取到其他</description>
+    </item>
+    
   </channel>
 </rss>

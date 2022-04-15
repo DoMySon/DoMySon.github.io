@@ -6,7 +6,19 @@
     <description>Recent content in go on 薛定谔的Bug</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 06 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>sync.Map</title>
+      <link>https://domyson.github.io/2022/04/sync.map/</link>
+      <pubDate>Thu, 14 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2022/04/sync.map/</guid>
+      <description>&lt;h1 id=&#34;syncmap-自带的安全-map&#34;&gt;&lt;code&gt;sync.Map&lt;/code&gt; 自带的安全 &lt;code&gt;map&lt;/code&gt;&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;源码位于 &lt;code&gt;${GOPATH}/src/sync/map.go&lt;/code&gt;，值得注意的是&lt;code&gt;sync.Map&lt;/code&gt;是&lt;code&gt;lazy load&lt;/code&gt;,不需要初始化&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
     <item>
       <title>Cgo</title>
       <link>https://domyson.github.io/2022/04/cgo/</link>

@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>Lock | 薛定谔的Bug</title>
-    <meta property="og:title" content="Lock - 薛定谔的Bug">
+    <title>mysql | 薛定谔的Bug</title>
+    <meta property="og:title" content="mysql - 薛定谔的Bug">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="Lock">
+    <meta name="description" content="mysql">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://domyson.github.io/tags/lock/">
+    <meta property="og:url" content="https://domyson.github.io/categories/mysql/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/tags/lock/index.xml" title="薛定谔的Bug" />
+    <link rel="alternate" type="application/rss+xml" href="https://domyson.github.io/categories/mysql/index.xml" title="薛定谔的Bug" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -67,9 +67,9 @@
 <div class="res-cons">
     
     <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Lock</span>
-        的文章
+        分类
+        <span class="keyword">mysql</span>
+        中的文章
     </h3>
     
 
@@ -77,49 +77,51 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/02/lock/">Lock</a>
+                <a href="https://domyson.github.io/2022/04/mysql-batch-update/">mysql batch update</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2019年2月26日
+            2022年4月13日
         </date>
         
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/others'>others</a>
+            <a href='/categories/mysql'>mysql</a>
             
         </div>
         
         <div class="post-content">
-            <h1 id="悲观锁">悲观锁</h1>
-<ul>
-<li>
-<p>假想最坏的情况，每次拿数据前都会上锁(可上锁的情况下,否则等待) 直到修改完数据。</p>
-</li>
-<li>
-<p>若锁住时间长，则会严重影响性能。</p>
-</li>
-<li>
-<p>优点:</p>
-<ol>
-<li>
-<p>在竞争激烈条件下更有优势</p>
-</li>
-<li>
-<p>当锁住的不止有一个变量的情况下</p>
-</li>
-</ol>
-</li>
-<li>
-<p>缺点:</p>
-<ol>
-<li>即乐观锁的优点</li>
-</ol>
-</li>
-</ul>
-<h1 id="乐观锁">乐观锁</h1>……
-            <p class="readmore"><a href="https://domyson.github.io/2019/02/lock/">阅读全文</a></p>
+            <h1 id="前言">前言</h1>
+<p>最近开发公会功能，需要定时保存一些，如果每次都是以公会为单位的话，相当于n个公会执行了n次<code>UPDATE</code>操作</p>
+<h1 id="实现">实现</h1>
+<h2 id="简单粗暴update">简单粗暴<code>UPDATE</code></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> mytable <span style="color:#66d9ef">SET</span> field1<span style="color:#f92672">=</span>val1,field2<span style="color:#f92672">=</span>val2 [WHRER CONDITION];
+</span></span></code></pre></div>……
+            <p class="readmore"><a href="https://domyson.github.io/2022/04/mysql-batch-update/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2022/04/innodb/">innodb</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年4月7日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/mysql'>mysql</a>
+            
+        </div>
+        
+        <div class="post-content">
+            Innodb 事务隔离级别有四种默认是RR READ UNCOMMITTED 未提交读，A事务修改了数据但未提交，B事务可以读到这些未提交的数据（脏读） READ COMMITTED 提交读，A事务可以读取到其他……
+            <p class="readmore"><a href="https://domyson.github.io/2022/04/innodb/">阅读全文</a></p>
         </div>
     </article>
     
@@ -175,6 +177,26 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/golang%E5%BC%80%E6%BA%90%E5%BA%93/" title="Golang开源库">Golang开源库</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/" title="如何避免死锁">如何避免死锁</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/b%E6%A0%91/" title="B树">B树</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/sync.map/" title="sync.Map">sync.Map</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
     </li>
     
@@ -183,35 +205,15 @@
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/innodb/" title="innodb">innodb</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
         <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
 </ul>
@@ -229,21 +231,29 @@
     
     <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (10)</a></li>
     
     <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (2)</a></li>
+    
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (5)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/">同步 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%BC%80%E6%BA%90%E5%BA%93/">开源库 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (2)</a></li>
     
     <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
@@ -292,10 +302,6 @@
     
     <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
     <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
@@ -325,6 +331,8 @@
     <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
     <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+    <a href="https://domyson.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
     
 </div>
     </section>

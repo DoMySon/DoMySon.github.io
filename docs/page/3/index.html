@@ -68,6 +68,243 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/01/channel/" title="channel">channel</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月20日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <blockquote>
+<p><code>CSP(communicating sequential processes)</code> 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 <code>Actor</code> 模型不同，<code>CSP</code> 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 <code>goroutine，</code> 消息通道对应的就是 <code>channel</code>。<code>CSP</code> 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。</p>
+</blockquote>
+<blockquote>
+<p><code>channel</code> 提供了一种通信机制，通过它，一个 <code>goroutine</code> 可以与另一 <code>goroutine</code> 发送消息。<code>channel</code> 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 <code>len()</code> 获取通道当前缓冲数量。 <code>cap()</code> 获取通道最大缓冲。</p>
+</blockquote>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/01/channel/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/01/dockernetwork/" title="DockerNetwork">DockerNetwork</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年1月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="docker-network">Docker Network</h1>
+<blockquote>
+<p><code>Docker</code> 在安装时候，默认创建三个网络 <code>bridge（默认）</code>,<code>none</code>,<code>host</code>。</p>
+</blockquote>
+<blockquote>
+<p><code>docker network create --driver [bridge|host|none|container] networkname</code></p>
+</blockquote>
+<ul>
+<li>
+<p><code>bridge</code>：默认模式，容器使用独立 network Namespace，并连接到<code>docker0</code>虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 <code>docker0</code> 中。</p>
+</li>
+<li>
+<p><code>host</code>：与宿主机共享网络，此时容器没有使用网络的namespace，<code>-p</code> 将不会起任何作用。</p>
+</li>
+<li>
+<p><code>container</code>：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。</p>
+</li>
+<li>
+<p><code>none</code>：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。</p>
+</li>
+<li>
+<p><code>container</code>：与指定的容器共享网络，如果有的话。</p>
+</li>
+</ul>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/01/dockernetwork/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/12/go-module/" title="Go Module">Go Module</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月29日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="module">Module</h1>
+<p>Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 <code>go.mod</code> 文件来建立依赖管理。</p>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/12/go-module/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="Unity内存管理">Unity内存管理</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月27日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/unity'>Unity</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="unity-托管内存">Unity 托管内存</h1>
+<ol>
+<li>
+<p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p>
+</li>
+<li>
+<p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p>
+</li>
+<li>
+<p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p>
+</li>
+<li>
+<p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p>
+</li>
+<li>
+<p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p>
+</li>
+<li>
+<p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p>
+</li>
+</ol>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/" title="golang内置锁">golang内置锁</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年12月11日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90'>源码分析</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            sync.Mutex mutex相关的所有事情都是通过sync.Mutex类型的两个方法sync.Lock()和sync.Unlock()函数来完成的，前者用于……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/12/golang%E5%86%85%E7%BD%AE%E9%94%81/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2019/09/tree/" title="Tree">Tree</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年9月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="树-tree">树 <code>Tree</code></h1>
+<h2 id="定义">定义</h2>
+<blockquote>
+<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
+</blockquote>
+<pre tabindex="0"><code>      A
+     / \
+    B   C
+   /   / \
+  D   E   F
+ /|\   \
+G H I   J
+</code></pre><ul>
+<li>
+<p>有且仅有一个特定的称为根（Root）的结点；</p>
+</li>
+<li>
+<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
+</li>
+<li>
+<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
+</li>
+<li>
+<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
+</li>
+</ul>
+<h2 id="节点的度">节点的度</h2>
+<blockquote>
+<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
+</blockquote>
+<pre tabindex="0"><code>             A -度2
+            / \
+           B   C -度2
+          /   / \
+   度3 - D   E   F - 度0
+        /|\   \
+       G H I   J
+</code></pre><h2 id="节点的深度">节点的深度</h2>
+<blockquote>
+<p>该节点的深度为 4</p>
+</blockquote>
+<pre tabindex="0"><code>------------------------------
+          A         第一层       
+-------- /-\------------------
+        B   C       第二层 
+-------/---/-\----------------        
+      D   E   F     第三层
+-----/|\---\------------------            
+    G H I   J       第四层
+------------------------------
+</code></pre>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2019/09/tree/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://domyson.github.io/2019/08/consistenthash/" title="ConsistentHash">ConsistentHash</a>
             </h1>
         </header>
@@ -190,203 +427,6 @@
         <p class="readmore"><a href="https://domyson.github.io/2019/08/unsafe%E5%8C%85/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" title="Go性能分析">Go性能分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年8月23日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p>单元测试（unit testing），是指对软件中的最小可测试单元进行检查和验证。对于单元测试中单元的含义，一般要根据实际情况去判定其具体含义，如 C语言中单元指一个函数,单元就是人为规定的最小的被测功能模块。单元测试是在软件开发过程中要进行的最低级别的测试活动，软件的独立单元将在与程序的其他部分相隔离的情况下进行测试。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/08/go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/topk/" title="TopK">TopK</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月31日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            问题 在一堆数据里面找到前 K 大（也可以是前 K 小）的数。本文对于三个算法 QuickSort、HeapSort、BubbleSort 来比对 全局排序……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/topk/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/classicsort/" title="ClassicSort">ClassicSort</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="概念">概念</h1>
-<h2 id="稳定排序非稳定排序">稳定排序，非稳定排序</h2>
-<blockquote>
-<p>如果 a 原本在 b 的前面，且 a == b，排序之后 a 仍然在 b 的前面，则为稳定排序。若可能 a 不在 b 的后面则为  <code>非稳定排序</code></p>
-</blockquote>
-<h2 id="原地排序非原地排序">原地排序，非原地排序</h2>
-<blockquote>
-<p>原地排序就是指在排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换的数据排序。若利用了其他辅助数组，则为 <code>非原地排序</code></p>
-</blockquote>
-<h2 id="时间复杂度">时间复杂度</h2>
-<blockquote>
-<p>一个算法执行所耗费的时间</p>
-</blockquote>
-<h2 id="空间复杂度">空间复杂度</h2>
-<blockquote>
-<p>完成算法所需的内存空间大小</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/classicsort/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/ilruntime/" title="ILRuntime">ILRuntime</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/unity'>Unity</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            这是一个介绍……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/ilruntime/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/07/redis/" title="Redis">Redis</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年7月24日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/redis'>redis</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="liunx安装">Liunx安装</h1>
-<h1 id="基本数据结构">基本数据结构</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>string</code></td>
-<td style="text-align:center">键值对</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>has</code></td>
-<td style="text-align:center">hash表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>list</code></td>
-<td style="text-align:center">字符串列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>set</code></td>
-<td style="text-align:center">无重复列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>sorted set</code></td>
-<td style="text-align:center">有序无重复列表</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>subscribe/publish</code></td>
-<td style="text-align:center">发布订阅模式</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><a href="http://doc.redisfans.com/index.html">Redis命令</a></p>
-</blockquote>
-<blockquote>
-<p><a href="https://redis.io/download">Redis下载</a></p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/07/redis/">阅读全文</a></p>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/05/md5/" title="MD5">MD5</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年5月22日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/algorithm'>Algorithm</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            简介 MD5(Messgae-digest algorithm5)信息摘要 将任意长度的明文生成 128bit 或 16byte 的哈希值，也为16个byte,一般转为16进制表示,所以会显示32个字符，而M……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/05/md5/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -421,6 +461,10 @@
     
     <li >
         <a href="https://domyson.github.io/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://domyson.github.io/page/7/">7</a>
     </li>
     
 
@@ -478,6 +522,26 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/golang%E5%BC%80%E6%BA%90%E5%BA%93/" title="Golang开源库">Golang开源库</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/" title="如何避免死锁">如何避免死锁</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/b%E6%A0%91/" title="B树">B树</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/sync.map/" title="sync.Map">sync.Map</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
     </li>
     
@@ -486,35 +550,15 @@
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/innodb/" title="innodb">innodb</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
         <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
 </ul>
@@ -532,21 +576,29 @@
     
     <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (10)</a></li>
     
     <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (2)</a></li>
+    
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (5)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/">同步 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%BC%80%E6%BA%90%E5%BA%93/">开源库 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (2)</a></li>
     
     <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
@@ -595,10 +647,6 @@
     
     <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
     <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
@@ -628,6 +676,8 @@
     <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
     <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+    <a href="https://domyson.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
     
 </div>
     </section>

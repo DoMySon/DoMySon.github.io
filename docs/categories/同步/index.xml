@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>同步 on 薛定谔的Bug</title>
+    <link>https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/</link>
+    <description>Recent content in 同步 on 薛定谔的Bug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 15 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何避免死锁</title>
+      <link>https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/</guid>
+      <description>产生的条件 互斥：资源不能被共享，只能由一个进程使用。 请求与保持：进程已获得了一些资源，但因请求其它资源被阻塞时，对已获得的资源保持不放。 不可</description>
+    </item>
+    
+  </channel>
+</rss>

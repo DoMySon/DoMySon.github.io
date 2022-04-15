@@ -70,6 +70,305 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年7月4日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/c'>c</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="预处理器">预处理器</h1>
+<ul>
+<li>
+<p><code>#pragma</code> 用于指示编译器完成一些特定的动作</p>
+<ol>
+<li>
+<p>#pragma message usermessage</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#if defined IOS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">#pragma message &#34;ready complie ios...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">//complie output:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   note: <span style="color:#960050;background-color:#1e0010">#</span>pragma message: ready complie ios...
+</span></span></code></pre></div></li>
+<li>
+<p>#pragma once 确保头文件仅被编译一次</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma once
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> value <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;test.h&#34;</span><span style="color:#75715e">
+</span></span></span></code></pre></div></li>
+<li>
+<p>#pragma pack(size_t) 指定内存对齐</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//example:test.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 2byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> foo{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 4byte 对齐
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#pragma pack(4)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> bar{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c1;
+</span></span><span style="display:flex;"><span>    shirt s;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> c2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> foo)); <span style="color:#75715e">//8
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> bar)); <span style="color:#75715e">//12
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div></li>
+<li>
+<p>在不同编译器之间不可移植，在不同编译器可能以不同的方式解释，预处理器将忽略不被识别的此指令</p>
+</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">#define</td>
+<td style="text-align:center">定义宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#include</td>
+<td style="text-align:center">包含一个源代码文件</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#undef</td>
+<td style="text-align:center">取消一个定义的宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifdef</td>
+<td style="text-align:center">是否定义了宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#ifndef</td>
+<td style="text-align:center">是否没有定义一个宏</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#if</td>
+<td style="text-align:center">条件检测</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#else</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#elif</td>
+<td style="text-align:center">条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#endif</td>
+<td style="text-align:center">结束条件分支</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#error</td>
+<td style="text-align:center">当遇到标准错误，输出错误消息</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#pragma</td>
+<td style="text-align:center">使用标准化方法，向编译器发布特殊的命令到编译器中</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">#line</td>
+<td style="text-align:center">重置下一行行数</td>
+<td style="text-align:center">#line 100</td>
+</tr>
+</tbody>
+</table>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年5月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/c'>C</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            ……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/05/pointer/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年4月18日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            编译指示 在计算机编程中，编译指示(pragma) 是一种语言结构，它指示编译器应该如何处理其输入。指示不是编程语言语法的一部分，因编译器而异。……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年3月12日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/others'>others</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="简介">简介</h1>
+<ul>
+<li>
+<p>msys2集成了mingw，同时msys2还有一些其他的特性，例如包管理器等。</p>
+</li>
+<li>
+<p>msys2可以在windows下搭建一个完美的类linux环境，包括bash、vim、gcc、make等工具都可以通过包管理器来添加和卸载</p>
+</li>
+<li>
+<p>msys2的包管理器是使用的是 <code>pacman</code></p>
+</li>
+</ul>
+<p><a href="https://www.msys2.org/">下载地址</a></p>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/03/msys2/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月26日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="如何启用gc跟踪">如何启用GC跟踪</h1>
+<blockquote>
+<p>GODEBUG=gctrace=1 go run *.go</p>
+</blockquote>
+<p>其中 <code>gctrace=1</code> 表示只针对这个进程进行GC追踪</p>
+<h1 id="输出分析">输出分析</h1>
+<pre tabindex="0"><code>gc 1 @0.035s 0%: 0+0.99+0 ms clock, 0+0/0/0+0 ms cpu, 4-&gt;5-&gt;1 MB, 5 MB goal, 12 P
+scvg: 0 MB released
+scvg: inuse: 5, idle: 2, sys: 7, released: 2, consumed: 5 (MB)
+GC forced
+</code></pre>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月13日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/go'>go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <h1 id="go-版本变迁差异">Go 版本变迁差异</h1>……
+        </div>
+        <p class="readmore"><a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://domyson.github.io/2020/02/%E4%BD%8D%E8%BF%90%E7%AE%97/" title="位运算">位运算</a>
             </h1>
         </header>
@@ -242,258 +541,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2020/01/channel/" title="channel">channel</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月20日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <blockquote>
-<p><code>CSP(communicating sequential processes)</code> 模型由并发执行实体(进程，线程或协程)，和消息通道组成，实体之间通过消息通道发送消息进行通信。和 <code>Actor</code> 模型不同，<code>CSP</code> 模型关注的是消息发送的载体，即通道，而不是发送消息的执行实体。Go 语言的并发模型参考了 CSP 理论，其中执行实体对应的是 <code>goroutine，</code> 消息通道对应的就是 <code>channel</code>。<code>CSP</code> 模型的核心是：不通过共享内存来达到通讯，而是通过通讯来共享内存。</p>
-</blockquote>
-<blockquote>
-<p><code>channel</code> 提供了一种通信机制，通过它，一个 <code>goroutine</code> 可以与另一 <code>goroutine</code> 发送消息。<code>channel</code> 本身还需关联了一个类型，也就是可以发送数据的类型。可以通过 <code>len()</code> 获取通道当前缓冲数量。 <code>cap()</code> 获取通道最大缓冲。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2020/01/channel/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2020/01/dockernetwork/" title="DockerNetwork">DockerNetwork</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年1月2日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="docker-network">Docker Network</h1>
-<blockquote>
-<p><code>Docker</code> 在安装时候，默认创建三个网络 <code>bridge（默认）</code>,<code>none</code>,<code>host</code>。</p>
-</blockquote>
-<blockquote>
-<p><code>docker network create --driver [bridge|host|none|container] networkname</code></p>
-</blockquote>
-<ul>
-<li>
-<p><code>bridge</code>：默认模式，容器使用独立 network Namespace，并连接到<code>docker0</code>虚拟网卡（默认模式）。通过该网桥以及Iptables nat表配置与宿主机通信，此模式会为每一个容器分配Network Namespace、设置IP等，并将一个主机上的容器连接到同一个网桥 <code>docker0</code> 中。</p>
-</li>
-<li>
-<p><code>host</code>：与宿主机共享网络，此时容器没有使用网络的namespace，<code>-p</code> 将不会起任何作用。</p>
-</li>
-<li>
-<p><code>container</code>：新创建的容器和已经存在的一个容器共享一个Network Namespace,新创建的容器不会创建自己的网卡，配置自己的IP，而是和一个指定的容器共享IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过lo网卡设备通信。</p>
-</li>
-<li>
-<p><code>none</code>：该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）。</p>
-</li>
-<li>
-<p><code>container</code>：与指定的容器共享网络，如果有的话。</p>
-</li>
-</ul>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2020/01/dockernetwork/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/12/go-module/" title="Go Module">Go Module</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月29日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="module">Module</h1>
-<p>Golang 从1.11版本开始支持官方自带的依赖管理模块。根据项目路径中的 <code>go.mod</code> 文件来建立依赖管理。</p>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/12/go-module/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="Unity内存管理">Unity内存管理</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月27日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/unity'>Unity</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="unity-托管内存">Unity 托管内存</h1>
-<ol>
-<li>
-<p>用户代码分配的内存本质上在 <code>IL2CPP</code> 构建的 <code>VM</code> 的托管内存(<code>Managed Memory</code>)上，所以用户代码分配遵从于这个 <code>VM</code> 的分配方式。</p>
-</li>
-<li>
-<p><code>IL2CPP</code> 采用的是 <code>Boehm</code> 回收算法,这算法的缺陷是 <code>不分代</code>，<code>不压缩</code>，虽然提高了效率，但由于用户申请内存的不确定性，容易造成内存碎片，不利于此块的内存重使用。</p>
-</li>
-<li>
-<p>内存以 <code>Block</code> 来管理，当一个 <code>Block</code> 6次GC没有被访问，才会返回给 OS。</p>
-</li>
-<li>
-<p><code>Zombie Memory</code>,由于用户不主动释放，但实际没有使用。那么这块内存将不会被回收。</p>
-</li>
-<li>
-<p>对于一个物体，应该是 <code>Destory</code> 而不是置为 <code>Null</code>。</p>
-</li>
-<li>
-<p>下一代采用 <code>渐进式GC</code>（分帧GC，使CPU峰值更平滑），可以手动开关。</p>
-</li>
-</ol>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/12/unity%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/12/go%E9%94%81/" title="Go锁">Go锁</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年12月11日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/go'>go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="简介">简介</h1>
-<blockquote>
-<p>锁是传统并发程序对共享资源进行访问控制的主要手段。</p>
-</blockquote>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/12/go%E9%94%81/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://domyson.github.io/2019/09/tree/" title="Tree">Tree</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年9月2日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/%E7%AE%97%E6%B3%95'>算法</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <h1 id="树-tree">树 <code>Tree</code></h1>
-<h2 id="定义">定义</h2>
-<blockquote>
-<p>树（Tree）是n（n&gt;=0)个结点的有限集。<code>n=0</code> 时称为空树。在任意一颗非空树中：</p>
-</blockquote>
-<pre tabindex="0"><code>      A
-     / \
-    B   C
-   /   / \
-  D   E   F
- /|\   \
-G H I   J
-</code></pre><ul>
-<li>
-<p>有且仅有一个特定的称为根（Root）的结点；</p>
-</li>
-<li>
-<p>当n&gt;1时，其余结点可分为m(m&gt;0)个互不相交的有限集T1、T2、&hellip;&hellip;、Tn，其中每一个集合本身又是一棵树，并且称为根的子树。</p>
-</li>
-<li>
-<p>n&gt;0时根结点是唯一的，不可能存在多个根结点，数据结构中的树只能有一个根结点。</p>
-</li>
-<li>
-<p>m&gt;0时，子树的个数没有限制，但它们一定是互不相交的。</p>
-</li>
-</ul>
-<h2 id="节点的度">节点的度</h2>
-<blockquote>
-<p>节点又有子树数目成为节点的 <code>度</code>，如上图</p>
-</blockquote>
-<pre tabindex="0"><code>             A -度2
-            / \
-           B   C -度2
-          /   / \
-   度3 - D   E   F - 度0
-        /|\   \
-       G H I   J
-</code></pre><h2 id="节点的深度">节点的深度</h2>
-<blockquote>
-<p>该节点的深度为 4</p>
-</blockquote>
-<pre tabindex="0"><code>------------------------------
-          A         第一层       
--------- /-\------------------
-        B   C       第二层 
--------/---/-\----------------        
-      D   E   F     第三层
------/|\---\------------------            
-    G H I   J       第四层
-------------------------------
-</code></pre>……
-        </div>
-        <p class="readmore"><a href="https://domyson.github.io/2019/09/tree/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -527,6 +574,10 @@ G H I   J
     
     <li >
         <a href="https://domyson.github.io/post/page/6/">6</a>
+    </li>
+    
+    <li >
+        <a href="https://domyson.github.io/post/page/7/">7</a>
     </li>
     
 
@@ -584,6 +635,26 @@ G H I   J
 <ul class="widget-list">
     
     <li>
+        <a href="https://domyson.github.io/2022/04/golang%E5%BC%80%E6%BA%90%E5%BA%93/" title="Golang开源库">Golang开源库</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81/" title="如何避免死锁">如何避免死锁</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/b%E6%A0%91/" title="B树">B树</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/sync.map/" title="sync.Map">sync.Map</a>
+    </li>
+    
+    <li>
+        <a href="https://domyson.github.io/2022/04/mysql-batch-update/" title="mysql batch update">mysql batch update</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" title="延时队列">延时队列</a>
     </li>
     
@@ -592,35 +663,15 @@ G H I   J
     </li>
     
     <li>
+        <a href="https://domyson.github.io/2022/04/innodb/" title="innodb">innodb</a>
+    </li>
+    
+    <li>
         <a href="https://domyson.github.io/2022/04/cgo/" title="Cgo">Cgo</a>
     </li>
     
     <li>
         <a href="https://domyson.github.io/2022/04/mysql100%E9%97%AE/" title="mysql100问">mysql100问</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/07/%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8/" title="预处理器">预处理器</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/05/pointer/" title="pointer">pointer</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/04/go-%E7%BC%96%E8%AF%91%E6%8C%87%E7%A4%BA/" title="Go 编译指示">Go 编译指示</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/03/msys2/" title="Msys2">Msys2</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go-gc%E5%88%86%E6%9E%90/" title="Go GC分析">Go GC分析</a>
-    </li>
-    
-    <li>
-        <a href="https://domyson.github.io/2020/02/go%E5%8E%86%E4%BB%A3%E7%89%88%E6%9C%AC/" title="go历代版本">go历代版本</a>
     </li>
     
 </ul>
@@ -638,21 +689,29 @@ G H I   J
     
     <li><a href="https://domyson.github.io/categories/docker/">Docker (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/go/">go (11)</a></li>
+    <li><a href="https://domyson.github.io/categories/go/">go (10)</a></li>
     
     <li><a href="https://domyson.github.io/categories/linux/">Linux (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/lua/">Lua (1)</a></li>
     
+    <li><a href="https://domyson.github.io/categories/mysql/">mysql (2)</a></li>
+    
     <li><a href="https://domyson.github.io/categories/network/">Network (2)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/others/">others (6)</a></li>
+    <li><a href="https://domyson.github.io/categories/others/">others (5)</a></li>
     
     <li><a href="https://domyson.github.io/categories/redis/">redis (1)</a></li>
     
     <li><a href="https://domyson.github.io/categories/unity/">Unity (3)</a></li>
     
-    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (1)</a></li>
+    <li><a href="https://domyson.github.io/categories/%E5%85%AB%E8%82%A1%E6%96%87/">八股文 (3)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%90%8C%E6%AD%A5/">同步 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E5%BC%80%E6%BA%90%E5%BA%93/">开源库 (1)</a></li>
+    
+    <li><a href="https://domyson.github.io/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析 (2)</a></li>
     
     <li><a href="https://domyson.github.io/categories/%E7%AE%97%E6%B3%95/">算法 (9)</a></li>
     
@@ -701,10 +760,6 @@ G H I   J
     
     <a href="https://domyson.github.io/tags/i/o/">I/O</a>
     
-    <a href="https://domyson.github.io/tags/lock/">Lock</a>
-    
-    <a href="https://domyson.github.io/tags/locker/">Locker</a>
-    
     <a href="https://domyson.github.io/tags/lua/">Lua</a>
     
     <a href="https://domyson.github.io/tags/markdown/">Markdown</a>
@@ -734,6 +789,8 @@ G H I   J
     <a href="https://domyson.github.io/tags/unity/">Unity</a>
     
     <a href="https://domyson.github.io/tags/web/">Web</a>
+    
+    <a href="https://domyson.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
     
 </div>
     </section>
